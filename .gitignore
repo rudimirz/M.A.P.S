@@ -1,0 +1,18 @@
+# Local credentials
+.env
+.env.*
+*.pem
+*.key
+
+# Workspace and tooling
+.local/
+.claude/
+.codex/
+.venv/
+node_modules/
+__pycache__/
+*.pyc
+*.log
+*.zip
+Thumbs.db
+.DS_Store

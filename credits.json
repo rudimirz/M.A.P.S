@@ -1,0 +1,27 @@
+{
+  "project": "M.A.P.S. · Moon Mission",
+  "challenge": "NASA Space Apps Challenge 2026 · Space Mission Design Game",
+  "contributors": [
+    "Rubén Mauricio Romero",
+    "Joseph Arroyo",
+    "Solomon Perriyil",
+    "Soumya Shree"
+  ],
+  "super_intelligence": {
+    "video": {
+      "tool": "Grok Imagine",
+      "usage": "Cinematics, character video, and the campaign card still."
+    },
+    "audio": {
+      "tool": "ElevenLabs",
+      "usage": "English prologue narration."
+    },
+    "code": {
+      "tools": [
+        "Claude Design",
+        "OpenAI Codex"
+      ],
+      "usage": "AI assistance with game design, implementation and documentation."
+    }
+  }
+}

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./multiplayer-demo/react.js"></script>
+<script src="./multiplayer-demo/react-dom.js"></script>
+<script src="./multiplayer-demo/support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+html,body{margin:0;height:100%;background:#05080e}
+a{color:#90e1bd}a:hover{color:#bff0d8}
+</style>
+</helmet>
+<x-import component-from-global-scope="deck-stage" from="./deck-stage.js" width="1920" height="1080" hint-size="100%,100%">
+
+<section data-label="ES · NASA × Luna" data-screen-label="01 ES" style="box-sizing:border-box;padding:56px 72px;display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:22px;background:radial-gradient(120% 80% at 30% 0%,#16243d,#070b12 60%);color:#f0f4fa;font-family:'Segoe UI',system-ui,sans-serif">
+  <header style="display:flex;justify-content:space-between;align-items:flex-end;gap:40px">
+    <div style="display:grid;gap:8px">
+      <span style="font:800 24px Bahnschrift,'Segoe UI',sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#ffc779">NASA Space Apps · recursos publicados</span>
+      <h1 style="margin:0;font:800 56px/1.05 Bahnschrift,'Segoe UI',sans-serif">¿Cuánta sinergia hay con MAPS · Misión Luna?</h1>
+    </div>
+    <div style="display:grid;gap:6px;justify-items:end;font-size:24px;color:#acbbce">
+      <div style="display:flex;gap:22px;align-items:center">
+        <span style="display:flex;gap:6px;align-items:center"><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><span style="margin-left:4px">Alta</span></span>
+        <span style="display:flex;gap:6px;align-items:center"><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;box-sizing:border-box;border:2px solid #566278"></i><span style="margin-left:4px">Media</span></span>
+        <span style="display:flex;gap:6px;align-items:center"><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;box-sizing:border-box;border:2px solid #566278"></i><i style="width:16px;height:16px;border-radius:50%;box-sizing:border-box;border:2px solid #566278"></i><span style="margin-left:4px">Baja</span></span>
+      </div>
+      <span>NASA no avala este proyecto.</span>
+    </div>
+  </header>
+
+  <div style="display:grid;grid-template-columns:minmax(0,1fr) 640px;gap:28px;min-height:0">
+    <div style="display:grid;grid-template-rows:auto minmax(0,1fr);gap:20px;min-height:0">
+      <div style="display:grid;gap:14px;padding:20px 24px;border-radius:16px;background:#111823;border:1px solid #344255">
+        <span style="font:800 24px Bahnschrift,'Segoe UI',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#acbbce">Ciclo de una misión científica (NASA) → en Luna</span>
+        <div style="display:grid;grid-template-columns:1fr auto 1fr auto 1fr auto 1fr auto 1fr;gap:8px;align-items:stretch">
+          <div style="display:grid;gap:4px;align-content:start;padding:12px;border-radius:10px;background:#0b111a;border:1px solid #344255"><b style="font:800 26px/1.15 Bahnschrift,'Segoe UI',sans-serif">Necesidad científica</b><span style="font-size:24px;line-height:1.25;color:#acbbce">Briefing: encontrar hielo</span></div>
+          <span style="align-self:center;font-size:28px;color:#566278">→</span>
+          <div style="display:grid;gap:4px;align-content:start;padding:12px;border-radius:10px;background:#0b111a;border:2px solid #90e1bd"><b style="font:800 26px/1.15 Bahnschrift,'Segoe UI',sans-serif">Requisitos</b><span style="font-size:24px;line-height:1.25;color:#90e1bd">R1–R5: briefing, HUD e informe</span></div>
+          <span style="align-self:center;font-size:28px;color:#566278">→</span>
+          <div style="display:grid;gap:4px;align-content:start;padding:12px;border-radius:10px;background:#0b111a;border:1px solid #344255"><b style="font:800 26px/1.15 Bahnschrift,'Segoe UI',sans-serif">Diseño</b><span style="font-size:24px;line-height:1.25;color:#acbbce">Taller: cohete, piezas, órbita</span></div>
+          <span style="align-self:center;font-size:28px;color:#566278">→</span>
+          <div style="display:grid;gap:4px;align-content:start;padding:12px;border-radius:10px;background:#0b111a;border:1px solid #344255"><b style="font:800 26px/1.15 Bahnschrift,'Segoe UI',sans-serif">Verificación</b><span style="font-size:24px;line-height:1.25;color:#acbbce">Ensayo de vibración</span></div>
+          <span style="align-self:center;font-size:28px;color:#566278">→</span>
+          <div style="display:grid;gap:4px;align-content:start;padding:12px;border-radius:10px;background:#0b111a;border:1px solid #344255"><b style="font:800 26px/1.15 Bahnschrift,'Segoe UI',sans-serif">Ejecución</b><span style="font-size:24px;line-height:1.25;color:#acbbce">Lanzar, alunizar, volver</span></div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;min-height:0">
+        <div style="display:flex;flex-direction:column;gap:10px;padding:18px;border-radius:16px;background:#111823;border:1px solid #344255;border-top:6px solid #ffc779">
+          <b style="font:800 30px Bahnschrift,'Segoe UI',sans-serif;color:#ffc779">Lanzamiento</b>
+          <span style="font-size:24px;line-height:1.25;color:#acbbce">Cohete y servicios para llegar al espacio</span>
+          <div style="display:grid;gap:6px;margin-top:6px;font-size:24px;line-height:1.25"><span>Contrato del cohete</span><span>Cofia</span><span>Despegue</span></div>
+          <div style="margin-top:auto;display:flex;gap:6px;align-items:center;font-size:24px;color:#acbbce"><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><span style="margin-left:6px">Alta</span></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;padding:18px;border-radius:16px;background:#111823;border:1px solid #344255;border-top:6px solid #90e1bd">
+          <b style="font:800 30px Bahnschrift,'Segoe UI',sans-serif;color:#90e1bd">Espacio</b>
+          <span style="font-size:24px;line-height:1.25;color:#acbbce">Nave, instrumentos, módulo y rover</span>
+          <div style="display:grid;gap:6px;margin-top:6px;font-size:24px;line-height:1.25"><span>Visor de cráter</span><span>Panel eléctrico</span><span>Pulso de eclipse</span><span>Alunizaje</span><span>Rover con cable</span><span>Salto al cráter</span><span>Ascenso</span></div>
+          <div style="margin-top:auto;display:flex;gap:6px;align-items:center;font-size:24px;color:#acbbce"><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><span style="margin-left:6px">Alta</span></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;padding:18px;border-radius:16px;background:#111823;border:1px solid #344255;border-top:6px solid #8ed5f3">
+          <b style="font:800 30px Bahnschrift,'Segoe UI',sans-serif;color:#8ed5f3">Tierra</b>
+          <span style="font-size:24px;line-height:1.25;color:#acbbce">Estaciones y control de misión</span>
+          <div style="display:grid;gap:6px;margin-top:6px;font-size:24px;line-height:1.25"><span>Antena y ventanas de radio</span><span>Control de misión</span><span>Roles de la tripulación</span></div>
+          <div style="margin-top:auto;display:flex;gap:6px;align-items:center;font-size:24px;color:#acbbce"><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><span style="margin-left:6px">Alta</span></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;padding:18px;border-radius:16px;background:#111823;border:1px solid #344255;border-top:6px solid #d5afff">
+          <b style="font:800 30px Bahnschrift,'Segoe UI',sans-serif;color:#d5afff">Usuarios</b>
+          <span style="font-size:24px;line-height:1.25;color:#acbbce">Científicos que analizan los datos</span>
+          <div style="display:grid;gap:6px;margin-top:6px;font-size:24px;line-height:1.25"><span>Informe final con causas</span><span>Qué hará la ciencia con tus datos</span><span>Misiones reales parecidas</span></div>
+          <div style="margin-top:auto;display:flex;gap:6px;align-items:center;font-size:24px;color:#acbbce"><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><span style="margin-left:6px">Alta</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px;padding:20px 24px;border-radius:16px;background:#111823;border:1px solid #344255;min-height:0">
+      <span style="font:800 24px Bahnschrift,'Segoe UI',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#acbbce">Lo que publicó NASA (y CSA)</span>
+      <div style="display:grid;gap:8px">
+        <div style="display:grid;grid-template-columns:76px minmax(0,1fr);gap:12px;align-items:center"><span style="display:flex;gap:6px"><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i></span><span style="display:grid"><b style="font:700 25px/1.2 'Segoe UI',sans-serif">Design and Develop Science Missions</b><span style="font-size:24px;line-height:1.2;color:#acbbce">Ciclo y 4 segmentos → toda la misión</span></span></div>
+        <div style="display:grid;grid-template-columns:76px minmax(0,1fr);gap:12px;align-items:center"><span style="display:flex;gap:6px"><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i></span><span style="display:grid"><b style="font:700 25px/1.2 'Segoe UI',sans-serif">Mission Design Lab</b><span style="font-size:24px;line-height:1.2;color:#acbbce">Disciplinas de ingeniería → minijuegos</span></span></div>
+        <div style="display:grid;grid-template-columns:76px minmax(0,1fr);gap:12px;align-items:center"><span style="display:flex;gap:6px"><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i></span><span style="display:grid"><b style="font:700 25px/1.2 'Segoe UI',sans-serif">Learning Game About Telescopes</b><span style="font-size:24px;line-height:1.2;color:#acbbce">Mismo arco: objetivo, diseño, resultado</span></span></div>
+        <div style="display:grid;grid-template-columns:76px minmax(0,1fr);gap:12px;align-items:center"><span style="display:flex;gap:6px"><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;box-sizing:border-box;border:2px solid #566278"></i></span><span style="display:grid"><b style="font:700 25px/1.2 'Segoe UI',sans-serif">Concept Maturity Levels</b><span style="font-size:24px;line-height:1.2;color:#acbbce">Comparar opciones → cohete y órbita</span></span></div>
+        <div style="display:grid;grid-template-columns:76px minmax(0,1fr);gap:12px;align-items:center"><span style="display:flex;gap:6px"><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;box-sizing:border-box;border:2px solid #566278"></i></span><span style="display:grid"><b style="font:700 25px/1.2 'Segoe UI',sans-serif">GMAT</b><span style="font-size:24px;line-height:1.2;color:#acbbce">Órbitas y ventanas → visor y antena</span></span></div>
+        <div style="display:grid;grid-template-columns:76px minmax(0,1fr);gap:12px;align-items:center"><span style="display:flex;gap:6px"><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;box-sizing:border-box;border:2px solid #566278"></i></span><span style="display:grid"><b style="font:700 25px/1.2 'Segoe UI',sans-serif">CubeSat 101</b><span style="font-size:24px;line-height:1.2;color:#acbbce">De la idea a la operación → campaña</span></span></div>
+        <div style="display:grid;grid-template-columns:76px minmax(0,1fr);gap:12px;align-items:center"><span style="display:flex;gap:6px"><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;box-sizing:border-box;border:2px solid #566278"></i></span><span style="display:grid"><b style="font:700 25px/1.2 'Segoe UI',sans-serif">CSA · juegos y actividades</b><span style="font-size:24px;line-height:1.2;color:#acbbce">Juegos educativos → mismo público</span></span></div>
+        <div style="display:grid;grid-template-columns:76px minmax(0,1fr);gap:12px;align-items:center"><span style="display:flex;gap:6px"><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;box-sizing:border-box;border:2px solid #566278"></i></span><span style="display:grid"><b style="font:700 25px/1.2 'Segoe UI',sans-serif">NASA Mission Viz</b><span style="font-size:24px;line-height:1.2;color:#acbbce">Trayectoria 2D → informe y HUD</span></span></div>
+        <div style="display:grid;grid-template-columns:76px minmax(0,1fr);gap:12px;align-items:center"><span style="display:flex;gap:6px"><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;box-sizing:border-box;border:2px solid #566278"></i></span><span style="display:grid"><b style="font:700 25px/1.2 'Segoe UI',sans-serif">Misión en realidad virtual (2023)</b><span style="font-size:24px;line-height:1.2;color:#acbbce">Línea de tiempo → informe final</span></span></div>
+      </div>
+    </div>
+  </div>
+
+  <footer style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">
+    <span style="font:800 24px Bahnschrift,'Segoe UI',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#90e1bd;margin-right:6px">Ya en el juego</span>
+    <span style="display:flex;gap:10px;align-items:center;padding:10px 18px;border-radius:999px;border:2px solid #90e1bd;font-size:24px"><b style="color:#90e1bd">✓</b>Requisitos visibles</span>
+    <span style="display:flex;gap:10px;align-items:center;padding:10px 18px;border-radius:999px;border:2px solid #90e1bd;font-size:24px"><b style="color:#90e1bd">✓</b>Segmento de usuarios</span>
+    <span style="display:flex;gap:10px;align-items:center;padding:10px 18px;border-radius:999px;border:2px solid #90e1bd;font-size:24px"><b style="color:#90e1bd">✓</b>Misiones reales parecidas</span>
+    <span style="display:flex;gap:10px;align-items:center;padding:10px 18px;border-radius:999px;border:2px solid #90e1bd;font-size:24px"><b style="color:#90e1bd">✓</b>Trayectoria y línea de tiempo</span>
+  </footer>
+</section>
+
+<section data-label="EN · NASA × Luna" data-screen-label="02 EN" style="box-sizing:border-box;padding:56px 72px;display:grid;grid-template-rows:auto minmax(0,1fr) auto;gap:22px;background:radial-gradient(120% 80% at 30% 0%,#16243d,#070b12 60%);color:#f0f4fa;font-family:'Segoe UI',system-ui,sans-serif">
+  <header style="display:flex;justify-content:space-between;align-items:flex-end;gap:40px">
+    <div style="display:grid;gap:8px">
+      <span style="font:800 24px Bahnschrift,'Segoe UI',sans-serif;letter-spacing:.18em;text-transform:uppercase;color:#ffc779">NASA Space Apps · released resources</span>
+      <h1 style="margin:0;font:800 56px/1.05 Bahnschrift,'Segoe UI',sans-serif">How much synergy with MAPS · Moon Mission?</h1>
+    </div>
+    <div style="display:grid;gap:6px;justify-items:end;font-size:24px;color:#acbbce">
+      <div style="display:flex;gap:22px;align-items:center">
+        <span style="display:flex;gap:6px;align-items:center"><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><span style="margin-left:4px">High</span></span>
+        <span style="display:flex;gap:6px;align-items:center"><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;box-sizing:border-box;border:2px solid #566278"></i><span style="margin-left:4px">Medium</span></span>
+        <span style="display:flex;gap:6px;align-items:center"><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;box-sizing:border-box;border:2px solid #566278"></i><i style="width:16px;height:16px;border-radius:50%;box-sizing:border-box;border:2px solid #566278"></i><span style="margin-left:4px">Low</span></span>
+      </div>
+      <span>NASA does not endorse this project.</span>
+    </div>
+  </header>
+
+  <div style="display:grid;grid-template-columns:minmax(0,1fr) 640px;gap:28px;min-height:0">
+    <div style="display:grid;grid-template-rows:auto minmax(0,1fr);gap:20px;min-height:0">
+      <div style="display:grid;gap:14px;padding:20px 24px;border-radius:16px;background:#111823;border:1px solid #344255">
+        <span style="font:800 24px Bahnschrift,'Segoe UI',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#acbbce">Science mission life cycle (NASA) → in the Moon Mission</span>
+        <div style="display:grid;grid-template-columns:1fr auto 1fr auto 1fr auto 1fr auto 1fr;gap:8px;align-items:stretch">
+          <div style="display:grid;gap:4px;align-content:start;padding:12px;border-radius:10px;background:#0b111a;border:1px solid #344255"><b style="font:800 26px/1.15 Bahnschrift,'Segoe UI',sans-serif">Science need</b><span style="font-size:24px;line-height:1.25;color:#acbbce">Briefing: find ice</span></div>
+          <span style="align-self:center;font-size:28px;color:#566278">→</span>
+          <div style="display:grid;gap:4px;align-content:start;padding:12px;border-radius:10px;background:#0b111a;border:2px solid #90e1bd"><b style="font:800 26px/1.15 Bahnschrift,'Segoe UI',sans-serif">Requirements</b><span style="font-size:24px;line-height:1.25;color:#90e1bd">R1–R5: briefing, HUD and report</span></div>
+          <span style="align-self:center;font-size:28px;color:#566278">→</span>
+          <div style="display:grid;gap:4px;align-content:start;padding:12px;border-radius:10px;background:#0b111a;border:1px solid #344255"><b style="font:800 26px/1.15 Bahnschrift,'Segoe UI',sans-serif">Design</b><span style="font-size:24px;line-height:1.25;color:#acbbce">Workshop: rocket, parts, orbit</span></div>
+          <span style="align-self:center;font-size:28px;color:#566278">→</span>
+          <div style="display:grid;gap:4px;align-content:start;padding:12px;border-radius:10px;background:#0b111a;border:1px solid #344255"><b style="font:800 26px/1.15 Bahnschrift,'Segoe UI',sans-serif">Verification</b><span style="font-size:24px;line-height:1.25;color:#acbbce">Vibration test</span></div>
+          <span style="align-self:center;font-size:28px;color:#566278">→</span>
+          <div style="display:grid;gap:4px;align-content:start;padding:12px;border-radius:10px;background:#0b111a;border:1px solid #344255"><b style="font:800 26px/1.15 Bahnschrift,'Segoe UI',sans-serif">Implementation</b><span style="font-size:24px;line-height:1.25;color:#acbbce">Launch, land, return</span></div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;min-height:0">
+        <div style="display:flex;flex-direction:column;gap:10px;padding:18px;border-radius:16px;background:#111823;border:1px solid #344255;border-top:6px solid #ffc779">
+          <b style="font:800 30px Bahnschrift,'Segoe UI',sans-serif;color:#ffc779">Launch</b>
+          <span style="font-size:24px;line-height:1.25;color:#acbbce">Rocket and services to reach space</span>
+          <div style="display:grid;gap:6px;margin-top:6px;font-size:24px;line-height:1.25"><span>Rocket contract</span><span>Fairing</span><span>Liftoff</span></div>
+          <div style="margin-top:auto;display:flex;gap:6px;align-items:center;font-size:24px;color:#acbbce"><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><span style="margin-left:6px">High</span></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;padding:18px;border-radius:16px;background:#111823;border:1px solid #344255;border-top:6px solid #90e1bd">
+          <b style="font:800 30px Bahnschrift,'Segoe UI',sans-serif;color:#90e1bd">Space</b>
+          <span style="font-size:24px;line-height:1.25;color:#acbbce">Spacecraft, instruments, lander, rover</span>
+          <div style="display:grid;gap:6px;margin-top:6px;font-size:24px;line-height:1.25"><span>Crater viewer</span><span>Power panel</span><span>Eclipse pulse</span><span>Landing</span><span>Tethered rover</span><span>Crater hop</span><span>Ascent</span></div>
+          <div style="margin-top:auto;display:flex;gap:6px;align-items:center;font-size:24px;color:#acbbce"><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><span style="margin-left:6px">High</span></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;padding:18px;border-radius:16px;background:#111823;border:1px solid #344255;border-top:6px solid #8ed5f3">
+          <b style="font:800 30px Bahnschrift,'Segoe UI',sans-serif;color:#8ed5f3">Ground</b>
+          <span style="font-size:24px;line-height:1.25;color:#acbbce">Stations and mission control</span>
+          <div style="display:grid;gap:6px;margin-top:6px;font-size:24px;line-height:1.25"><span>Antenna and radio windows</span><span>Mission control</span><span>Crew roles</span></div>
+          <div style="margin-top:auto;display:flex;gap:6px;align-items:center;font-size:24px;color:#acbbce"><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><span style="margin-left:6px">High</span></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;padding:18px;border-radius:16px;background:#111823;border:1px solid #344255;border-top:6px solid #d5afff">
+          <b style="font:800 30px Bahnschrift,'Segoe UI',sans-serif;color:#d5afff">User</b>
+          <span style="font-size:24px;line-height:1.25;color:#acbbce">Scientists who analyse the data</span>
+          <div style="display:grid;gap:6px;margin-top:6px;font-size:24px;line-height:1.25"><span>Final report with causes</span><span>What science will do with your data</span><span>Similar real missions</span></div>
+          <div style="margin-top:auto;display:flex;gap:6px;align-items:center;font-size:24px;color:#acbbce"><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><span style="margin-left:6px">High</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px;padding:20px 24px;border-radius:16px;background:#111823;border:1px solid #344255;min-height:0">
+      <span style="font:800 24px Bahnschrift,'Segoe UI',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#acbbce">What NASA (and CSA) released</span>
+      <div style="display:grid;gap:8px">
+        <div style="display:grid;grid-template-columns:76px minmax(0,1fr);gap:12px;align-items:center"><span style="display:flex;gap:6px"><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i></span><span style="display:grid"><b style="font:700 25px/1.2 'Segoe UI',sans-serif">Design and Develop Science Missions</b><span style="font-size:24px;line-height:1.2;color:#acbbce">Life cycle, 4 segments → whole mission</span></span></div>
+        <div style="display:grid;grid-template-columns:76px minmax(0,1fr);gap:12px;align-items:center"><span style="display:flex;gap:6px"><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i></span><span style="display:grid"><b style="font:700 25px/1.2 'Segoe UI',sans-serif">Mission Design Lab</b><span style="font-size:24px;line-height:1.2;color:#acbbce">Engineering disciplines → minigames</span></span></div>
+        <div style="display:grid;grid-template-columns:76px minmax(0,1fr);gap:12px;align-items:center"><span style="display:flex;gap:6px"><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i></span><span style="display:grid"><b style="font:700 25px/1.2 'Segoe UI',sans-serif">Learning Game About Telescopes</b><span style="font-size:24px;line-height:1.2;color:#acbbce">Same arc: goal, design, result</span></span></div>
+        <div style="display:grid;grid-template-columns:76px minmax(0,1fr);gap:12px;align-items:center"><span style="display:flex;gap:6px"><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;box-sizing:border-box;border:2px solid #566278"></i></span><span style="display:grid"><b style="font:700 25px/1.2 'Segoe UI',sans-serif">Concept Maturity Levels</b><span style="font-size:24px;line-height:1.2;color:#acbbce">Trade studies → rocket and orbit</span></span></div>
+        <div style="display:grid;grid-template-columns:76px minmax(0,1fr);gap:12px;align-items:center"><span style="display:flex;gap:6px"><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;box-sizing:border-box;border:2px solid #566278"></i></span><span style="display:grid"><b style="font:700 25px/1.2 'Segoe UI',sans-serif">GMAT</b><span style="font-size:24px;line-height:1.2;color:#acbbce">Orbits and windows → viewer, antenna</span></span></div>
+        <div style="display:grid;grid-template-columns:76px minmax(0,1fr);gap:12px;align-items:center"><span style="display:flex;gap:6px"><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;box-sizing:border-box;border:2px solid #566278"></i></span><span style="display:grid"><b style="font:700 25px/1.2 'Segoe UI',sans-serif">CubeSat 101</b><span style="font-size:24px;line-height:1.2;color:#acbbce">From idea to operations → campaign</span></span></div>
+        <div style="display:grid;grid-template-columns:76px minmax(0,1fr);gap:12px;align-items:center"><span style="display:flex;gap:6px"><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;box-sizing:border-box;border:2px solid #566278"></i></span><span style="display:grid"><b style="font:700 25px/1.2 'Segoe UI',sans-serif">CSA · games and activities</b><span style="font-size:24px;line-height:1.2;color:#acbbce">Learning games → same audience</span></span></div>
+        <div style="display:grid;grid-template-columns:76px minmax(0,1fr);gap:12px;align-items:center"><span style="display:flex;gap:6px"><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;box-sizing:border-box;border:2px solid #566278"></i></span><span style="display:grid"><b style="font:700 25px/1.2 'Segoe UI',sans-serif">NASA Mission Viz</b><span style="font-size:24px;line-height:1.2;color:#acbbce">2D trajectory → report and HUD</span></span></div>
+        <div style="display:grid;grid-template-columns:76px minmax(0,1fr);gap:12px;align-items:center"><span style="display:flex;gap:6px"><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;background:#f0f4fa"></i><i style="width:16px;height:16px;border-radius:50%;box-sizing:border-box;border:2px solid #566278"></i></span><span style="display:grid"><b style="font:700 25px/1.2 'Segoe UI',sans-serif">VR mission challenge (2023)</b><span style="font-size:24px;line-height:1.2;color:#acbbce">Timeline → final report</span></span></div>
+      </div>
+    </div>
+  </div>
+
+  <footer style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">
+    <span style="font:800 24px Bahnschrift,'Segoe UI',sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#90e1bd;margin-right:6px">Now in the game</span>
+    <span style="display:flex;gap:10px;align-items:center;padding:10px 18px;border-radius:999px;border:2px solid #90e1bd;font-size:24px"><b style="color:#90e1bd">✓</b>Visible requirements</span>
+    <span style="display:flex;gap:10px;align-items:center;padding:10px 18px;border-radius:999px;border:2px solid #90e1bd;font-size:24px"><b style="color:#90e1bd">✓</b>User segment</span>
+    <span style="display:flex;gap:10px;align-items:center;padding:10px 18px;border-radius:999px;border:2px solid #90e1bd;font-size:24px"><b style="color:#90e1bd">✓</b>Similar real missions</span>
+    <span style="display:flex;gap:10px;align-items:center;padding:10px 18px;border-radius:999px;border:2px solid #90e1bd;font-size:24px"><b style="color:#90e1bd">✓</b>Trajectory and timeline</span>
+  </footer>
+</section>
+
+</x-import>
+</x-dc>
+</body>
+</html>

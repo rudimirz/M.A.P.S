@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="M.A.P.S. · Moon Mission, a space mission design game for NASA Space Apps Challenge 2026.">
+  <title>M.A.P.S. · Moon Mission</title>
+  <style>
+    :root{background:#070b12;color:#f0f4fa;font:1rem/1.55 "Segoe UI",system-ui,sans-serif}
+    *{box-sizing:border-box}
+    body{margin:0}
+    main{width:min(100% - 2rem,68rem);margin:clamp(1rem,7vh,5rem) auto}
+    .event{margin:0 0 1rem;color:#acbbce}
+    article{display:grid;grid-template-columns:1fr 1fr;overflow:hidden;background:#121a25;border:1px solid #344255;border-radius:1.1rem}
+    img{width:100%;height:100%;object-fit:cover;min-height:14rem}
+    .copy{padding:clamp(1.3rem,5vw,3rem);align-self:center}
+    h1,h2,p{margin:0}h1{font-size:clamp(2.5rem,7vw,4rem);line-height:1.1}h2{margin:.55rem 0;font-size:1.45rem}
+    .copy p{color:#bdc9d8}a{color:#a8d7ff}
+    .play{display:inline-block;margin:1.35rem 0 .7rem;padding:.65rem .95rem;border-radius:.48rem;background:#90e1bd;color:#071713;font-weight:750;text-decoration:none}
+    a:focus-visible{outline:3px solid #b8dfff;outline-offset:4px}
+    .links{margin-top:1rem;font-size:.9rem}
+    @media(max-width:39rem){article{grid-template-columns:1fr}img{height:12rem;min-height:0}}
+  </style>
+</head>
+<body>
+  <main>
+    <p class="event">NASA Space Apps Challenge 2026 · Space Mission Design Game</p>
+    <article>
+      <div class="copy">
+        <h1>M.A.P.S.</h1>
+        <h2>Moon Mission</h2>
+        <p>Build a spacecraft, explore the lunar south pole and see how your choices change what you bring home.</p>
+        <a class="play" href="missions/luna/">Play Moon Mission</a>
+        <p>Desktop · Solo or 1–4 players on one computer</p>
+      </div>
+      <img src="missions/luna/media/cards/luna-mision-02.jpg" alt="Lunar mission artwork generated with SI">
+    </article>
+    <p class="links"><a href="missions/luna/nasa-luna.html">NASA science reference</a> · <a href="https://github.com/rudimirz/M.A.P.S">Source and credits</a></p>
+  </main>
+</body>
+</html>
