@@ -18,8 +18,7 @@ Design a mission to the lunar south pole and choose whether to map a crater, con
 1. Open the game on a computer with a keyboard and mouse.
 2. Choose **Play** in the game and select the Moon Mission card.
 3. Choose solo play or a local crew of up to four people on one computer. The language switch supports English, Spanish and Portuguese.
-4. Use **Pilot** to practice Moon Mission minigames.
-5. To play Moon Mission with friends on separate computers, select **Online**. The host shares the game tab and approves guests who enter the room code. This beta depends on public PeerJS signaling and WebRTC connectivity.
+4. To play Moon Mission with friends on separate computers, select **Play online**. The host shares the game tab and approves guests who enter the room code. Online rooms use public PeerJS signaling and WebRTC.
 
 To serve the repository locally, run `python -m http.server 8000` from the root and open `http://localhost:8000`.
 

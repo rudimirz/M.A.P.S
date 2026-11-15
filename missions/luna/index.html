@@ -1925,10 +1925,7 @@ showTitle=function(){SND.amb('amb_control');MUS('tema');clearTimers();clearStage
   const acts=h('div','lacts');acts.append(play,rec);if(window.MAPS_ONLINE){const ob=h('button','lrec onl-entry',esc(MAPS_ONLINE.label()));ob.type='button';ob.addEventListener('click',()=>MAPS_ONLINE.open());acts.append(ob)}
   const meta=h('div','lmeta');const cfg=h('button','lcfg','<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v2.6M12 18.9v2.6M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M2.5 12h2.6M18.9 12h2.6M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/></svg>'+esc(tm('settings')));cfg.type='button';cfg.addEventListener('click',openSettings);
   const crd=h('button','lcfg',esc(tm('credits')));crd.type='button';crd.addEventListener('click',()=>showCredits());
-  const pilot=h('button','lcfg plt','◆ '+esc(tm('pilot')));
-  pilot.type='button';
-  pilot.addEventListener('click',showPilot);
-  meta.append(h('span','mpbadge','<i></i>'+esc(L3({es:'Local',en:'Local',pt:'Local'}))+' · 1–4'),h('span','lsep'),cfg,h('span','lsep'),crd,h('span','lsep'),pilot,h('span','lsep'),h('span','lkey',tm('enter')));col.append(acts,meta);wr.append(col);
+  meta.append(h('span','mpbadge','<i></i>'+esc(L3({es:'Local',en:'Local',pt:'Local'}))+' · 1–4'),h('span','lsep'),cfg,h('span','lsep'),crd,h('span','lsep'),h('span','lkey',tm('enter')));col.append(acts,meta);wr.append(col);
   const tk=h('div','lticker');const lv=h('span','llive','<i></i>'+esc(tm('live')));const trk=h('div','ltrack');const items=[];
   allRec().sort((a,b)=>b.t-a.t).slice(0,7).forEach(r=>items.push('<i class="flg" style="background:'+flagCSS(r.pais)+'"></i><b>'+esc(r.crew.join(', '))+'</b> <span>'+(r.c!=='luna'?esc(L3((CAMP.find(x=>x.id===r.c)||{n:{es:''}}).n))+' · '+r.pts+'/'+(r.max||1000):r.pts+' pts')+' · <em style="color:'+(ECOL[r.fin]||'#acbbce')+'">'+esc(tm('endN')[r.fin]||'')+'</em></span>'));
   try{const F=t('feedP');[['noticias','ice_ok',0],['profe','land_soft',0],['data','orbit_2',0]].forEach(([u,k,i])=>{const p=F[k]&&F[k][i];if(p)items.splice(items.length>2?2:items.length,0,'<b class="fu">@'+esc(u==='noticias'?'noticiasMAPS':u==='profe'?'profe_ciencia':'datos_orbita')+'</b> <span>'+esc(fmt(p[1],{p:'Perú',c:'A'}))+'</span>')})}catch(_){}
@@ -1979,6 +1976,8 @@ Object.assign(ECOL,{a_extendido:'#90e1bd',a_completo:'#90e1bd',a_minimo:'#ffc779
 (()=>{const g=CAMP.find(c=>c.id==='ganimedes');if(!g)return;delete g.draft;g.info=true;g.ext=true;g.lv=null;g.st=XC.ganimedes?.entryUrl?'live':'soon';g.tag={es:'Pixel art 2D',en:'2D pixel art',pt:'Pixel art 2D'};g.vid='media/ganimedes-03.mp4';
   g.sub={es:'The Integrated Front: trae de Ganímedes el alga que puede devolverle el oxígeno a la Tierra',en:'The Integrated Front: bring back from Ganymede the alga that could restore Earth’s oxygen',pt:'The Integrated Front: traga de Ganimedes a alga que pode devolver o oxigênio à Terra'};
   g.learn={es:['Presupuesto y selección de piezas','Masa y capacidad del cohete','Energía y datos a bordo','Ecuación del cohete'],en:['Budget and part selection','Mass and rocket capacity','Power and data on board','The rocket equation'],pt:['Orçamento e seleção de peças','Massa e capacidade do foguete','Energia e dados a bordo','Equação do foguete']};
+  const difficulties=['Cadet','Engineer','Flight Director'];
+  g.diffs={es:difficulties,en:difficulties,pt:difficulties};
   g.meta={es:'Cinco niveles · En inglés',en:'Five levels',pt:'Cinco níveis · Em inglês'}})();
 (()=>{const o=CAMP.find(c=>c.id==='solomon');if(!o)return;o.art='aurora';o.tag={es:'Juego 2.5D',en:'2.5D game',pt:'Jogo 2.5D'};o.vid='media/ultimo-campo-01.mp4';o.info=true;o.lv=1;o.by='Solomon';
   o.n={es:'The Crimson Sky',en:'The Crimson Sky',pt:'The Crimson Sky'};o.pl={es:'La Tierra · 2064',en:'Earth · 2064',pt:'Terra · 2064'};
@@ -2191,7 +2190,27 @@ MT.en.players='1–4 players';MT.pt.players='1–4 jogadores';
 showCredits=function(){clearTimers();clearStage();sky.hidden=true;chrome('select');document.getElementById('t-mission').textContent=tm('credits');const vn=scenePrep('title');vn.classList.add('dim');const sc=h('div','screen');const wr=h('div','cr2');
   const hd=h('div','cr2h');const bk=h('button','btn ghostl sm','◂  '+esc(tm('home')));bk.type='button';bk.addEventListener('click',()=>showTitle());const tt=h('div','cr2t');const lg=h('div','cr2lg');lg.innerHTML=LOGO(72);tt.append(lg);const tx=h('div');tx.append(h('span','eyebrow',esc(tm('credits'))),h('h2',null,'MAPS'),h('p',null,esc(tm('credTag'))));tt.append(tx);hd.append(tt,bk);wr.append(hd);
   const tm1=h('section','cr2sec');tm1.append(h('b','clbl',esc(tm('credTeam'))));const g=h('div','cr2team');
-  [['Rubén Mauricio Romero','MR','#90e1bd'],['Joseph Arroyo','JA','#8ed5f3'],['Solomon Perriyil','SP','#ffc779'],['Soumya Shree','SS','#d5afff']].forEach(([name,initials,col])=>{const card=h('figure','cr2p');card.style.setProperty('--c',col);const mark=h('div','cr2initials',esc(initials));mark.setAttribute('aria-hidden','true');card.append(mark,h('figcaption',null,'<b>'+esc(name)+'</b>'));g.append(card)});tm1.append(g);wr.append(tm1);
+  const team=[
+    ['Rubén Mauricio Romero','mauricio.jpg','#90e1bd'],
+    ['Joseph Arroyo','joseph.jpg','#8ed5f3'],
+    ['Solomon Perriyil','solomon.jpg','#ffc779'],
+    ['Soumya Shree','soumya.jpg','#d5afff']
+  ];
+  team.forEach(([name,file,color])=>{
+    const card=h('figure','cr2p');
+    card.style.setProperty('--c',color);
+    const photo=h('div','cr2ph'), frame=h('div','cr2cl');
+    const image=document.createElement('img');
+    image.src='media/team/'+file;
+    image.alt='';
+    image.decoding='async';
+    frame.append(image);
+    photo.append(frame);
+    card.append(photo,h('figcaption',null,'<b>'+esc(name)+'</b>'));
+    g.append(card);
+  });
+  tm1.append(g);
+  wr.append(tm1);
   const H=CFG.hackathon||{},HN=H.name&&typeof H.name==='object'?L3(H.name):H.name;if(HN||H.url){const hk=h('section','cr2sec cr2c');hk.append(h('b','clbl',esc(tm('credHack'))));const a=document.createElement(H.url?'a':'div');if(H.url){a.href=H.url;a.target='_blank';a.rel='noopener'}a.className='cr2hk';const parts=String(HN||H.url).split(' · ');a.innerHTML='<span class="cr2hki">SPACE<br>APPS</span><span class="cr2hkt"><b>'+esc(parts[0])+'</b>'+(parts[1]?'<em>'+esc(parts.slice(1).join(' · '))+'</em>':'')+'</span>'+(H.url?'<i>↗</i>':'');hk.append(a);wr.append(hk)}
   const rs=h('section','cr2sec');rs.append(h('b','clbl',esc(tm('credRes'))));const gr=h('div','cr2res');tm('credList').forEach((x,i)=>{const m=String(x).match(/^<b>(.*?)<\/b>\s*·\s*(.*)$/);const d=h('div','cr2r');d.style.animationDelay=(.3+i*.04)+'s';if(m){const bits=m[2].split(' · ');const lic=bits.length>1?bits.pop():'';d.append(h('b',null,m[1]),h('span',null,bits.join(' · ')));if(lic)d.append(h('em',null,lic))}else d.innerHTML=x;gr.append(d)});rs.append(gr);const ref=h('a','chlink',esc(L3({es:'Lámina NASA · Misión Luna',en:'NASA · Lunar Mission reference',pt:'Referência NASA · Missão Lunar'})));ref.href='nasa-luna.html';rs.append(ref);wr.append(rs);
   sc.append(wr);vn.append(sc);stage.append(vn);bk.focus()};
@@ -2206,7 +2225,6 @@ Object.assign(MT.es,{credTag:'Un juego de diseño de misiones espaciales: cada d
 .cr2p:hover{transform:translateY(-6px);border-color:var(--c);box-shadow:0 30px 60px -26px #000,0 0 44px -14px var(--c)}
 .cr2ph{position:relative;width:min(150px,100%);aspect-ratio:1;border-radius:50%;padding:4px;background:conic-gradient(from 210deg,var(--c),transparent 40%,var(--c) 70%,transparent 90%,var(--c))}
 .cr2cl{width:100%;height:100%;border-radius:50%;overflow:hidden;border:4px solid #0d131d;background-color:#0d131d;background-repeat:no-repeat}.cr2ph img{display:block;width:100%;height:100%;object-fit:cover;filter:saturate(.95) contrast(1.03)}
-.cr2initials{display:grid;place-items:center;width:68px;aspect-ratio:1;border:1px solid var(--c);border-radius:50%;color:var(--c);font:800 1.3rem var(--heading)}
 .cr2p figcaption{display:grid;justify-items:center;gap:2px;text-align:center}.cr2p figcaption b{font:800 1.2rem/1.1 var(--heading);color:var(--ink)}.cr2p figcaption span{font:700 .82rem var(--heading);letter-spacing:.14em;text-transform:uppercase;color:var(--c)}
 .cr2c{justify-items:center;text-align:center}.cr2c>.clbl{justify-self:center}.cr2hk{justify-self:center;width:auto;max-width:100%;display:flex;align-items:center;justify-content:center;gap:16px;padding:14px 22px;text-align:left;border-radius:18px;border:1px solid rgba(255,199,121,.45);background:linear-gradient(90deg,rgba(255,199,121,.12),rgba(255,199,121,.03));color:var(--ink);text-decoration:none;transition:border-color .2s,background .2s}
 .cr2hk:hover{border-color:var(--gold);background:linear-gradient(90deg,rgba(255,199,121,.2),rgba(255,199,121,.05));color:var(--ink)}
@@ -2218,50 +2236,6 @@ Object.assign(MT.es,{credTag:'Un juego de diseño de misiones espaciales: cada d
 @keyframes cr2In{from{opacity:0;transform:translateY(14px)}}
 @media (max-width:900px){.cr2team{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (min-width:761px) and (max-height:760px){.cr2{gap:18px}.cr2ph{width:min(112px,100%)}.cr2p{padding:16px 10px 14px;gap:10px}.cr2lg .badge{width:56px;height:56px}}
-`;document.head.append(st)})();
-Object.assign(MT.es,{pilot:'Modo piloto',pilotT:'Menú de pruebas',pilotS:'Solo para el equipo interno. Abre cualquier minijuego o salta a un paso de la misión, sin jugar todo en orden. Aquí no se guardan puntos ni récords.',pilotMg:'Minijuegos',pilotSt:'Saltar a un paso de la misión',pilotNp:'Jugadores',pilotBack:'Volver al menú',pilotGo:'Abrir',pilotStN:'La misión arranca desde ese paso con una carga estándar. Algunas escenas pueden mencionar decisiones que no tomaste.',pilotTag:'INTERNO'});
-Object.assign(MT.en,{pilot:'Pilot mode',pilotT:'Test menu',pilotS:'Internal team only. Open any minigame or jump to a mission step without playing everything in order. No points or records are saved here.',pilotMg:'Minigames',pilotSt:'Jump to a mission step',pilotNp:'Players',pilotBack:'Back to menu',pilotGo:'Open',pilotStN:'The mission starts from that step with a standard loadout. Some scenes may mention decisions you never made.',pilotTag:'INTERNAL'});
-Object.assign(MT.pt,{pilot:'Modo piloto',pilotT:'Menu de testes',pilotS:'Só para a equipe interna. Abra qualquer minijogo ou pule para um passo da missão, sem jogar tudo em ordem. Aqui não se salvam pontos nem recordes.',pilotMg:'Minijogos',pilotSt:'Pular para um passo da missão',pilotNp:'Jogadores',pilotBack:'Voltar ao menu',pilotGo:'Abrir',pilotStN:'A missão começa nesse passo com uma carga padrão. Algumas cenas podem citar decisões que você não tomou.',pilotTag:'INTERNO'});
-const PMG=[['01-cofia.html',{es:'Cofia',en:'Fairing',pt:'Coifa'},'#ffc779'],['02-visor-crater.html',{es:'Visor de cráteres',en:'Crater viewer',pt:'Visor de crateras'},'#8ed5f3'],['05-panel-electrico.html',{es:'Panel eléctrico',en:'Power panel',pt:'Painel elétrico'},'#90e1bd'],['03-antena-y-cola.html',{es:'Antena y cola',en:'Antenna and queue',pt:'Antena e fila'},'#d5afff'],['04-pulso-eclipse.html',{es:'Pulso en eclipse',en:'Eclipse pulse',pt:'Pulso no eclipse'},'#8ed5f3'],['06-alunizaje.html',{es:'Alunizaje',en:'Moon landing',pt:'Alunissagem'},'#ffc779'],['07-rover-con-cable.html',{es:'Rover con cable',en:'Rover on a cable',pt:'Rover com cabo'},'#8ed5f3'],['08-salto-al-crater.html',{es:'Salto al cráter',en:'Hop into the crater',pt:'Salto na cratera'},'#90e1bd'],['09-ascenso.html',{es:'Ascenso',en:'Ascent',pt:'Subida'},'#ff8a7a']];
-let PNP=1;
-function pilotOpen(file){clearTimers();clearStage();sky.hidden=true;const q=new URLSearchParams({lang:LANG,howto:'1',piloto:'1',reinicios:'0'});const P=Array.from({length:PNP},(_,i)=>'J'+(i+1));
-  if(file.startsWith('03-')){const seat=i=>P[i]||(PNP===1&&i===1?'J1':'IA');q.set('roles',['antena','cola','vuelo','energia'].map((k,i)=>k+':'+(PNP===1?'J1':seat(i))).join(','));q.set('names',P.map(p=>p+':'+p).join('|'))}
-  if(PNP>1&&(file.startsWith('06-')||file.startsWith('09-'))){q.set('motor','J1');q.set('nav','J2')}if(PNP===1&&file.startsWith('09-')){q.set('motor','J1');q.set('nav','J1')}if(file.startsWith('09-'))q.set('roles2',['vuelo','instrumentos','operaciones','comunicaciones'].map((k,i)=>k+':'+(PNP===1?'J1':(P[i]||'IA'))).join(','));
-  const f=h('iframe','frame');
-  f.src=file+'?'+q.toString();
-  const onSound=event=>{
-    if(event.source!==f.contentWindow||event.origin!==location.origin)return;
-    const message=event.data;
-    if(message?.type==='maps:sfx')playLabSound(message.name);
-  };
-  window.addEventListener('message',onSound);
-  S.off=()=>window.removeEventListener('message',onSound);
-  f.setAttribute('allow','fullscreen');f.addEventListener('load',()=>{try{f.contentWindow.focus()}catch(_){}});stage.append(f);chrome('select');const nm=(PMG.find(x=>x[0]===file)||[])[1];document.getElementById('t-place').textContent=tm('pilot');document.getElementById('t-mission').textContent=nm?L3(nm):'';let bk=document.getElementById('pltbk');if(!bk){bk=h('button','pltbk');bk.id='pltbk';bk.type='button';bk.addEventListener('click',()=>showPilot());document.querySelector('.bar .mtitle').after(bk)}bk.textContent='◂  '+tm('pilotBack');bk.hidden=false}
-{const _ch=chrome;chrome=function(mode){const b=document.getElementById('pltbk');if(b)b.hidden=true;return _ch(mode)}}
-function showPilot(){clearTimers();clearStage();sky.hidden=true;chrome('select');document.getElementById('t-mission').textContent=tm('pilot');const vn=scenePrep('title');vn.classList.add('dim');const sc=h('div','screen');const wr=h('div','plt2');
-  const hd=h('div','plt2h');const tx=h('div');tx.append(h('span','eyebrow',esc(tm('pilot'))+' · '+esc(tm('pilotTag'))),h('h2',null,esc(tm('pilotT'))),h('p',null,esc(tm('pilotS'))));const bk=h('button','btn ghostl sm','◂  '+esc(tm('home')));bk.type='button';bk.addEventListener('click',()=>showTitle());hd.append(tx,bk);wr.append(hd);
-  const np=h('div','plt2np');np.append(h('b','clbl',esc(tm('pilotNp'))));const seg=h('div','plt2seg');[1,2,3,4].forEach(n=>{const b=h('button',null,String(n));b.type='button';b.setAttribute('aria-pressed',String(n===PNP));b.addEventListener('click',()=>{PNP=n;[...seg.children].forEach((x,i)=>x.setAttribute('aria-pressed',String(i+1===n)))});seg.append(b)});np.append(seg);wr.append(np);
-  const s1=h('section','plt2sec');s1.append(h('b','clbl',esc(tm('pilotMg'))));const g=h('div','plt2g');PMG.forEach(([file,n,col],i)=>{const b=h('button','plt2c');b.type='button';b.style.setProperty('--c',col);b.append(h('i',null,file.slice(0,2)),h('b',null,esc(L3(n))),h('span',null,esc(tm('pilotGo'))+' ▸'));b.addEventListener('click',()=>pilotOpen(file));g.append(b)});s1.append(g);wr.append(s1);
-  const s2=h('section','plt2sec');s2.append(h('b','clbl',esc(tm('pilotSt'))));const g2=h('div','plt2st');(t('steps')||[]).forEach((n,i)=>{const b=h('button',null,'<i>'+(i+1)+'</i>'+esc(n));b.type='button';b.addEventListener('click',()=>pilotStep(i+1));g2.append(b)});s2.append(g2,h('p','plt2n',esc(tm('pilotStN'))));wr.append(s2);
-  sc.append(wr);vn.append(sc);stage.append(vn);bk.focus()}
-function pilotStep(n){NP=PNP;TEAM.players=Array.from({length:NP},(_,i)=>({name:(TEAM.players[i]&&TEAM.players[i].name)||''}));RO=NP===1?{vuelo:'J1',instrumentos:'J1',operaciones:'J1',comunicaciones:'J1'}:{vuelo:NP>2?'J3':'IA',instrumentos:'J1',operaciones:NP>3?'J4':'IA',comunicaciones:NP>1?'J2':'J1'};syncCrew();
-  S={step:n,contrato:'expreso',modulo:'ninguno',parts:['cmp','ant','len','rad'],aboard:['cmp','ant','len','rad'],cond:'extra',budget:11,costo:9,reserva:2,asked:false,res:{},rs:{},launchVib:'ok',timers:[],pilot:true};go(n,true)}
-(()=>{const st=document.createElement('style');st.textContent=`
-.lcfg.plt{color:#ffc779}.lcfg.plt:hover{color:#ffe2b0}
-.pltbk{flex:none;min-height:34px;margin-left:14px;padding:3px 16px;border-radius:999px;border:1px solid #ffc779;background:rgba(255,199,121,.12);color:#ffc779;font:700 .82rem var(--heading);white-space:nowrap;cursor:pointer}.pltbk:hover{background:rgba(255,199,121,.24)}.pltbk[hidden]{display:none}
-.plt2{width:min(1040px,100%);display:grid;gap:24px;align-self:center;padding-block:8px}
-.plt2h{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}.plt2h h2{margin:4px 0 6px;font:800 clamp(1.8rem,3.4vw,2.4rem)/1.05 var(--heading)}.plt2h p{margin:0;color:var(--muted);max-width:62ch;text-wrap:pretty}.plt2h .eyebrow{color:#ffc779}
-.plt2np{display:flex;align-items:center;gap:14px}.plt2seg{display:flex;gap:6px}.plt2seg button{width:44px;height:40px;border-radius:12px;border:1px solid #344255;background:#111823;color:var(--ink);font:800 1rem var(--heading);cursor:pointer}.plt2seg button[aria-pressed="true"]{border-color:#ffc779;background:rgba(255,199,121,.16);color:#ffc779}
-.plt2sec{display:grid;gap:12px}
-.plt2g{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
-.plt2c{--c:var(--mint);display:grid;gap:8px;justify-items:start;text-align:left;padding:16px;border-radius:16px;border:1px solid color-mix(in srgb,var(--c) 30%,var(--edge));background:radial-gradient(120% 80% at 0% 0%,color-mix(in srgb,var(--c) 14%,transparent),transparent 60%),linear-gradient(180deg,#16202e,#0d131d);color:var(--ink);cursor:pointer;transition:transform .2s,border-color .2s}
-.plt2c:hover,.plt2c:focus-visible{transform:translateY(-3px);border-color:var(--c)}
-.plt2c i{font:800 .78rem ui-monospace,Consolas,monospace;font-style:normal;color:var(--c);letter-spacing:.1em}.plt2c b{font:800 1.08rem/1.15 var(--heading)}.plt2c span{font:700 .8rem var(--heading);color:var(--muted)}
-.plt2st{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px}
-.plt2st button{display:flex;align-items:center;gap:10px;min-height:44px;padding:6px 12px;border-radius:12px;border:1px solid #243042;background:rgba(15,21,31,.85);color:#d3dce8;font:600 .86rem var(--heading);text-align:left;cursor:pointer}
-.plt2st button:hover,.plt2st button:focus-visible{border-color:#ffc779;color:#fff}
-.plt2st i{flex:none;width:26px;height:26px;display:grid;place-items:center;border-radius:50%;border:1px solid #46566d;font:800 .74rem ui-monospace,Consolas,monospace;font-style:normal;color:#ffc779}
-.plt2n{margin:0;color:var(--muted);font-size:.84rem}
 `;document.head.append(st)})();
 function showComputerNotice(trigger){
   if(!window.MAPSMobileGate)return false;
