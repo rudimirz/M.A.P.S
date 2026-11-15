@@ -28,7 +28,11 @@ pt:{skip:'Pular',voice:'Ativar narração',tap:'Toque para seguir',replay:'Ver p
  c6:['Fotografar da órbita','Enviar os dados à Terra','Descer um robô para confirmar'],c6s:'O plano é simples. **Executá-lo**, nem tanto.',
  c7a:'Cada quilo a bordo custa.',c7b:'E ainda não temos foguete.',
  ep:'Episódio 01',title:'Missão Lua',epn:'O gelo da sombra',c8:'Hipótese pronta. Hora de testá-la.'}};
-const P=()=>{const l=window.PROLOGO_LANG||(typeof LANG!=='undefined'?LANG:'es');return TX[l]||TX.es};
+const prologueLanguage=()=>{
+  const lang=window.PROLOGO_LANG||(typeof LANG!=='undefined'?LANG:'es');
+  return ['es','en','pt'].includes(lang)?lang:'es';
+};
+const P=()=>TX[prologueLanguage()];
 const X=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const F=s=>X(s).replace(/\*\*(.+?)\*\*/g,'<em>$1</em>');
 const E=(tag,cls,html)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e};
@@ -100,7 +104,7 @@ const VO=(()=>{const ss=window.speechSynthesis;let cb=null,busy=false,V=[];if(!s
   const done=()=>{busy=false;const f=cb;cb=null;f&&f()};
   return{say(text,who){this.stop();if(!text)return;try{if(typeof SFX!=='undefined'&&!SFX.on)return}catch(_){}const u=new SpeechSynthesisUtterance(text);const v=pick(who);if(v){u.voice=v;u.lang=v.lang}else u.lang=PREF[0];u.pitch=PIT[who]||1;u.rate=1.03;u.onend=done;u.onerror=done;busy=true;ss.speak(u)},
     stop(){busy=false;cb=null;try{ss.cancel()}catch(_){}},after(f){if(busy||ss.speaking)cb=f;else f()}}})();
-function recordedNarration(button){
+function recordedNarration(button,language){
   const audio=new Audio();
   audio.preload='auto';
   let cue=-1,deadline;
@@ -122,7 +126,7 @@ function recordedNarration(button){
       this.stop();
       if(typeof SFX!=='undefined'&&!SFX.on)return;
       cue=index;
-      audio.src='media/prologo/voice-en/'+String(index+1).padStart(2,'0')+'.mp3';
+      audio.src='media/prologo/voice-'+language+'/'+String(index+1).padStart(2,'0')+'.mp3';
       start();
     },
     after(next){
@@ -144,7 +148,7 @@ function play(onEnd,opt){opt=opt||{};const LIST=opt.cuts||CUTS;if(O)return;const
   const sk=E('button','pskip',X(T.skip)+' ⏭');sk.type='button';sk.dataset.act='end';const dots=E('div','pdots');LIST.forEach(()=>dots.append(E('i')));const tap=E('span','ptap',X(T.tap));O.append(sk,dots,tap);
   const voiceButton=E('button','pskip pvoice',X(T.voice));
   voiceButton.type='button';voiceButton.hidden=true;
-  const narration=LIST===CUTS?recordedNarration(voiceButton):null;
+  const narration=LIST===CUTS?recordedNarration(voiceButton,prologueLanguage()):null;
   if(narration)O.append(voiceButton);
   const voice=narration||VO;
   document.body.append(O);

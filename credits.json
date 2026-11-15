@@ -14,7 +14,8 @@
     },
     "audio": {
       "tool": "ElevenLabs",
-      "usage": "English prologue narration."
+      "usage": "Moon Mission prologue narration in English, Spanish and Portuguese.",
+      "languages": ["en", "es", "pt"]
     },
     "code": {
       "tools": [

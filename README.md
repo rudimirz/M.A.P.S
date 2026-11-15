@@ -33,6 +33,6 @@ The game uses simplified parameters for play. The game's Credits menu includes t
 
 Rubén Mauricio Romero, Joseph Arroyo, Solomon Perriyil and Soumya Shree.
 
-Grok Imagine generated the game’s cinematics and character video. ElevenLabs generated the English narration. Claude Design and OpenAI Codex assisted with design and code. See [AI disclosures](credits.json), [CC0 sound credits](missions/luna/sfx/ATTRIBUTION.md), the [Three.js MIT notice](missions/luna/three.LICENSE.txt) and the [React MIT notice](missions/luna/multiplayer-demo/react.LICENSE.txt).
+Grok Imagine generated the game’s cinematics and character video. ElevenLabs generated the Moon Mission prologue narration in English, Spanish and Portuguese. Claude Design and OpenAI Codex assisted with design and code. See [AI disclosures](credits.json), [CC0 sound credits](missions/luna/sfx/ATTRIBUTION.md), the [Three.js MIT notice](missions/luna/three.LICENSE.txt) and the [React MIT notice](missions/luna/multiplayer-demo/react.LICENSE.txt).
 
 Ganymede credits its introductory videos and crew art as AI-generated. Its mission menu links to the credited NASA resources. The Crimson Sky lists its story, art and music credits in its [campaign README](missions/crimson-sky/README.md). [PeerJS MIT license](missions/luna/peerjs.LICENSE.txt).
