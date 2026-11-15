@@ -4,6 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ganymede · The Integrated Front</title>
+<meta name="description" content="Ganymede: a NASA Space Apps Challenge 2026 mission-design game. Plan a crewed trip to Jupiter's moon Ganymede using NASA data.">
+<meta name="ai-disclosure" content="Contains AI-generated content. Intro videos: AI-generated with Grok (xAI). Crew character art: AI-generated. Code, game text and data checks: written with help from Claude (Anthropic) and reviewed by the team. Intro narration: ElevenLabs v4, Adam Stone, in English, Spanish and Brazilian Portuguese. In-game dialogue: synthetic speech from the player's browser (Web Speech API). Music: generated in code (Web Audio API). AI images and videos carry an 'AI' mark in the game.">
+<meta name="credits" content="NASA, JPL, ESA (Juice). Fonts: Pixelify Sans, Manrope, IBM Plex Mono (Google Fonts, SIL OFL). Sound effects: CC0 packs by Kenney, rubberduck and WobbleBoxx via Legerdo/open-game-sfx-index. Full list is in the in-game Sources & credits screen.">
 <script src="../luna/multiplayer-demo/react.js"></script>
 <script src="../luna/multiplayer-demo/react-dom.js"></script>
 <script src="./ganymede-runtime.js"></script>
@@ -98,8 +101,8 @@ html,body{margin:0;background:#03100f}a{color:#7dffbf}a:hover{color:#effcf8}
   </div>
   <div style="flex:1;display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,64px);align-items:center;justify-content:center">
     <div style="display:flex;flex-direction:column;align-items:center">
-      <div style="width:clamp(200px,26vw,340px);height:clamp(356px,46vw,604px)">
-        <img src="assets/characters/kalpana.png" alt="Ms. Kalpana, full-body pixel art" style="display:block;width:100%;height:100%;object-fit:contain;image-rendering:pixelated">
+      <div style="position:relative;width:clamp(200px,26vw,340px);height:clamp(356px,46vw,604px)">
+        <img src="assets/characters/kalpana.png" alt="Ms. Kalpana, full-body pixel art" style="display:block;width:100%;height:100%;object-fit:contain;image-rendering:pixelated"><span aria-label="AI-generated image" style="position:absolute;right:0;bottom:0;z-index:2;padding:1px 4px;background:rgba(3,16,15,.55);color:rgba(239,252,248,.85);font:600 9px/1.2 'IBM Plex Mono',monospace;letter-spacing:.08em;pointer-events:none">AI</span>
       </div>
       <div style="width:clamp(240px,31vw,410px);height:16px;background:#d9eef2;box-shadow:0 8px 0 #5f95a3"></div>
     </div>
@@ -135,8 +138,8 @@ html,body{margin:0;background:#03100f}a{color:#7dffbf}a:hover{color:#effcf8}
   </div>
   <div style="flex:1;display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,64px);align-items:center;justify-content:center">
     <div style="display:flex;flex-direction:column;align-items:center">
-      <div style="width:clamp(200px,26vw,340px);height:clamp(356px,46vw,604px)">
-        <img src="assets/characters/jay.png" alt="Mr. J, full-body pixel art" style="display:block;width:100%;height:100%;object-fit:contain;image-rendering:pixelated">
+      <div style="position:relative;width:clamp(200px,26vw,340px);height:clamp(356px,46vw,604px)">
+        <img src="assets/characters/jay.png" alt="Mr. J, full-body pixel art" style="display:block;width:100%;height:100%;object-fit:contain;image-rendering:pixelated"><span aria-label="AI-generated image" style="position:absolute;right:0;bottom:0;z-index:2;padding:1px 4px;background:rgba(3,16,15,.55);color:rgba(239,252,248,.85);font:600 9px/1.2 'IBM Plex Mono',monospace;letter-spacing:.08em;pointer-events:none">AI</span>
       </div>
       <div style="width:clamp(240px,31vw,410px);height:16px;background:#d9eef2;box-shadow:0 8px 0 #5f95a3"></div>
     </div>
@@ -172,8 +175,8 @@ html,body{margin:0;background:#03100f}a{color:#7dffbf}a:hover{color:#effcf8}
   </div>
   <div style="flex:1;display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,64px);align-items:center;justify-content:center">
     <div style="display:flex;flex-direction:column;align-items:center">
-      <div style="width:clamp(200px,26vw,340px);height:clamp(356px,46vw,604px)">
-        <img src="assets/characters/poppy.png" alt="Madam Poppy, full-body pixel art" style="display:block;width:100%;height:100%;object-fit:contain;image-rendering:pixelated">
+      <div style="position:relative;width:clamp(200px,26vw,340px);height:clamp(356px,46vw,604px)">
+        <img src="assets/characters/poppy.png" alt="Madam Poppy, full-body pixel art" style="display:block;width:100%;height:100%;object-fit:contain;image-rendering:pixelated"><span aria-label="AI-generated image" style="position:absolute;right:0;bottom:0;z-index:2;padding:1px 4px;background:rgba(3,16,15,.55);color:rgba(239,252,248,.85);font:600 9px/1.2 'IBM Plex Mono',monospace;letter-spacing:.08em;pointer-events:none">AI</span>
       </div>
       <div style="width:clamp(240px,31vw,410px);height:16px;background:#d9eef2;box-shadow:0 8px 0 #5f95a3"></div>
     </div>
@@ -208,8 +211,8 @@ html,body{margin:0;background:#03100f}a{color:#7dffbf}a:hover{color:#effcf8}
   </div>
   <div style="flex:1;display:flex;flex-wrap:wrap;gap:clamp(24px,4vw,64px);align-items:center;justify-content:center">
     <div style="display:flex;flex-direction:column;align-items:center">
-      <div style="width:clamp(200px,26vw,340px);height:clamp(356px,46vw,604px)">
-        <img src="assets/characters/malfoy.png" alt="Mr. Malfoy, full-body pixel art" style="display:block;width:100%;height:100%;object-fit:contain;image-rendering:pixelated">
+      <div style="position:relative;width:clamp(200px,26vw,340px);height:clamp(356px,46vw,604px)">
+        <img src="assets/characters/malfoy.png" alt="Mr. Malfoy, full-body pixel art" style="display:block;width:100%;height:100%;object-fit:contain;image-rendering:pixelated"><span aria-label="AI-generated image" style="position:absolute;right:0;bottom:0;z-index:2;padding:1px 4px;background:rgba(3,16,15,.55);color:rgba(239,252,248,.85);font:600 9px/1.2 'IBM Plex Mono',monospace;letter-spacing:.08em;pointer-events:none">AI</span>
       </div>
       <div style="width:clamp(240px,31vw,410px);height:16px;background:#d9eef2;box-shadow:0 8px 0 #5f95a3"></div>
     </div>
@@ -229,7 +232,59 @@ html,body{margin:0;background:#03100f}a{color:#7dffbf}a:hover{color:#effcf8}
   </div>
   <div style="display:flex;gap:16px;justify-content:space-between;align-items:center">
     <button type="button" onClick="{{ back }}" style="min-height:52px;padding:0 24px;border:4px solid #2b5560;border-radius:0;background:#06191c;color:#effcf8;font:700 20px 'Pixelify Sans',sans-serif;cursor:pointer" style-hover="border-color:#effcf8">◂ Back</button>
-    <button type="button" onClick="{{ next }}" style="min-height:52px;padding:0 24px;border:4px solid #03100f;border-radius:0;background:#d9eef2;color:#03100f;font:700 20px 'Pixelify Sans',sans-serif;cursor:pointer;box-shadow:6px 6px 0 #000000" style-hover="background:#effcf8">Assemble crew ▸</button>
+    <button type="button" onClick="{{ next }}" style="min-height:52px;padding:0 24px;border:4px solid #03100f;border-radius:0;background:#d9eef2;color:#03100f;font:700 20px 'Pixelify Sans',sans-serif;cursor:pointer;box-shadow:6px 6px 0 #000000" style-hover="background:#effcf8">What you’ll learn ▸</button>
+  </div>
+</main>
+</sc-if>
+
+<sc-if value="{{ isLearn }}" hint-placeholder-val="{{ false }}">
+<main data-screen-label="06b What you'll learn" style="min-height:100vh;box-sizing:border-box;display:flex;flex-direction:column;gap:clamp(20px,3vw,36px);padding:clamp(20px,4vw,56px);background:linear-gradient(180deg,#d9eef2 0,#9fc8d2 12px,#1f4a58 40px,#082028 180px,#03100f 100%);font-family:'Manrope',sans-serif;color:#effcf8">
+  <div style="display:flex;flex-direction:column;gap:12px;padding-top:28px;max-width:820px">
+    <span style="font:600 18px 'Pixelify Sans',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#7ff0ff">Mission briefing</span>
+    <h2 style="margin:0;font:700 clamp(36px,4.5vw,60px)/1 'Pixelify Sans',sans-serif;text-shadow:4px 4px 0 #03100f">What you’ll learn</h2>
+    <p style="margin:0;font-size:clamp(18px,1.6vw,21px);line-height:1.5;color:#cfe9e3;text-wrap:pretty">You’ll use the same maths NASA engineers use to plan a mission. Every result shows its formula, and every number says where it comes from.</p>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:clamp(14px,2vw,22px)">
+      <div style="display:flex;flex-direction:column;gap:10px;padding:18px 20px;background:#06191c;border:4px solid #2b5560;box-shadow:6px 6px 0 #000000">
+        <div style="display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;justify-content:space-between"><span style="font:600 13px 'IBM Plex Mono',monospace;letter-spacing:.1em;text-transform:uppercase;color:#7dffbf">Level 1</span><span style="padding:1px 7px;background:#7dffbf;color:#03100f;font:600 12px 'IBM Plex Mono',monospace">REAL</span></div>
+        <h3 style="margin:0;font:700 24px/1.15 'Pixelify Sans',sans-serif">Launch windows</h3>
+        <p style="margin:0;font-size:17px;line-height:1.45;color:#cfe9e3;text-wrap:pretty">Why a ship can only leave for Jupiter about once every 13 months, worked out from NASA JPL planet positions.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;padding:18px 20px;background:#06191c;border:4px solid #2b5560;box-shadow:6px 6px 0 #000000">
+        <div style="display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;justify-content:space-between"><span style="font:600 13px 'IBM Plex Mono',monospace;letter-spacing:.1em;text-transform:uppercase;color:#ffb36b">Levels 1 and 4</span><span style="padding:1px 7px;background:#7dffbf;color:#03100f;font:600 12px 'IBM Plex Mono',monospace">REAL</span></div>
+        <h3 style="margin:0;font:700 24px/1.15 'Pixelify Sans',sans-serif">The rocket equation</h3>
+        <p style="margin:0;font-size:17px;line-height:1.45;color:#cfe9e3;text-wrap:pretty">Why every tonne you pack costs fuel, and why going home is harder than arriving.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;padding:18px 20px;background:#06191c;border:4px solid #2b5560;box-shadow:6px 6px 0 #000000">
+        <div style="display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;justify-content:space-between"><span style="font:600 13px 'IBM Plex Mono',monospace;letter-spacing:.1em;text-transform:uppercase;color:#d9eef2">Levels 1 and 3</span><span style="padding:1px 7px;background:#7dffbf;color:#03100f;font:600 12px 'IBM Plex Mono',monospace">REAL</span></div>
+        <h3 style="margin:0;font:700 24px/1.15 'Pixelify Sans',sans-serif">Power budgets</h3>
+        <p style="margin:0;font-size:17px;line-height:1.45;color:#cfe9e3;text-wrap:pretty">Why ships at Jupiter carry reactors: sunlight there is 27 times weaker than at Earth.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;padding:18px 20px;background:#06191c;border:4px solid #2b5560;box-shadow:6px 6px 0 #000000">
+        <div style="display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;justify-content:space-between"><span style="font:600 13px 'IBM Plex Mono',monospace;letter-spacing:.1em;text-transform:uppercase;color:#7ff0ff">Levels 2, 3 and 5</span><span style="padding:1px 7px;background:#7dffbf;color:#03100f;font:600 12px 'IBM Plex Mono',monospace">REAL</span></div>
+        <h3 style="margin:0;font:700 24px/1.15 'Pixelify Sans',sans-serif">Radiation dose</h3>
+        <p style="margin:0;font-size:17px;line-height:1.45;color:#cfe9e3;text-wrap:pretty">How shielding, routes and solar storms add up against NASA’s 600 mSv career limit.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;padding:18px 20px;background:#06191c;border:4px solid #2b5560;box-shadow:6px 6px 0 #000000">
+        <div style="display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;justify-content:space-between"><span style="font:600 13px 'IBM Plex Mono',monospace;letter-spacing:.1em;text-transform:uppercase;color:#d9eef2">Levels 1 and 3</span><span style="padding:1px 7px;background:#7dffbf;color:#03100f;font:600 12px 'IBM Plex Mono',monospace">REAL</span></div>
+        <h3 style="margin:0;font:700 24px/1.15 'Pixelify Sans',sans-serif">Talking to Earth</h3>
+        <p style="margin:0;font-size:17px;line-height:1.45;color:#cfe9e3;text-wrap:pretty">Data rates scaled from NASA’s Galileo mission, and why every message takes over half an hour.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;padding:18px 20px;background:#06191c;border:4px solid #2b5560;box-shadow:6px 6px 0 #000000">
+        <div style="display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;justify-content:space-between"><span style="font:600 13px 'IBM Plex Mono',monospace;letter-spacing:.1em;text-transform:uppercase;color:#ffb36b">Level 4</span><span style="padding:1px 7px;background:#7dffbf;color:#03100f;font:600 12px 'IBM Plex Mono',monospace">REAL</span></div>
+        <h3 style="margin:0;font:700 24px/1.15 'Pixelify Sans',sans-serif">Hard trade-offs</h3>
+        <p style="margin:0;font-size:17px;line-height:1.45;color:#cfe9e3;text-wrap:pretty">Mass, balance and a crew vote: there is rarely one perfect answer, only better and worse ones.</p>
+      </div>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center;padding:14px 18px;background:#06191c;border:3px solid #2b5560;font-size:16px;line-height:1.4;color:#cfe9e3">
+    <span style="font:700 17px 'Pixelify Sans',sans-serif;color:#effcf8">Real or fiction?</span>
+    <span style="display:flex;gap:8px;align-items:center"><span style="padding:1px 7px;background:#7dffbf;color:#03100f;font:600 12px 'IBM Plex Mono',monospace">REAL</span>NASA, JPL and ESA data</span>
+    <span style="display:flex;gap:8px;align-items:center"><span style="padding:1px 7px;background:#ffd36b;color:#03100f;font:600 12px 'IBM Plex Mono',monospace">ESTIMATE</span>real physics, hardware not built yet</span>
+    <span style="display:flex;gap:8px;align-items:center"><span style="padding:1px 7px;background:#ffa3d1;color:#03100f;font:600 12px 'IBM Plex Mono',monospace">FICTION</span>the story and game balance</span>
+  </div>
+  <div style="display:flex;gap:16px;justify-content:space-between;align-items:center">
+    <button type="button" onClick="{{ back }}" style="min-height:52px;padding:0 24px;border:4px solid #2b5560;border-radius:0;background:#06191c;color:#effcf8;font:700 20px 'Pixelify Sans',sans-serif;cursor:pointer" style-hover="border-color:#effcf8">◂ Back</button>
+    <button type="button" onClick="{{ next }}" style="min-height:52px;padding:0 24px;border:4px solid #03100f;border-radius:0;background:#7dffbf;color:#03100f;font:700 20px 'Pixelify Sans',sans-serif;cursor:pointer;box-shadow:6px 6px 0 #000000" style-hover="background:#effcf8">Assemble crew ▸</button>
   </div>
 </main>
 </sc-if>
@@ -248,7 +303,7 @@ html,body{margin:0;background:#03100f}a{color:#7dffbf}a:hover{color:#effcf8}
     <sc-for list="{{ seats }}" as="seat" hint-placeholder-count="4">
       <div style="display:flex;flex-direction:column;background:#06191c;border:4px solid {{ seat.color }};box-shadow:8px 8px 0 #000000">
         <div style="position:relative;height:clamp(170px,22vh,230px);background:linear-gradient(180deg,#082028 0,#1f4a58 100%);border-bottom:4px solid #03100f">
-          <div role="img" aria-label="{{ seat.character }}" style="position:absolute;left:0;right:0;top:10px;bottom:12px;background:url('{{ seat.img }}') 50% 100% / contain no-repeat;image-rendering:pixelated;opacity:{{ seat.artOpacity }}"></div>
+          <div role="img" aria-label="{{ seat.character }}" style="position:absolute;left:0;right:0;top:10px;bottom:12px;background:url('{{ seat.img }}') 50% 100% / contain no-repeat;image-rendering:pixelated;opacity:{{ seat.artOpacity }}"></div><span aria-label="AI-generated image" style="position:absolute;right:6px;bottom:18px;z-index:2;padding:1px 4px;background:rgba(3,16,15,.55);color:rgba(239,252,248,.85);font:600 9px/1.2 'IBM Plex Mono',monospace;letter-spacing:.08em;pointer-events:none">AI</span>
           <div style="position:absolute;left:0;right:0;bottom:0;height:12px;background:#d9eef2"></div>
           <span style="position:absolute;top:10px;left:10px;padding:3px 10px;background:{{ seat.color }};color:#03100f;font:700 15px 'Pixelify Sans',sans-serif;letter-spacing:.08em;text-transform:uppercase">{{ seat.badge }}</span>
         </div>
@@ -338,18 +393,21 @@ html,body{margin:0;background:#03100f}a{color:#7dffbf}a:hover{color:#effcf8}
       <div style="display:flex;flex-direction:column;gap:6px;padding:16px 20px;background:#06191c;border:1px solid #2b5560">
         <h3 style="margin:0;font:600 15px 'IBM Plex Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:#7ff0ff">Other resources</h3>
         <ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column">
-          <li style="display:flex;flex-direction:column;gap:4px;padding:10px 0;border-bottom:1px solid #12333a"><span style="font:600 16px 'IBM Plex Mono',monospace;color:#effcf8">Fonts</span><span style="font-size:16px;line-height:1.5;color:#cfe9e3;text-wrap:pretty">Pixelify Sans, Manrope and IBM Plex Mono from Google Fonts, under the SIL Open Font License.</span></li>
-          <li style="display:flex;flex-direction:column;gap:4px;padding:10px 0;border-bottom:1px solid #12333a"><span style="font:600 16px 'IBM Plex Mono',monospace;color:#effcf8">Sound effects</span><span style="font-size:16px;line-height:1.5;color:#cfe9e3;text-wrap:pretty">CC0 packs by Kenney, rubberduck and WobbleBoxx, via the open-game-sfx-index repository. Full list in sfx/ATTRIBUTION.md.</span></li>
-          <li style="display:flex;flex-direction:column;gap:4px;padding:10px 0;border-bottom:1px solid #12333a"><span style="font:600 16px 'IBM Plex Mono',monospace;color:#effcf8">Music</span><span style="font-size:16px;line-height:1.5;color:#cfe9e3;text-wrap:pretty">Generated in code with the Web Audio API. No audio files.</span></li>
-          <li style="display:flex;flex-direction:column;gap:4px;padding:10px 0;border-bottom:1px solid #12333a"><span style="font:600 16px 'IBM Plex Mono',monospace;color:#effcf8">Constants</span><span style="font-size:16px;line-height:1.5;color:#cfe9e3;text-wrap:pretty">Speed of light 299,792.458 km/s and 1 AU = 149,597,870.7 km (IAU).</span></li>
+          <li style="display:flex;flex-direction:column;gap:4px;padding:10px 0;border-bottom:1px solid #12333a"><span style="font:600 16px 'IBM Plex Mono',monospace;color:#effcf8">Fonts</span><span style="font-size:16px;line-height:1.5;color:#cfe9e3;text-wrap:pretty"><a href="https://fonts.google.com/specimen/Pixelify+Sans" target="_blank" rel="noopener" style="color:#7ff0ff" style-hover="color:#effcf8">Pixelify Sans ↗</a>, <a href="https://fonts.google.com/specimen/Manrope" target="_blank" rel="noopener" style="color:#7ff0ff" style-hover="color:#effcf8">Manrope ↗</a> and <a href="https://fonts.google.com/specimen/IBM+Plex+Mono" target="_blank" rel="noopener" style="color:#7ff0ff" style-hover="color:#effcf8">IBM Plex Mono ↗</a> from Google Fonts, under the <a href="https://openfontlicense.org" target="_blank" rel="noopener" style="color:#7ff0ff" style-hover="color:#effcf8">SIL Open Font License ↗</a>.</span></li>
+          <li style="display:flex;flex-direction:column;gap:4px;padding:10px 0;border-bottom:1px solid #12333a"><span style="font:600 16px 'IBM Plex Mono',monospace;color:#effcf8">Sound effects</span><span style="font-size:16px;line-height:1.5;color:#cfe9e3;text-wrap:pretty">CC0 packs by <a href="https://kenney.nl/assets" target="_blank" rel="noopener" style="color:#7ff0ff" style-hover="color:#effcf8">Kenney ↗</a>, rubberduck and WobbleBoxx (<a href="https://opengameart.org" target="_blank" rel="noopener" style="color:#7ff0ff" style-hover="color:#effcf8">OpenGameArt ↗</a>), via the <a href="https://github.com/Legerdo/open-game-sfx-index" target="_blank" rel="noopener" style="color:#7ff0ff" style-hover="color:#effcf8">open-game-sfx-index ↗</a> repository. <a href="https://creativecommons.org/publicdomain/zero/1.0/" target="_blank" rel="noopener" style="color:#7ff0ff" style-hover="color:#effcf8">CC0 licence ↗</a>. Each file is listed in sfx/ATTRIBUTION.md.</span></li>
+          <li style="display:flex;flex-direction:column;gap:4px;padding:10px 0;border-bottom:1px solid #12333a"><span style="font:600 16px 'IBM Plex Mono',monospace;color:#effcf8">Music</span><span style="font-size:16px;line-height:1.5;color:#cfe9e3;text-wrap:pretty">Generated in code with the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API" target="_blank" rel="noopener" style="color:#7ff0ff" style-hover="color:#effcf8">Web Audio API ↗</a>. No audio files.</span></li>
+          <li style="display:flex;flex-direction:column;gap:4px;padding:10px 0;border-bottom:1px solid #12333a"><span style="font:600 16px 'IBM Plex Mono',monospace;color:#effcf8">Character voices</span><span style="font-size:16px;line-height:1.5;color:#cfe9e3;text-wrap:pretty">Synthetic speech from your browser’s <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Speech_API" target="_blank" rel="noopener" style="color:#7ff0ff" style-hover="color:#effcf8">Web Speech API ↗</a>. The voices are not recordings, so they sound different on each device.</span></li>
+          <li style="display:flex;flex-direction:column;gap:4px;padding:10px 0;border-bottom:1px solid #12333a"><span style="font:600 16px 'IBM Plex Mono',monospace;color:#effcf8">Constants</span><span style="font-size:16px;line-height:1.5;color:#cfe9e3;text-wrap:pretty">Speed of light 299,792.458 km/s and 1 AU = 149,597,870.7 km (<a href="https://www.iau.org/static/resolutions/IAU2012_English.pdf" target="_blank" rel="noopener" style="color:#7ff0ff" style-hover="color:#effcf8">IAU 2012 ↗</a>).</span></li>
         </ul>
       </div>
       <div style="display:flex;flex-direction:column;gap:6px;padding:16px 20px;background:#06191c;border:1px solid #2b5560">
         <h3 style="margin:0;font:600 15px 'IBM Plex Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:#7ff0ff">Use of artificial intelligence</h3>
         <ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column">
-          <li style="display:flex;flex-direction:column;gap:4px;padding:10px 0;border-bottom:1px solid #12333a"><span style="font:600 16px 'IBM Plex Mono',monospace;color:#effcf8">Intro videos</span><span style="font-size:16px;line-height:1.5;color:#cfe9e3;text-wrap:pretty">AI-generated video. Narration synthesized with the Adam Stone voice from ElevenLabs in English, Spanish and Brazilian Portuguese.</span></li>
-          <li style="display:flex;flex-direction:column;gap:4px;padding:10px 0;border-bottom:1px solid #12333a"><span style="font:600 16px 'IBM Plex Mono',monospace;color:#effcf8">Crew character art</span><span style="font-size:16px;line-height:1.5;color:#cfe9e3;text-wrap:pretty">AI-generated.</span></li>
-          <li style="display:flex;flex-direction:column;gap:4px;padding:10px 0;border-bottom:1px solid #12333a"><span style="font:600 16px 'IBM Plex Mono',monospace;color:#effcf8">Code, game text and data checks</span><span style="font-size:16px;line-height:1.5;color:#cfe9e3;text-wrap:pretty">Written with help from Claude (Anthropic), then checked by the team against the sources on this page.</span></li>
+          <li style="display:flex;flex-direction:column;gap:4px;padding:10px 0;border-bottom:1px solid #12333a"><span style="font:600 16px 'IBM Plex Mono',monospace;color:#effcf8">Intro videos (6 clips)</span><span style="font-size:16px;line-height:1.5;color:#cfe9e3;text-wrap:pretty">AI-generated with <a href="https://grok.com" target="_blank" rel="noopener" style="color:#7ff0ff" style-hover="color:#effcf8">Grok (xAI) ↗</a>. Marked as AI-generated on screen. Intro narration uses the Adam Stone voice from ElevenLabs v4 in English, Spanish and Brazilian Portuguese.</span></li>
+          <li style="display:flex;flex-direction:column;gap:4px;padding:10px 0;border-bottom:1px solid #12333a"><span style="font:600 16px 'IBM Plex Mono',monospace;color:#effcf8">Crew character art (4 images)</span><span style="font-size:16px;line-height:1.5;color:#cfe9e3;text-wrap:pretty">AI-generated. Marked “AI” on every image.</span></li>
+          <li style="display:flex;flex-direction:column;gap:4px;padding:10px 0;border-bottom:1px solid #12333a"><span style="font:600 16px 'IBM Plex Mono',monospace;color:#effcf8">Code, game text and data checks</span><span style="font-size:16px;line-height:1.5;color:#cfe9e3;text-wrap:pretty">Written with help from <a href="https://www.anthropic.com/claude" target="_blank" rel="noopener" style="color:#7ff0ff" style-hover="color:#effcf8">Claude (Anthropic) ↗</a>, then checked by the team against the sources on this page.</span></li>
+          <li style="display:flex;flex-direction:column;gap:4px;padding:10px 0;border-bottom:1px solid #12333a"><span style="font:600 16px 'IBM Plex Mono',monospace;color:#effcf8">Pixel-art scenes and music</span><span style="font-size:16px;line-height:1.5;color:#cfe9e3;text-wrap:pretty">Drawn and composed in code (ship map, lander, re-entry, endings, music). The code was written with help from Claude.</span></li>
+          <li style="display:flex;flex-direction:column;gap:4px;padding:10px 0;border-bottom:1px solid #12333a"><span style="font:600 16px 'IBM Plex Mono',monospace;color:#effcf8">Character voices</span><span style="font-size:16px;line-height:1.5;color:#cfe9e3;text-wrap:pretty">Synthetic browser speech, not AI-cloned or recorded voices.</span></li>
           <li style="display:flex;flex-direction:column;gap:4px;padding:10px 0;border-bottom:1px solid #12333a"><span style="font:600 16px 'IBM Plex Mono',monospace;color:#effcf8">NASA branding</span><span style="font-size:16px;line-height:1.5;color:#cfe9e3;text-wrap:pretty">No AI-generated content uses NASA logos, flags or mission insignia. NASA photos are used unaltered, with credit.</span></li>
         </ul>
       </div>
@@ -376,7 +434,7 @@ html,body{margin:0;background:#03100f}a{color:#7dffbf}a:hover{color:#effcf8}
 
   <div style="display:flex;flex-wrap:wrap;gap:16px 20px;align-items:center;padding:16px 20px;background:#effcf8;color:#03100f;border:4px solid #03100f;box-shadow:6px 6px 0 #2b5560">
     <div style="position:relative;flex:none;width:88px;height:88px;overflow:hidden;background:#9fc8d2;border:4px solid #03100f">
-      <div aria-hidden="true" style="position:absolute;inset:0;background:url('{{ l3spk.img }}') 50% 50% / cover no-repeat;image-rendering:pixelated"></div>
+      <div aria-hidden="true" style="position:absolute;inset:0;background:url('{{ l3spk.img }}') 50% 50% / cover no-repeat;image-rendering:pixelated"></div><span aria-label="AI-generated image" style="position:absolute;right:2px;bottom:2px;z-index:2;padding:1px 4px;background:rgba(3,16,15,.55);color:rgba(239,252,248,.85);font:600 9px/1.2 'IBM Plex Mono',monospace;letter-spacing:.08em;pointer-events:none">AI</span>
     </div>
     <div style="flex:1 1 320px;display:flex;flex-direction:column;gap:6px;min-width:0">
       <div style="display:flex;flex-wrap:wrap;gap:4px 14px;align-items:baseline">
@@ -835,7 +893,7 @@ html,body{margin:0;background:#03100f}a{color:#7dffbf}a:hover{color:#effcf8}
 
   <div style="display:flex;flex-wrap:wrap;gap:16px 20px;align-items:center;padding:16px 20px;background:#effcf8;color:#03100f;border:4px solid #03100f;box-shadow:6px 6px 0 #2b5560">
     <div style="position:relative;flex:none;width:88px;height:88px;overflow:hidden;background:#9fc8d2;border:4px solid #03100f">
-      <div aria-hidden="true" style="position:absolute;inset:0;background:url('{{ l4spk.img }}') 50% 50% / cover no-repeat;image-rendering:pixelated"></div>
+      <div aria-hidden="true" style="position:absolute;inset:0;background:url('{{ l4spk.img }}') 50% 50% / cover no-repeat;image-rendering:pixelated"></div><span aria-label="AI-generated image" style="position:absolute;right:2px;bottom:2px;z-index:2;padding:1px 4px;background:rgba(3,16,15,.55);color:rgba(239,252,248,.85);font:600 9px/1.2 'IBM Plex Mono',monospace;letter-spacing:.08em;pointer-events:none">AI</span>
     </div>
     <div style="flex:1 1 320px;display:flex;flex-direction:column;gap:6px;min-width:0">
       <div style="display:flex;flex-wrap:wrap;gap:4px 14px;align-items:baseline">
@@ -1174,11 +1232,11 @@ html,body{margin:0;background:#03100f}a{color:#7dffbf}a:hover{color:#effcf8}
 
   <div style="display:flex;flex-wrap:wrap;gap:16px;justify-content:center;align-items:flex-start">
   <div ref="{{ l5FrameRef }}" tabindex="0" onMouseDown="{{ l5FocusGame }}" aria-label="Game screen. Click once, then use the arrow keys." style="position:relative;flex:none;outline:none;width:min(100%,calc(66vh * 320 / 176));aspect-ratio:320/176;border:6px solid #effcf8;box-shadow:0 0 0 6px #1f4a58,10px 10px 0 6px #000000;background:#03100f">
-    <canvas ref="{{ l5Cv }}" onClick="{{ l5A }}" width="320" height="176" role="img" aria-label="{{ l5CvLabel }}" style="display:block;width:100%;height:100%;image-rendering:pixelated"></canvas>
+    <canvas ref="{{ l5Cv }}" onClick="{{ l5A }}" width="320" height="176" role="img" aria-label="{{ l5CvLabel }}" style="display:block;width:100%;height:100%;image-rendering:pixelated"></canvas><span aria-label="AI-generated image" style="position:absolute;right:4px;top:4px;z-index:2;padding:1px 4px;background:rgba(3,16,15,.55);color:rgba(239,252,248,.85);font:600 9px/1.2 'IBM Plex Mono',monospace;letter-spacing:.08em;pointer-events:none">AI</span>
     <sc-for list="{{ l5Labels }}" as="lb" hint-placeholder-count="0"><span style="position:absolute;left:{{ lb.x }};top:{{ lb.y }};transform:translate(-50%,-50%);padding:1px 7px;background:rgba(3,16,15,.82);color:{{ lb.c }};font:600 clamp(10px,1.2vw,13px) 'IBM Plex Mono',monospace;letter-spacing:.06em;white-space:nowrap;pointer-events:none">{{ lb.t }}</span></sc-for>
     <sc-if value="{{ l5HasDlg }}" hint-placeholder-val="{{ false }}">
       <div role="dialog" aria-live="polite" style="position:absolute;left:6px;right:6px;bottom:6px;display:flex;gap:10px;align-items:stretch;padding:10px 12px;background:#f8f8f0;color:#181818;border:4px solid #181818;box-shadow:inset 0 0 0 3px #b8c8d0">
-        <sc-if value="{{ l5DlgFace }}" hint-placeholder-val="{{ false }}"><div aria-hidden="true" style="flex:none;align-self:flex-start;width:clamp(44px,8vw,72px);height:clamp(44px,8vw,72px);background:#9fc8d2 url('{{ l5DlgImg }}') 50% 50% / cover no-repeat;image-rendering:pixelated;border:3px solid #181818"></div></sc-if>
+        <sc-if value="{{ l5DlgFace }}" hint-placeholder-val="{{ false }}"><div aria-hidden="true" style="position:relative;flex:none;align-self:flex-start;width:clamp(44px,8vw,72px);height:clamp(44px,8vw,72px);background:#9fc8d2 url('{{ l5DlgImg }}') 50% 50% / cover no-repeat;image-rendering:pixelated;border:3px solid #181818"><span aria-label="AI-generated image" style="position:absolute;right:1px;bottom:1px;z-index:2;padding:1px 4px;background:rgba(3,16,15,.55);color:rgba(239,252,248,.85);font:600 9px/1.2 'IBM Plex Mono',monospace;letter-spacing:.08em;pointer-events:none">AI</span></div></sc-if>
         <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:6px">
           <span style="font:700 clamp(14px,1.6vw,18px) 'Pixelify Sans',sans-serif;letter-spacing:.04em;color:#1f4a58">{{ l5DlgName }}</span>
           <p style="margin:0;font:600 clamp(15px,1.7vw,19px)/1.45 'Manrope',sans-serif;color:#181818;text-wrap:pretty">{{ l5DlgText }}</p>
@@ -1314,6 +1372,10 @@ html,body{margin:0;background:#03100f}a{color:#7dffbf}a:hover{color:#effcf8}
         <span style="font:600 13px 'IBM Plex Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#a9cfc8">Ending</span>
         <span style="font:700 32px/1.05 'Pixelify Sans',sans-serif;color:{{ l5EndColor }}">{{ l5EndName }}</span>
         <span style="font:600 24px 'IBM Plex Mono',monospace">{{ l5Total }}</span>
+        <div style="display:flex;flex-direction:column;gap:6px;padding:10px 0 4px">
+          <span style="font:600 13px 'IBM Plex Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#a9cfc8">The four endings</span>
+          <sc-for list="{{ l5AllEnds }}" as="e" hint-placeholder-count="4"><div style="display:flex;gap:10px;align-items:flex-start;padding:8px 10px;background:{{ e.bg }};color:{{ e.fg }};border:3px solid {{ e.bd }}"><span style="flex:none;width:18px;font:700 16px 'IBM Plex Mono',monospace">{{ e.mark }}</span><div style="display:flex;flex-direction:column;gap:2px;min-width:0"><span style="font:700 16px 'Pixelify Sans',sans-serif">{{ e.name }}</span><span style="font-size:14px;line-height:1.35;text-wrap:pretty">{{ e.rule }}</span></div></div></sc-for>
+        </div>
         <ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px">
           <sc-for list="{{ l5Scores }}" as="b" hint-placeholder-count="6"><li style="display:flex;justify-content:space-between;gap:12px;font-size:16px;border-bottom:2px solid #2b5560;padding-bottom:5px"><span>{{ b.label }}</span><span style="font:600 16px 'IBM Plex Mono',monospace">{{ b.value }}</span></li></sc-for>
         </ul>
@@ -1350,7 +1412,7 @@ html,body{margin:0;background:#03100f}a{color:#7dffbf}a:hover{color:#effcf8}
         </div>
         <div style="display:flex;flex-direction:column;gap:10px;padding:18px 20px;background:#06191c;border:4px solid #7ff0ff">
           <span style="font:700 20px 'Pixelify Sans',sans-serif">Real or fiction?</span>
-          <span style="font-size:16px;line-height:1.5;color:#cfe9e3;text-wrap:pretty"><b style="color:#7dffbf">Real science you used:</b> planet positions from NASA JPL, the rocket equation, radiation dose, the radio link equation, heat flow, melting ice, centre of mass, and skip re-entry like Artemis I.</span>
+          <span style="font-size:16px;line-height:1.5;color:#cfe9e3;text-wrap:pretty"><b style="color:#7dffbf">Real science you used:</b> planet positions from NASA JPL, the rocket equation, radiation dose, radio data rates scaled from Galileo, heat flow, melting ice, centre of mass, and skip re-entry like Artemis I.</span>
           <span style="font-size:16px;line-height:1.5;color:#cfe9e3;text-wrap:pretty"><b style="color:#ffa3d1">Fiction:</b> the ocean plague, the Gany-Phyta algae, gold in the ice, the Áurea consortium, the Lifter rockets and the fuel tanker.</span>
           <ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px">
             <sc-for list="{{ l5Real }}" as="r" hint-placeholder-count="4"><li style="display:flex;flex-direction:column;gap:2px"><a href="{{ r.href }}" target="_blank" rel="noopener" style="align-self:flex-start;font:700 17px 'Pixelify Sans',sans-serif;color:#7ff0ff" style-hover="color:#effcf8">{{ r.name }} ↗</a><span style="font-size:15px;line-height:1.45;color:#cfe9e3">{{ r.text }}</span></li></sc-for>
@@ -1369,6 +1431,7 @@ html,body{margin:0;background:#03100f}a{color:#7dffbf}a:hover{color:#effcf8}
       <span style="font:600 15px 'IBM Plex Mono',monospace;letter-spacing:.14em;text-transform:uppercase;color:#7ff0ff">Ganymede mission</span>
       <h2 style="margin:0;font:700 clamp(32px,4vw,52px)/1 'Pixelify Sans',sans-serif;text-shadow:4px 4px 0 #000000">Mission map</h2>
       <p style="margin:0;font-size:17px;line-height:1.5;color:#cfe9e3;text-wrap:pretty">Five stages from Earth to Ganymede and back. Tap a stage to play it. Finished stages show your score, saved in this browser.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:4px 12px;align-items:baseline;align-self:flex-start;padding:8px 14px;background:#03100f;border:3px solid #7dffbf"><span style="font:600 13px 'IBM Plex Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:#7dffbf">Mission total</span><span style="font:700 24px 'Pixelify Sans',sans-serif;color:#effcf8">{{ mapTotal }}</span><span style="font-size:14px;color:#a9cfc8">{{ mapTotalNote }}</span></div>
     </div>
     <button type="button" onClick="{{ closeMap }}" style="min-height:52px;padding:0 24px;border:4px solid #2b5560;border-radius:0;background:#06191c;color:#effcf8;font:700 20px 'Pixelify Sans',sans-serif;cursor:pointer" style-hover="border-color:#effcf8">◂ Title</button>
   </div>
@@ -1411,7 +1474,7 @@ html,body{margin:0;background:#03100f}a{color:#7dffbf}a:hover{color:#effcf8}
 
   <div style="display:flex;flex-wrap:wrap;gap:16px 20px;align-items:center;padding:16px 20px;background:#effcf8;color:#03100f;border:4px solid #03100f;box-shadow:6px 6px 0 #2b5560">
     <div style="position:relative;flex:none;width:88px;height:88px;overflow:hidden;background:#9fc8d2;border:4px solid #03100f">
-      <div aria-hidden="true" style="position:absolute;inset:0;background:url('{{ spk.img }}') 50% 50% / cover no-repeat;image-rendering:pixelated"></div>
+      <div aria-hidden="true" style="position:absolute;inset:0;background:url('{{ spk.img }}') 50% 50% / cover no-repeat;image-rendering:pixelated"></div><span aria-label="AI-generated image" style="position:absolute;right:2px;bottom:2px;z-index:2;padding:1px 4px;background:rgba(3,16,15,.55);color:rgba(239,252,248,.85);font:600 9px/1.2 'IBM Plex Mono',monospace;letter-spacing:.08em;pointer-events:none">AI</span>
     </div>
     <div style="flex:1 1 320px;display:flex;flex-direction:column;gap:6px;min-width:0">
       <div style="display:flex;flex-wrap:wrap;gap:4px 14px;align-items:baseline">
@@ -1713,6 +1776,7 @@ html,body{margin:0;background:#03100f}a{color:#7dffbf}a:hover{color:#effcf8}
       <div style="display:flex;flex-wrap:wrap;gap:10px 28px;font:700 20px 'Pixelify Sans',sans-serif">
         <span>Ship mass <span style="color:#7ff0ff">{{ lvMass }}</span></span>
         <span>Money left <span style="color:#7dffbf">{{ lvMoney }}</span></span>
+        <span style="display:flex;gap:8px;align-items:center;font:500 15px 'Manrope',sans-serif;color:#cfe9e3"><span style="padding:1px 6px;background:#ffa3d1;color:#03100f;font:600 12px 'IBM Plex Mono',monospace">FICTION</span>Rocket names, lift limits and prices are invented for game balance.</span>
       </div>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:clamp(14px,2vw,24px)">
         <sc-for list="{{ launchers }}" as="o" hint-placeholder-count="3">
@@ -1960,7 +2024,7 @@ html,body{margin:0;background:#03100f}a{color:#7dffbf}a:hover{color:#effcf8}
 
   <div style="display:flex;flex-wrap:wrap;gap:16px 20px;align-items:center;padding:16px 20px;background:#effcf8;color:#03100f;border:4px solid #03100f;box-shadow:6px 6px 0 #2b5560">
     <div style="position:relative;flex:none;width:88px;height:88px;overflow:hidden;background:#9fc8d2;border:4px solid #03100f">
-      <div aria-hidden="true" style="position:absolute;inset:0;background:url('{{ l2spk.img }}') 50% 50% / cover no-repeat;image-rendering:pixelated"></div>
+      <div aria-hidden="true" style="position:absolute;inset:0;background:url('{{ l2spk.img }}') 50% 50% / cover no-repeat;image-rendering:pixelated"></div><span aria-label="AI-generated image" style="position:absolute;right:2px;bottom:2px;z-index:2;padding:1px 4px;background:rgba(3,16,15,.55);color:rgba(239,252,248,.85);font:600 9px/1.2 'IBM Plex Mono',monospace;letter-spacing:.08em;pointer-events:none">AI</span>
     </div>
     <div style="flex:1 1 320px;display:flex;flex-direction:column;gap:6px;min-width:0">
       <div style="display:flex;flex-wrap:wrap;gap:4px 14px;align-items:baseline">
@@ -2195,6 +2259,7 @@ class Component extends DCLogic {
     l4: { step: 0, cuts: [], agree: {}, rounds: 0, override: false, place: {}, selItem: null, result: null },
     l5: { phase: 'ship', ev: 0, day: 0, health: 60, algae: 100, dose: 0, cuts: [], keptGold: 0, target: 0, contractOk: true, log: [], dlg: null, reHud: null, re: null, ending: null, done: false, result: null } };
   l2Canvas = React.createRef();
+  linkKbps(link, dist) { const D = link > 1 ? 0.9 : 0.5; return 134.4 * (100 / 20) * Math.pow(D / 4.8, 2) * Math.pow(34 / 70, 2) * Math.pow(5.2 / (dist || 5.2), 2); }
   l1info() {
     const s = this.state.l1;
     if (s.result) { const k = this.calcL1(s); return { parts: s.parts, margin: s.result.margin, money: s.result.money, power: k.power, data: k.data, link: k.link, cap: k.cap, month: k.m, dsnH: k.dsnH, path: s.path }; }
@@ -2316,7 +2381,7 @@ class Component extends DCLogic {
   ];
   finishL2(routeId) {
     const s = this.state.l2.storm, L = this.l1info(), has = id => L.parts.includes(id), r = this.routes.find(x => x.id === routeId), pa = this.pathOf(L.path);
-    const cruise = this.cruiseDose(pa, has('water')), marginLeft = this.r1(L.margin - r.fuel), health = Math.max(0, Math.round(100 - (s.D + r.dose) * .6 - cruise / 250)), years = Math.round((pa.yrs - (r.id === 'fast' ? .25 : 0)) * 100) / 100;
+    const cruise = this.cruiseDose(pa, has('water')), marginLeft = this.r1(L.margin - r.fuel), health = Math.max(0, Math.round(100 - (s.D + r.dose) * .45 - cruise / 250)), years = Math.round((pa.yrs - (r.id === 'fast' ? .25 : 0)) * 100) / 100;
     const pumpOk = s.rep >= 1, insUsed = !pumpOk && has('insurance');
     const crew = Math.round(400 * Math.max(0, Math.min(1, 1 - s.D / 90))), fix = Math.round(300 * s.rep), steer = Math.round(200 * s.align);
     const dec = r.id === 'fast' ? (marginLeft >= 2 ? 100 : 70) : 80, total = crew + fix + steer + dec;
@@ -2534,6 +2599,7 @@ class Component extends DCLogic {
     const p = this.pathOf(o.path), cl = v => Math.max(0, Math.min(1, v)), G = '#7dffbf', A = '#ffb36b', Rd = '#ff8a7a';
     const dials = [['Budget reserve', '$' + o.money + 'M', o.money / 5], ['Fuel margin', o.margin + ' t', o.margin / 12], ['Power spare', o.power + ' kW', o.power / 5], ['Crew health', o.health + '%', o.health / 100]]
       .concat(o.extra || []).map(([label, value, f]) => ({ label, value, deg: Math.round(-90 + 180 * cl(f)), color: cl(f) < .25 ? Rd : cl(f) < .5 ? A : G }));
+    const linkDistance = o.delay ? o.delay * 60 / 499.005 : 5.2;
     const lit = o.link >= 3 ? 4 : o.link === 2 ? 3 : 1, sent = Math.floor(Math.min(o.data, o.cap ?? o.link)), lost = Math.max(0, o.data - sent);
     const frac = o.arrive ? cl(o.now / o.arrive) : 0, home = o.home ?? o.arrive + 3.23, span = 9, at = y => (cl(y / span) * 100).toFixed(1) + '%';
     this.boardTarget = { path: o.path ? p.id : null, frac, storm: !!o.storm, win: o.path ? this.winOf(p.id, o.m ?? 28) : null };
@@ -2543,7 +2609,7 @@ class Component extends DCLogic {
       progText: o.now ? Math.round(frac * 100) + '% of the way to Jupiter. Arrival in year ' + o.arrive.toFixed(1) + '.' : 'Departure. Jupiter is ' + o.arrive.toFixed(1) + ' years away on this route.',
       dials,
       bars: [10, 18, 26, 34].map((h, i) => ({ h: h + 'px', c: i < lit ? G : '#2b5560' })),
-      commsText: (o.antenna ? 'High-gain antenna' : 'Low-gain antenna only') + ' · ' + o.link * 10 + ' kbps' + (o.delay ? ' · signal delay ' + Math.round(o.delay) + ' min' : ''),
+      commsText: (o.antenna ? 'High-gain antenna' : 'Low-gain antenna only') + ' · ' + this.linkKbps(o.link, linkDistance).toFixed(1) + ' kbps' + (o.delay ? ' · signal delay ' + Math.round(o.delay) + ' min' : ''),
       leds: Array.from({ length: 6 }, (_, i) => { const c = i < sent ? G : i < sent + lost ? A : '#03100f'; return { c, glow: i < sent + lost ? '0 0 8px ' + c : 'none' }; }),
       dataText: o.data ? sent + ' of ' + o.data + ' data units reach Earth' + (lost ? ' · ' + lost + ' lost' : '') : 'No science data planned',
       ticks: Array.from({ length: span + 1 }, (_, y) => ({ left: at(y), label: String(y) })),
@@ -2695,11 +2761,11 @@ class Component extends DCLogic {
     const f0 = v => (v < 0 ? '−' : '') + Math.abs(Math.round(v)).toLocaleString('en-US'), f1 = v => (v < 0 ? '−' : '') + Math.abs(Math.round(v * 10) / 10).toLocaleString('en-US'), f2 = v => (v < 0 ? '−' : '') + Math.abs(v).toFixed(2), cadet = this.state.diff === 'cadet', dir = this.state.diff === 'director';
     if (step === 2) {
       const src = 2000 + (k.has('rtg') ? 3000 : 0), loads = k.P.filter(p => p.p < 0), loadW = loads.reduce((a, p) => a - p.p * 1000, 0), spare = src - loadW, area = loadW / (50.26 * .28);
-      const V = k.data * 50, R = k.rate, days = V ? V * 1e6 / (R * 3600 * k.dsnH) : 0, home = days ? Math.min(100, Math.round(180 / days * 100)) : 100;
+      const V = k.data * 8.5, R = k.rate, days = V ? V * 1e6 / (R * 3600 * k.dsnH) : 0, home = days ? Math.min(100, Math.round(180 / days * 100)) : 100;
       return [
         this.mkCalc({ id: 'power', title: 'Power budget', tag: 'MIXED', good: spare >= 0, summaryQuiz: 'Add up what the reactors make, then subtract what your machines use.',
           summary: spare >= 0 ? 'The reactors run everything you packed with ' + f0(spare) + ' W to spare. Solar panels would need ' + f0(area) + ' m² to do the same job at Jupiter.' : 'Your machines need ' + f0(-spare) + ' W more than the reactors make.',
-          rows: [['Main fission reactor', '2,000 W', 'ESTIMATE']].concat(k.has('rtg') ? [['Second fission reactor', '3,000 W', 'ESTIMATE']] : [], loads.map(p => [p.name, '−' + f0(-p.p * 1000) + ' W', 'ESTIMATE']), [['NASA Kilopower reactors (tested 2018)', '1–10 kW', 'REAL'], ['Sunlight at Jupiter (Earth: 1,361)', '50.26 W/m²', 'REAL'], ['Juno’s solar cells', '≈ 28% efficient', 'REAL']]),
+          rows: [['Main fission reactor', '2,000 W', 'ESTIMATE']].concat(k.has('rtg') ? [['Second fission reactor', '3,000 W', 'FICTION']] : [], loads.map(p => [p.name, '−' + f0(-p.p * 1000) + ' W', 'ESTIMATE']), [['NASA Kilopower reactors (tested 2018)', '1–10 kW', 'REAL'], ['Sunlight at Jupiter (Earth: 1,361)', '50.26 W/m²', 'REAL'], ['Juno’s solar cells', '≈ 28% efficient', 'REAL']]),
           how: { general: 'spare = power made − power used\nsolar area = power used ÷ (sunlight × efficiency)', vars: [['made', 'reactor output, in watts'], ['used', 'what every packed machine draws'], ['sunlight', '50.26 W per m² at Jupiter (NASA fact sheet)'], ['efficiency', '0.28, like Juno’s best solar cells']], idea: 'Energy is conserved: every watt a machine uses has to come from a source. At Jupiter sunlight is only 3.7% as strong as at Earth, so solar panels would be enormous. That is why the ship carries small fission reactors like the 1–10 kW Kilopower units NASA tested in 2018.' },
           formula: 'spare = ' + f0(src) + ' − ' + f0(loadW) + ' = ' + f0(spare) + ' W\nsolar = ' + f0(loadW) + ' ÷ (50.26 × 0.28) = ' + f0(area) + ' m²',
           result: spare >= 0 ? '+' + f0(spare) + ' W spare' : f0(-spare) + ' W short',
@@ -2708,12 +2774,12 @@ class Component extends DCLogic {
         this.mkCalc({ id: 'data', title: 'Data downlink to Earth', tag: 'MIXED', good: home >= 100, summaryQuiz: 'You have 180 days at Ganymede. Will all your science make it home?',
           summary: !V ? 'No science instruments packed yet, so there is nothing to send home.' : home >= 100 ? 'All ' + f0(V) + ' Gb of science reaches Earth in ' + f0(days) + ' of your 180 days at Ganymede.' : 'At this rate only ' + home + '% of your science reaches Earth before you leave Ganymede.',
           sliders: [{ label: 'Deep Space Network dish time', min: 4, max: 12, step: 1, value: k.dsnH, display: k.dsnH + ' h/day' + (k.dsnCost ? ' · +$' + k.dsnCost + 'M' : ''), onInput: e => this.setL1({ dsnH: +e.target.value }) }],
-          rows: [['Science data (1 unit ≈ 4,000 camera frames)', k.data + ' × 50 Gb = ' + f0(V) + ' Gb', 'ESTIMATE'], ['Ship dish and transmitter', (k.has('antenna') ? '0.9 m high-gain' : '0.5 m medium-gain') + ', 100 W', 'ESTIMATE'], ['Deep Space Network dish', '34 m', 'REAL'], ['Earth–Jupiter distance' + (k.pa ? ' on arrival' : ' (average)'), f1(k.dist) + ' AU', 'REAL'], ['Link rate from the link equation', f1(R) + ' kbps', 'ESTIMATE'], ['Dish time per day (over 8 h costs $0.25M/h)', k.dsnH + ' h', 'ESTIMATE'], ['Stay at Ganymede', '180 days', 'ESTIMATE']],
-          how: { general: 'days = data ÷ (rate × hours × 3,600 s)\nrate ∝ power × ship dish² × ground dish² ÷ distance²', vars: [['data', 'science to send, in gigabits'], ['rate', 'kilobits per second the link carries'], ['hours', 'dish time booked each day'], ['distance', 'Earth to Jupiter, in AU']], idea: 'A radio beam spreads out as it travels, so its strength falls with the square of the distance. A bigger dish focuses the beam, so the rate grows with the square of the dish size. With a 0.5 m dish, 100 W and a 34 m Deep Space Network dish, the link equation gives about 10 kbps at 5.2 AU.' },
-          formula: 'rate = 10 kbps × ' + k.link + ' (dish) × (5.2 ÷ ' + f1(k.dist) + ')² = ' + f1(R) + ' kbps' + (V ? '\ndays = ' + f0(V) + ' Gb ÷ (' + f1(R) + ' kbps × ' + k.dsnH + ' h × 3,600) = ' + f0(days) + ' days' : '\nno data packed yet'),
+          rows: [['Science data (1 unit ≈ 700 camera frames)', k.data + ' × 8.5 Gb = ' + f1(V) + ' Gb', 'ESTIMATE'], ['Ship dish and transmitter', (k.has('antenna') ? '0.9 m high-gain' : '0.5 m medium-gain') + ', 100 W', 'ESTIMATE'], ['Deep Space Network dish', '34 m', 'REAL'], ['Earth–Jupiter distance' + (k.pa ? ' on arrival' : ' (average)'), f1(k.dist) + ' AU', 'REAL'], ['Galileo’s planned rate (4.8 m dish, 20 W, 70 m DSN dish)', '134.4 kbps', 'REAL'], ['Our rate, scaled from Galileo', f1(R) + ' kbps', 'ESTIMATE'], ['Dish time per day (over 8 h costs $0.25M/h)', k.dsnH + ' h', 'ESTIMATE'], ['Stay at Ganymede', '180 days', 'ESTIMATE']],
+          how: { general: 'days = data ÷ (rate × hours × 3,600 s)\nrate = Galileo’s rate × power ratio × (ship dish ratio)² × (ground dish ratio)² × (distance ratio)²', vars: [['data', 'science to send, in gigabits'], ['rate', 'kilobits per second the link carries'], ['hours', 'dish time booked each day'], ['distance', 'Earth to Jupiter, in AU']], idea: 'A radio beam spreads out as it travels, so its strength falls with the square of the distance. A bigger dish focuses the beam, so the rate grows with the square of the dish size. The ideal link equation ignores real losses (cables, pointing, coding) and the safety margin engineers keep, so we scale from a real design instead. Galileo’s 4.8 m dish and 20 W transmitter were built to send 134.4 kbps from Jupiter. A 0.5 m dish at 100 W into a 34 m dish gets about 1.7 kbps. Galileo’s big dish never opened, so it sent most of its science at under 200 bps.' },
+          formula: 'rate = 134.4 × (100 ÷ 20) × (' + (k.link > 1 ? '0.9' : '0.5') + ' ÷ 4.8)² × (34 ÷ 70)² × (5.2 ÷ ' + f1(k.dist) + ')² = ' + f1(R) + ' kbps' + (V ? '\ndays = ' + f0(V) + ' Gb ÷ (' + f1(R) + ' kbps × ' + k.dsnH + ' h × 3,600) = ' + f0(days) + ' days' : '\nno data packed yet'),
           result: !V ? '0 Gb to send' : home >= 100 ? 'All home in ' + f0(days) + ' days' : home + '% gets home',
           quiz: V ? { q: 'How many days to send all your data?', v: days, alts: [{ x: days * 2, why: 'That uses half the link rate.' }, { x: days / 2, why: 'That counts the dish hours twice.' }], fmt: v => f0(v) + ' days' } : null,
-          src: 'NASA Deep Space Network', href: this.links.dsn })
+          src: 'JPL DESCANSO · Galileo Telecommunications · NASA DSN', href: 'https://descanso.jpl.nasa.gov/monograph/series13/DeepCommo_Chapter4--141029.pdf' })
       ];
     }
     const pid = l1.path || 'direct', pa = this.pathOf(pid), m = k.m, w = this.winOf(pid, m), best = this.bestMonth(pid), dv = this.dvOf(pid, w), B = this.burnsOf(pid), dry = this.r1(k.hull + this.supOf(pa));
@@ -2785,7 +2851,7 @@ class Component extends DCLogic {
     const stay = Math.max(180, Math.ceil(Math.min(daysTotal, 999))), gold = l3.sep * stay * site.gold, target = this.goldTarget();
     const evaH = 10 + (has('drone') ? site.hazard / 2 : site.hazard) + (jam ? (has('spares') ? 2 : 6) : 0), evaDose = evaH * site.rate / 24, shDose = stay * site.rate * .01, dose = evaDose + shDose;
     const foodKg = 180 * 4 * 2.3, ration = Math.min(1, foodKg / (stay * 4 * 2.3)), shortDays = Math.max(0, stay - 180), foodPen = Math.min(30, shortDays * .25);
-    const dist = this.distArr(L.path, L.month), rateK = 10 * L.link * Math.pow(5.2 / dist, 2), vis = site.id === 'pole' ? .4 : .5, dsnH = L.dsnH ?? 8, gbDay = rateK * 1000 * 3600 * dsnH * vis / 1e9, dataGb = 40, sendDays = dataGb / gbDay, dataHome = Math.min(1, gbDay * stay / dataGb);
+    const dist = this.distArr(L.path, L.month), rateK = this.linkKbps(L.link, dist), vis = site.id === 'pole' ? .4 : .5, dsnH = L.dsnH ?? 8, gbDay = rateK * 1000 * 3600 * dsnH * vis / 1e9, dataGb = 7, sendDays = dataGb / gbDay, dataHome = Math.min(1, gbDay * stay / dataGb);
     return { site, avail, T, heatLoss, need, A, eJ, perM, v, depth, days, jam, daysTotal, stay, gold, target, evaH, evaDose, shDose, dose, heatShort: l3.heat < need - 1e-6, L, L2, has, used: l3.heat + l3.drill + l3.sep, foodKg, ration, shortDays, foodPen, dist, rateK, vis, dsnH, gbDay, dataGb, sendDays, dataHome };
   }
   enterL3() {
@@ -2796,7 +2862,8 @@ class Component extends DCLogic {
   pickSite(id, silent) {
     const site = this.sites.find(x => x.id === id), P = this.l3Plan(), heat = Math.min(P.avail, Math.ceil(this.needOf(site) * 4) / 4);
     if (!silent) this.sfx('click');
-    this.setL3({ site: silent ? null : id, heat, drill: Math.max(0, P.avail - heat), sep: 0 });
+    const tg = P.target, sep = tg && site.gold ? Math.min(Math.ceil(tg / (180 * site.gold) * 4) / 4, Math.max(0, P.avail - heat - .5)) : 0;
+    this.setL3({ site: silent ? null : id, heat, drill: Math.max(0, P.avail - heat - sep), sep });
   }
   setPow(key, v) { const P = this.l3Plan(), st = this.state.l3, others = ['heat', 'drill', 'sep'].filter(k => k !== key).reduce((a, k) => a + st[k], 0); this.setL3({ [key]: Math.max(0, Math.min(v, P.avail - others)) }); }
   startDrill() {
@@ -2895,13 +2962,13 @@ class Component extends DCLogic {
           result: f0(P.dose) + ' mSv on the surface',
           quiz: picked ? { q: 'What total dose will the crew get at this site?', v: P.dose, alts: [{ x: P.evaDose + P.stay * site.rate, why: 'Too much. The ice shelter lets only 1% through: multiply by 0.01.' }, { x: P.evaDose, why: 'That is only the spacewalk part. Add the shelter dose for the whole stay.' }], fmt: x => f0(x) + ' mSv' } : null,
           src: 'NASA Galileo mission · Ganymede’s magnetic field', href: 'https://science.nasa.gov/mission/galileo/' }),
-        this.mkCalc({ id: 'comms', title: 'Talking to Earth from ' + site.name, tag: 'REAL', good: P.sendDays <= P.stay, summaryQuiz: 'Earth is only above your horizon part of each Ganymede day. How long to send the 40 Gb of radar and sample data home?',
-          summary: 'Ganymede turns once every 7.15 days, so Earth is above your horizon about ' + Math.round(P.vis * 100) + '% of the time. At ' + f1(P.rateK) + ' kbps the 40 Gb of radar and sample data takes ' + f0(P.sendDays) + ' days to send' + (P.sendDays > P.stay ? ', longer than your stay.' : '.') + ' Each message takes ' + f0(P.dist * 499 / 60) + ' minutes to arrive.',
-          rows: [['Ganymede day (it always faces Jupiter)', '7.15 Earth days', 'REAL'], ['Earth above the horizon', Math.round(P.vis * 100) + '% of the time' + (site.id === 'pole' ? ', low in the sky' : ''), 'REAL'], ['Link rate from Level 1', f1(P.rateK) + ' kbps', 'ESTIMATE'], ['Deep Space Network time booked', P.dsnH + ' h/day', 'ESTIMATE'], ['Radar and sample data', '40 Gb', 'ESTIMATE'], ['Earth–Jupiter distance', f1(P.dist) + ' AU', 'REAL']],
+        this.mkCalc({ id: 'comms', title: 'Talking to Earth from ' + site.name, tag: 'REAL', good: P.sendDays <= P.stay, summaryQuiz: 'Earth is only above your horizon part of each Ganymede day. How long to send the 7 Gb of radar and sample data home?',
+          summary: 'Ganymede turns once every 7.15 days, so Earth is above your horizon about ' + Math.round(P.vis * 100) + '% of the time. At ' + f1(P.rateK) + ' kbps the 7 Gb of radar and sample data takes ' + f0(P.sendDays) + ' days to send' + (P.sendDays > P.stay ? ', longer than your stay.' : '.') + ' Each message takes ' + f0(P.dist * 499 / 60) + ' minutes to arrive.',
+          rows: [['Ganymede day (it always faces Jupiter)', '7.15 Earth days', 'REAL'], ['Earth above the horizon', Math.round(P.vis * 100) + '% of the time' + (site.id === 'pole' ? ', low in the sky' : ''), 'REAL'], ['Link rate from Level 1', f1(P.rateK) + ' kbps', 'ESTIMATE'], ['Deep Space Network time booked', P.dsnH + ' h/day', 'ESTIMATE'], ['Radar and sample data', '7 Gb', 'ESTIMATE'], ['Earth–Jupiter distance', f1(P.dist) + ' AU', 'REAL']],
           how: { general: 'Gb per day = rate × 3,600 s × dish hours × share of time Earth is up\ndays = data ÷ Gb per day', vars: [['rate', 'kilobits per second from Level 1'], ['share', 'fraction of each Ganymede day that Earth is above the horizon']], idea: 'Ganymede is tidally locked: one side always faces Jupiter, and a full day lasts its 7.15-day orbit. Earth rises and sets once per Ganymede day, so a lander only has Earth in view about half the time. Juno and Galileo planned their data the same way, around Deep Space Network passes.' },
-          formula: 'Gb/day = ' + f1(P.rateK) + ' kbps × 3,600 × ' + P.dsnH + ' h × ' + P.vis + ' = ' + P.gbDay.toFixed(2) + ' Gb\ndays = 40 ÷ ' + P.gbDay.toFixed(2) + ' = ' + f0(P.sendDays),
+          formula: 'Gb/day = ' + f1(P.rateK) + ' kbps × 3,600 × ' + P.dsnH + ' h × ' + P.vis + ' = ' + P.gbDay.toFixed(3) + ' Gb\ndays = 7 ÷ ' + P.gbDay.toFixed(3) + ' = ' + f0(P.sendDays),
           result: P.sendDays <= P.stay ? 'All data home in ' + f0(P.sendDays) + ' days' : Math.round(P.dataHome * 100) + '% gets home',
-          quiz: picked ? { q: 'How many days to send the 40 Gb home?', v: P.sendDays, alts: [{ x: P.sendDays * P.vis, why: 'That forgets that Earth is only up part of the time.' }, { x: P.sendDays * 2, why: 'Too long. Use the dish hours you booked in Level 1.' }], fmt: x => f0(x) + ' days' } : null,
+          quiz: picked ? { q: 'How many days to send the 7 Gb home?', v: P.sendDays, alts: [{ x: P.sendDays * P.vis, why: 'That forgets that Earth is only up part of the time.' }, { x: P.sendDays * 2, why: 'Too long. Use the dish hours you booked in Level 1.' }], fmt: x => f0(x) + ' days' } : null,
           src: 'NASA NSSDC Jovian satellite fact sheet · NASA Deep Space Network', href: 'https://nssdc.gsfc.nasa.gov/planetary/factsheet/joviansatfact.html' })
       ];
     }
@@ -2951,7 +3018,7 @@ class Component extends DCLogic {
     if (P.jam) E.push([has('spares'), has('spares') ? 'The drill jammed on a salt layer; spare parts fixed it in 3 days.' : 'The drill jammed on a salt layer and lost 15 days: no spare parts.']);
     E.push(P.heatShort ? [0, 'Heater short by ' + (P.need - this.state.l3.heat).toFixed(2) + ' kW: the crew was cold (−15 health).'] : [1, 'Habitat kept warm: ' + f0(P.heatLoss) + ' W of heat loss covered.']);
     E.push(P.ration >= 1 ? [1, 'Food lasted: ' + f0(P.foodKg) + ' kg covered all ' + P.stay + ' days.'] : [0, 'Food ran short: ' + Math.round(P.ration * 100) + '% rations for ' + P.stay + ' days (−' + Math.round(P.foodPen) + ' health).']);
-    E.push(P.dataHome >= 1 ? [1, 'All 40 Gb of radar and sample data reached Earth in ' + f0(P.sendDays) + ' days.'] : [0, 'Only ' + Math.round(P.dataHome * 100) + '% of the radar and sample data reached Earth before you left.']);
+    E.push(P.dataHome >= 1 ? [1, 'All 7 Gb of radar and sample data reached Earth in ' + f0(P.sendDays) + ' days.'] : [0, 'Only ' + Math.round(P.dataHome * 100) + '% of the radar and sample data reached Earth before you left.']);
     E.push([P.dose < 400, 'Surface radiation: ' + f0(P.dose) + ' mSv (' + f0(P.evaH) + ' h of spacewalks plus the ice shelter).']);
     if (P.target) E.push(P.gold >= P.target ? [1, 'The separator made ' + f1(P.gold) + ' t of gold: contract met.'] : [0, 'Only ' + f1(P.gold) + ' t of the ' + P.target + ' t of gold promised. Áurea will want answers in Level 4.']);
     E.push(has('incubator') ? [1, 'Algae sealed in the reinforced incubator for the trip home.'] : [0, 'No reinforced incubator: half the algae samples will not survive the trip.']);
@@ -3077,7 +3144,7 @@ class Component extends DCLogic {
     if (!c || !st.voice || !st.sound) return;
     const V = S.getVoices().filter(v => /^en/i.test(v.lang)), fem = /female|samantha|victoria|karen|zira|susan|serena|moira|tessa|fiona|veena|aria|jenny|libby|sonia/i, mal = /\bmale|daniel|alex|fred|david|mark|george|rishi|guy|ryan|thomas|arthur/i;
     const want = c.role === 0 || c.role === 2 ? fem : mal, pool = V.filter(v => want.test(v.name) && !(want === mal && /female/i.test(v.name))), list = pool.length ? pool : V;
-    const voice = list.length ? list[(c.role >= 2 ? 1 : 0) % list.length] : null, Pp = [[1.1, 1], [.9, .98], [1.2, 1], [.8, .94]][c.role] || [1, 1];
+    const voice = list.length ? list[(c.role >= 2 ? 1 : 0) % list.length] : null, Pp = [[1.15, 1.04], [.85, .96], [.92, .9], [.98, 1.02]][c.role] || [1, 1];
     const u = new SpeechSynthesisUtterance(c.text); if (voice) u.voice = voice; u.lang = voice ? voice.lang : 'en-GB'; u.pitch = Pp[0]; u.rate = Pp[1];
     const M = window.MAPS_MUSIC; u.onstart = () => { try { M && M.duck(true); } catch (_) {} }; u.onend = () => { try { M && M.duck(false); } catch (_) {} };
     S.speak(u);
@@ -3307,20 +3374,22 @@ class Component extends DCLogic {
       lines = ['Day 900. Months without gravity weaken muscles and bones. NASA crews exercise two hours a day.'];
       choices = (cut('kit') ? [{ label: 'Improvise with straps and bungees', run: done('Improvised workouts: better than nothing.', q => ({ health: q.health - 1 })) }] : [{ label: 'Two hours a day on the treadmill', run: done('Daily training keeps the crew strong.', q => ({ health: q.health + 3 })) }]).concat([{ label: 'Rest and save food', run: done('Resting saved food, but muscles wasted away.', q => ({ health: q.health - 5 })) }]);
     } else {
-      lines = ['Day 997. Earth ahead! We hit the atmosphere at 11 km/s.', 'Hold LIFT UP to climb and LIFT DOWN to dive. Dip in, skip back up, then dip again. Stay above the red line or the g-force will crush us, and do not bounce back into space.'];
+      lines = ['Day 997. Earth ahead! We hit the atmosphere at 11 km/s.', 'The white dots show where we will be in the next 30 seconds if you keep doing what you are doing. Hold LIFT UP or LIFT DOWN to bend them. If dots turn red, the g-force would crush us: lift up. If they turn blue, we would skip back into space: lift down.'];
       choices = [{ label: 'Begin re-entry', run: () => this.startReentry() }];
     }
     this.sfx('pop'); this.setL5({ phase: 'dlg', dlg: { role: e.role, lines, i: 0, choices, ev: e.id } });
   }
   glim() { return { cadet: 12, engineer: 10, director: 8 }[this.state.diff] || 10; }
   reLow(v) { const vv = Math.max(.6, v); return 60 - 7.2 * Math.log(this.glim() * .0098 / (4.1e-4 * vv * vv)); }
-  startReentry() { this.setL5({ day: 997 }); this.g5.re = { h: 122, v: 11, vh: -1, t: 0, maxg: 0, g: 0, low: false, trail: [], done: false }; this.g5.lift = 0; this.sfx('rumble'); this.setL5({ phase: 'reentry', dlg: null, reHud: null }); }
+  startReentry() { this.setL5({ day: 997 }); this._reA = null; this.g5.re = { h: 122, v: 11, vh: -1.2, t: 0, maxg: 0, g: 0, low: false, trail: [], done: false }; this.g5.lift = 0; this.sfx('rumble'); this.setL5({ phase: 'reentry', dlg: null, reHud: null }); }
   reStep(dt) {
     const R = this.g5.re, k = 4.1e-4; let U = this.g5.lift; const rho = Math.exp(-(R.h - 60) / 7.2), dec = k * rho * R.v * R.v, g = dec / .0098;
-    if (!U && this.state.diff === 'cadet') { const hl = this.reLow(R.v); U = R.h < hl + 8 || R.vh < -.6 ? 1 : R.h > hl + 22 && R.vh > -.2 ? -1 : 0; }
-    R.vh = Math.max(-1.5, Math.min(1, R.vh + (U * .05 + (R.v > 7.9 ? .004 : -.01)) * dt)); R.v = Math.max(0, R.v - dec * dt); R.h += R.vh * dt; R.t += dt; R.g = g; R.maxg = Math.max(R.maxg, g); if (R.h < 100) R.low = true;
-    if (g > this.glim()) return 'crush'; if (R.low && R.h > 125 && R.v > 7.9) return 'bounce'; if (R.v < .6) return 'ok'; if (R.h <= 0) return 'crash'; return null;
+    if (!U && this.state.diff === 'cadet') U = this.reAuto(R);
+    R.vh = Math.max(-2, Math.min(1, R.vh + (U * .3 * dec + .0098 * (R.v * R.v / 62.41 - 1)) * dt)); R.v = Math.max(0, R.v - dec * dt); R.h += R.vh * dt; R.t += dt; R.g = g; R.maxg = Math.max(R.maxg, g); if (R.h < 100) R.low = true;
+    if (g > this.glim()) return 'crush'; if (R.low && R.h > 125) return 'bounce'; if (R.v < .6) return 'ok'; if (R.h <= 0) return 'crash'; return null;
   }
+  rePredict(R0, U, T) { const R = { h: R0.h, v: R0.v, vh: R0.vh }, pts = []; let maxg = 0, maxh = -1e9; for (let t = 0; t < T; t++) { const dec = 4.1e-4 * Math.exp(-(R.h - 60) / 7.2) * R.v * R.v, g = dec / .0098; R.vh = Math.max(-2, Math.min(1, R.vh + U * .3 * dec + .0098 * (R.v * R.v / 62.41 - 1))); R.v = Math.max(0, R.v - dec); R.h += R.vh; maxg = Math.max(maxg, g); maxh = Math.max(maxh, R.h); pts.push([R.h, R.v, g]); if (R.v < .6 || R.h <= 0) break; } return { maxg, maxh, pts }; }
+  reAuto(R) { const gl = this.glim(), A = this._reA || (this._reA = { t: -9, u: 0 }); if (R.t - A.t < .5) return A.u; A.t = R.t; const up = p => R.low && p.maxh > 125 && R.v > 7.9; const p = this.rePredict(R, A.u, 30); if (p.maxg > gl * .85) A.u = 1; else if (up(p)) A.u = -1; else { const p0 = this.rePredict(R, 0, 30); if (p0.maxg < gl * .85 && !up(p0)) A.u = 0; } return A.u; }
   endReentry(res) {
     const st = this.state.l5, R = this.g5.re, ok = res === 'ok';
     const ending = !ok || st.algae < 40 ? 'failure' : st.health <= 25 ? 'martyr' : !st.contractOk ? 'pyrrhic' : 'golden';
@@ -3342,7 +3411,7 @@ class Component extends DCLogic {
     if (this.state.screen !== 15 || !this.g5) return; const cv = this.l5Cv.current; if (!cv) return;
     const x = cv.getContext('2d'), st = this.state.l5, G = this.g5, dt = Math.min(.05, Math.max(0, (t - (G.lt || t)) / 1000)); G.lt = t; x.imageSmoothingEnabled = false;
     if (st.phase === 'reentry' && G.re) {
-      let res = null; if (!G.re.done) { let left = dt * (G.re.v < 7.9 ? 24 : 10); while (left > 0 && !res) { const d = Math.min(.5, left); res = this.reStep(d); left -= d; } G.re.trail.push([G.re.h, G.re.v]); if (G.re.trail.length > 400) G.re.trail.shift(); }
+      let res = null; if (!G.re.done) { let left = dt * 6; while (left > 0 && !res) { const d = Math.min(.25, left); res = this.reStep(d); left -= d; } G.re.trail.push([G.re.h, G.re.v]); if (G.re.trail.length > 400) G.re.trail.shift(); }
       this.drawReentry(x, t); if (t - (G.hudT || 0) > 120) { G.hudT = t; this.setL5({ reHud: { h: G.re.h, v: G.re.v, g: G.re.g, maxg: G.re.maxg } }); }
       if (res) { G.re.done = true; setTimeout(() => this.endReentry(res), 400); } return;
     }
@@ -3386,6 +3455,7 @@ class Component extends DCLogic {
     x.fillStyle = '#ffffff'; for (let i = 0; i < 30; i++) x.fillRect((i * 53) % 320, (i * 37) % 70, 1, 1);
     const hl = this.reLow(R.v); x.fillStyle = 'rgba(255,90,90,.85)'; for (let i = 0; i < 320; i += 6) x.fillRect(i, Math.round(Y(hl)), 3, 1);
     if (R.low) { x.fillStyle = 'rgba(127,240,255,.85)'; for (let i = 0; i < 320; i += 6) x.fillRect(i, Math.round(Y(125)), 3, 1); }
+    const gl = this.glim(), PU = this.g5.lift || (this.state.diff === 'cadet' && this._reA ? this._reA.u : 0); if (!R.done) this.rePredict(R, PU, 30).pts.forEach(([h, v, gg], i) => { if (i % 2) return; x.fillStyle = gg > gl ? '#ff5a5a' : R.low && h > 125 ? '#7ff0ff' : '#effcf8'; x.fillRect(Math.round(X(v)), Math.round(Y(h)), 2, 2); });
     x.fillStyle = 'rgba(255,211,107,.6)'; R.trail.forEach(([h, v], i) => { if (i % 2 === 0) x.fillRect(Math.round(X(v)), Math.round(Y(h)), 1, 1); });
     const cx = Math.round(X(R.v)), cy = Math.round(Y(R.h)), heat = Math.min(1, (R.g || 0) / 6);
     if (heat > .05) { x.fillStyle = 'rgba(255,' + Math.round(200 - 140 * heat) + ',60,' + (.35 + .4 * heat) + ')'; const rr = 4 + 8 * heat + Math.random() * 2; x.beginPath(); x.arc(cx + 3, cy, rr, 0, 6.29); x.fill(); }
@@ -3435,8 +3505,8 @@ class Component extends DCLogic {
       const h = st.reHud || { h: 122, v: 11, g: 0 }, rho = Math.exp(-(h.h - 60) / 7.2);
       return [this.mkCalc({ id: 'l5entry', title: 'Skip re-entry', tag: 'REAL', good: h.g < this.glim(),
         summary: 'Air density doubles about every 5 km you drop. Too deep and the braking crushes you; too shallow and you skip back into space.',
-        rows: [['Entry speed from Jupiter', '11 km/s', 'REAL'], ['Air thins by e every', '7.2 km (scale height)', 'REAL'], ['G limit for this difficulty', this.glim() + ' g', 'ESTIMATE'], ['Artemis I skip entry', '2022, 11 km/s', 'REAL']],
-        how: { general: 'braking = k × ρ × v²\nρ = ρ(60 km) × e^(−(h − 60) ÷ 7.2)', vars: [['ρ', 'air density at height h'], ['v', 'speed'], ['k', 'capsule shape and mass']], idea: 'Coming home from deep space you are much faster than from Earth orbit. NASA’s Orion dipped into the air, skipped back up, then came down again on Artemis I. That spreads the heat and g-force out.' },
+        rows: [['Entry speed from Jupiter', '11 km/s', 'REAL'], ['Air thins by e every', '7.2 km (scale height)', 'REAL'], ['G limit for this difficulty', this.glim() + ' g', 'ESTIMATE'], ['Capsule lift (like Apollo or Orion)', '0.3 × braking', 'REAL'], ['Artemis I skip entry', '2022, 11 km/s', 'REAL']],
+        how: { general: 'braking = k × ρ × v²\nρ = ρ(60 km) × e^(−(h − 60) ÷ 7.2)\nlift = 0.3 × braking, pointed up or down', vars: [['ρ', 'air density at height h'], ['v', 'speed'], ['k', 'capsule shape and mass']], idea: 'Coming home from deep space you are much faster than from Earth orbit. NASA’s Orion dipped into the air, skipped back up, then came down again on Artemis I. That spreads the heat and g-force out.' },
         formula: 'ρ = e^(−(' + f0(h.h) + ' − 60) ÷ 7.2) = ' + rho.toFixed(2) + '\nbraking = ' + (h.g || 0).toFixed(1) + ' g at ' + h.v.toFixed(1) + ' km/s', result: (h.g || 0).toFixed(1) + ' g now', quiz: null,
         src: 'NASA · Artemis I', href: 'https://www.nasa.gov/mission/artemis-i/' })];
     }
@@ -3457,6 +3527,7 @@ class Component extends DCLogic {
       l5Label: '12 Level 5 · ' + ({ ship: 'Ship', dlg: 'Ship', reentry: 'Re-entry', ending: 'Ending' }[st.phase] || ''),
       l5Tag: st.phase === 'reentry' ? 'REAL · skip re-entry physics' : st.phase === 'ending' ? 'FICTION · your ending' : 'MIXED · real hazards, story crew', l5TagBg: TG[st.phase === 'reentry' ? 'REAL' : st.phase === 'ending' ? 'FICTION' : 'MIXED'],
       ...this.l5Side(st, hr, cut), ...(st.done ? (w => ({ l5Verdict: w.verdict, l5HealthEnd: w.hEnd, l5Chain: w.chain, l5Causes: w.causes, l5Tips: w.tips.map(t => ({ t })), l5HasTips: w.tips.length > 0 }))(this.l5Why(saved, st, res)) : { l5Chain: [], l5Causes: [], l5Tips: [], l5HasTips: false, l5Verdict: '', l5HealthEnd: 0 }),
+      l5AllEnds: [['golden', 'The Golden Breath', 'Safe landing, crew health above 25, algae alive and the gold contract met.', '#ffd36b'], ['pyrrhic', 'The Pyrrhic Victory', 'Safe landing and a healthy crew, but the gold contract was broken.', '#ffb36b'], ['martyr', 'Martyr’s Return', 'Safe landing with live algae, but crew health fell to 25 or below.', '#7ff0ff'], ['failure', 'Mission Failure', 'Re-entry failed, or the algae fell below 40%.', '#ff8a7a']].map(([id, name, rule, col]) => { const on = st.ending === id; return { name, rule, mark: on ? '▶' : '', bg: on ? col : 'transparent', fg: on ? '#03100f' : '#a9cfc8', bd: on ? col : '#2b5560' }; }),
       l5Cv: this.l5Cv, l5CvLabel: st.phase === 'reentry' ? 'Re-entry: capsule altitude against speed, with the g-limit line' : st.phase === 'ending' ? 'Ending scene: ' + endName : 'Top-down map of the ship', l5Hud: hud,
       l5HasDlg: !!d, l5DlgFace: face, l5DlgImg: face ? R[d.role].face : '', l5DlgName: face ? R[d.role].character : 'Narrator', l5DlgText: d ? d.lines[d.i] : '',
       l5HasChoices: !!(d && d.choices && last), l5Choices: d && d.choices ? d.choices.map(c => ({ label: c.label, pick: c.run })) : [], l5HasMore: !!(d && !(d.choices && last)), l5More: () => this.l5A(),
@@ -3511,7 +3582,7 @@ class Component extends DCLogic {
       l5PanelTitle: re ? 'Re-entry' : 'Crew status',
       l5Bars: re ? [{ label: 'Altitude', v: Math.max(0, Math.round(hr.h)) + ' km', pct: pct(hr.h / 122 * 100), c: '#7ff0ff' }, { label: 'Speed', v: hr.v.toFixed(1) + ' km/s', pct: pct(hr.v / 11 * 100), c: '#ffd36b' }, { label: 'G-force', v: g.toFixed(1) + ' of ' + gl + ' g', pct: pct(g / gl * 100), c: g > gl * .75 ? '#ff8a7a' : '#7dffbf' }]
         : [{ label: 'Day', v: st.day + ' of 997', pct: pct(st.day / 997 * 100), c: '#effcf8' }, { label: 'Crew health', v: st.health + ' / 100', pct: pct(st.health), c: st.health > 50 ? '#7dffbf' : st.health > 25 ? '#ffb36b' : '#ff8a7a' }, { label: 'Algae', v: st.algae + '%', pct: pct(st.algae), c: st.algae >= 60 ? '#7dffbf' : '#ffb36b' }, { label: 'Radiation this trip', v: st.dose + ' mSv', pct: pct(st.dose / 600 * 100), c: '#ffd36b' }, { label: 'Earth link', v: cut('sci') ? 'None' : 'Working', pct: cut('sci') ? '0%' : '100%', c: cut('sci') ? '#ff8a7a' : '#7ff0ff' }],
-      l5PanelNote: re ? 'Red dashed line: the g-limit. Blue dashed line: skipping back into space. The capsule moves right as it slows.' : 'You are ' + R[pr].character + ', in the white suit with the yellow marker. Walk to the station marked “!”.',
+      l5PanelNote: re ? 'White dots: your path for the next 30 seconds with your current controls. Red dots: the g-force would crush the crew there, so lift up. Blue dots: you would skip back into space, so lift down. The capsule moves right as it slows.' : 'You are ' + R[pr].character + ', in the white suit with the yellow marker. Walk to the station marked “!”.',
       l5Obj: this.l5Events.map((e, i) => ({ t: ['Solar storm · Bridge', 'Air scrubber · Life support', 'Algae light · Greenhouse', 'Message from Earth · Comms', 'Exercise · Bunks', 'Re-entry · Bridge'][i], mark: i < st.ev ? '✓' : i === st.ev ? '▶' : '○', c: i < st.ev ? '#7dffbf' : i === st.ev ? '#ffd36b' : '#a9cfc8', w: i === st.ev ? '700' : '400' }))
     };
   }
@@ -3534,7 +3605,7 @@ class Component extends DCLogic {
     if (S.l1.path === 'assist') T.push('Try a faster route. Less time in deep space means less cosmic radiation.');
     if (!has('incubator')) T.push('Pack the reinforced incubator so the algae start at full strength.');
     if (st.target && !st.contractOk) T.push('Give the gold separator more power in Level 3, or negotiate a smaller gold contract in Level 1.');
-    if (res && !res.ok) T.push(res.res === 'bounce' ? 'At re-entry, dive a little deeper on the first dip so the air can slow you down.' : 'At re-entry, lift up as soon as the g-force passes half the limit.');
+    if (res && !res.ok) T.push(res.res === 'bounce' ? 'At re-entry, dive a little deeper on the first dip so the air can slow you down.' : 'At re-entry, follow the white dots ahead of the capsule: lift up as soon as any turn red, and lift down if they turn blue.');
     if (S.l4.rounds || S.l4.override) T.push('Agree faster in Level 4: each extra round of negotiation costs crew health.');
     return { verdict, chain, causes: B, tips: T.slice(0, 3), hEnd: left };
   }
@@ -3545,9 +3616,10 @@ class Component extends DCLogic {
     const endName = { golden: 'The Golden Breath', pyrrhic: 'The Pyrrhic Victory', martyr: 'Martyr’s Return', failure: 'Mission Failure' };
     return {
       mapDash: Math.min(4, doneN) * 25 + ' 100',
+      mapTotal: doneN ? sv.reduce((a, v) => a + (v && v.score ? v.score : 0), 0).toLocaleString('en-US') + ' pts' : '—', mapTotalNote: doneN === 5 ? 'all five stages' : doneN + ' of 5 stages played',
       mapNodes: L.map(([name, img, pos, x, y], i) => { const v = sv[i], cur = i === (next < 0 ? 4 : next);
         return { name, img, pos, num: String(i + 1), x: x / 10 + '%', y: y / 5.6 + '%', done: !!v, ring: v ? '#7dffbf' : cur ? '#ffd36b' : '#5f95a3', glow: v ? 'rgba(125,255,191,.35)' : cur ? 'rgba(255,211,107,.45)' : 'rgba(0,0,0,0)',
-          sub: v ? (i === 4 && v.ending ? endName[v.ending] || 'Done' : (v.score != null ? v.score.toLocaleString('en-US') + ' pts' : 'Done')) : cur ? 'Play next ▸' : 'Not played yet', subC: v ? '#7dffbf' : cur ? '#ffd36b' : '#a9cfc8',
+          sub: v ? (i === 4 && v.ending ? (endName[v.ending] || 'Done') + (v.score != null ? ' · ' + v.score.toLocaleString('en-US') + ' pts' : '') : (v.score != null ? v.score.toLocaleString('en-US') + ' pts' : 'Done')) : cur ? 'Play next ▸' : 'Not played yet', subC: v ? '#7dffbf' : cur ? '#ffd36b' : '#a9cfc8',
           aria: 'Stage ' + (i + 1) + ': ' + name + (v ? ', finished' : ''), go: () => this.jumpTo(i + 1) }; })
     };
   }
@@ -3575,9 +3647,9 @@ class Component extends DCLogic {
     { id: 'decline', name: 'Decline', money: 0, gold: 0, fx: 'No extra money and no strings attached.' }
   ];
   launchers = [
-    { id: 'm', name: 'Lifter M', cap: 70, c: 2 },
-    { id: 'h', name: 'Lifter H', cap: 77, c: 3 },
-    { id: 'xh', name: 'Lifter XH', cap: 84, c: 5 }
+    { id: 'm', name: 'Lifter M', cap: 72, c: 2 },
+    { id: 'h', name: 'Lifter H', cap: 80, c: 3 },
+    { id: 'xh', name: 'Lifter XH', cap: 88, c: 5 }
   ];
   hints = [
     [1, 'Four limits: money, mass, power and hold space. Not everything fits.'],
@@ -3594,10 +3666,10 @@ class Component extends DCLogic {
     const supplies = r1(this.supOf(pr) + sum('sup')), dry = r1(hull + this.supOf(pr)), base = dry;
     const win = pa ? this.winOf(pa.id, m) : null, dv = pa ? this.dvOf(pa.id, win) : 0, fuel = pa ? this.fuelFor(pa.id, m, dry) : 0;
     const dsnH = this.state.diff === 'cadet' ? 8 : (l1.dsnH ?? 8), dsnCost = Math.max(0, dsnH - 8) * .25;
-    const budget = 8 + con.money, left = budget - sum('c') - dsnCost, link = 1 + sum('l'), dist = pa ? this.distArr(pa.id, m) : 5.2, rate = 10 * link * Math.pow(5.2 / dist, 2);
+    const budget = 8 + con.money, left = budget - sum('c') - dsnCost, link = 1 + sum('l'), dist = pa ? this.distArr(pa.id, m) : 5.2, rate = this.linkKbps(link, dist);
     const obj = this.objectives.find(o => o.id === l1.objective) || this.objectives[0];
     const req = obj.req, reqHave = req.filter(r => l1.parts.includes(r));
-    return { P, con, budget, left, supplies, pm, pa, fuel, base, hull, dry, m, win, dv, dsnH, dsnCost, dist, rate, mass: r1(dry + fuel), power: 2 + sum('p'), data: sum('d'), link, cap: r1(rate / 10 * dsnH * .1296), cells: sum('cells'), obj, req, reqHave, has: id => l1.parts.includes(id) };
+    return { P, con, budget, left, supplies, pm, pa, fuel, base, hull, dry, m, win, dv, dsnH, dsnCost, dist, rate, mass: r1(dry + fuel), power: 2 + sum('p'), data: sum('d'), link, cap: r1(rate * dsnH * .0762), cells: sum('cells'), obj, req, reqHave, has: id => l1.parts.includes(id) };
   }
   scoreL1(k, lv) {
     const reqOk = k.reqHave.length === k.req.length, df = k.data ? Math.min(1, k.cap / k.data) : 1;
@@ -3637,7 +3709,14 @@ class Component extends DCLogic {
       spkFor(2, 'We’re on our way. Here is what our choices mean for the next four years.')
     ][step];
     this._cue = spk;
-    const dirCut = this.state.diff === 'director' ? 2 : 0, maxCap = 84 - dirCut, lvRows = this.launchers.map(lv0 => { const lv = { ...lv0, cap: lv0.cap - dirCut }, ok = k.mass <= lv.cap && lv.c <= k.left; return { ...lv, ok, on: l1.launcher === lv.id && ok }; });
+    const dirCut = this.state.diff === 'director' ? 2 : 0;
+    const lvRows = this.launchers.map(launcher => {
+      const cap = launcher.cap - dirCut;
+      const ok = k.mass <= cap && launcher.c <= k.left;
+      return { ...launcher, cap, ok, on: l1.launcher === launcher.id && ok };
+    });
+    const maxCap = Math.max(...lvRows.map(launcher => launcher.cap));
+    const middleCap = lvRows.find(launcher => launcher.id === 'h').cap;
     const botLv = (lvRows.find(l => l.ok) || {}).id, chosenLv = lvRows.find(l => l.on);
     const calcs = step === 2 || step === 3 ? this.l1Calcs(k, l1, step) : [], qb = this.quizBlock(calcs);
     const blockWs = k.left < 2 ? (k.left < 0 ? 'Over budget by $' + (-k.left) + 'M.' : 'Keep at least $2M for the rocket.') : k.power < 0 ? 'Not enough power.' : qb;
@@ -3685,9 +3764,9 @@ class Component extends DCLogic {
         money: o.money ? '+$' + o.money + 'M budget' : '+$0', pick: () => { this.sfx('click'); this.setL1({ contract: o.id }); } })),
       meters: [
         { label: 'Budget', value: '$' + k.left + 'M left', sub: 'of $' + k.budget + 'M · the rocket is paid from this', pct: pct(k.left / k.budget), color: k.left < 2 ? '#ff8a7a' : '#7dffbf' },
-        { label: 'Mass', value: k.mass + ' t', sub: 'ship 40 · supplies ' + k.supplies + ' · parts ' + k.pm + (k.fuel ? ' · route fuel ' + k.fuel : ''), pct: pct(k.mass / 84), color: k.mass > 84 ? '#ff8a7a' : k.mass > 77 ? '#ffb36b' : '#7ff0ff' },
+        { label: 'Mass', value: k.mass + ' t', sub: 'ship 40 · supplies ' + k.supplies + ' · parts ' + k.pm + (k.fuel ? ' · route fuel ' + k.fuel : ''), pct: pct(k.mass / maxCap), color: k.mass > maxCap ? '#ff8a7a' : k.mass > middleCap ? '#ffb36b' : '#7ff0ff' },
         { label: 'Power', value: this.hideQ('power') && k.P.some(p => p.p < 0) ? '? · solve the check' : k.power >= 0 ? k.power + ' kW spare' : (-k.power) + ' kW short', sub: 'reactor 2 kW' + (k.has('rtg') ? ' + second reactor 3 kW' : ''), pct: k.power < 0 ? '100%' : pct(k.power / 5), color: k.power < 0 ? '#ff8a7a' : '#ffd36b' },
-        { label: 'Data → Earth', value: k.data ? Math.floor(Math.min(k.data, k.cap)) + ' of ' + k.data + ' sent' : 'No data yet', sub: (k.link * 10) + ' kbps · DSN ' + k.dsnH + ' h/day', pct: k.data ? pct(k.cap / k.data) : '0%', color: k.data > k.cap ? '#ffb36b' : '#7dffbf' },
+        { label: 'Data → Earth', value: k.data ? Math.floor(Math.min(k.data, k.cap)) + ' of ' + k.data + ' sent' : 'No data yet', sub: k.rate.toFixed(1) + ' kbps · DSN ' + k.dsnH + ' h/day', pct: k.data ? pct(k.cap / k.data) : '0%', color: k.data > k.cap ? '#ffb36b' : '#7dffbf' },
         { label: 'Hold', value: k.cells + ' / 9 cells', sub: 'bigger parts take 2 cells', pct: pct(k.cells / 9), color: k.cells >= 9 ? '#ffb36b' : '#d9eef2' }
       ],
       stations: R.map((r, i) => ({ label: r.role, color: r.color, on: i === l1.station, bg: i === l1.station ? r.color : '#03100f', fg: i === l1.station ? '#03100f' : '#effcf8', pick: () => { this.sfx('blip'); this.setL1({ station: i }); } })),
@@ -3695,7 +3774,7 @@ class Component extends DCLogic {
       stationParts: this.parts.filter(p => p.st === l1.station).map(p => {
         const packed = k.has(p.id), col = R[p.st].color, sg = (v, u) => (v > 0 ? '+' : '−') + Math.abs(v) + ' ' + u;
         return { ...p, packed, color: col, bg: packed ? '#0b2a2e' : '#06191c', border: packed ? col : '#2b5560', btn: packed ? 'Unpack' : 'Pack', btnBg: packed ? '#03100f' : col, btnFg: packed ? '#effcf8' : '#03100f',
-          stats: ['$' + p.c + 'M', p.m + ' t', p.p ? sg(p.p, 'kW') : '', p.d ? '+' + p.d + ' data' : '', p.l ? '+' + p.l * 10 + ' kbps' : '', p.sup ? sg(p.sup, 't supplies') : '', p.cells ? p.cells + (p.cells > 1 ? ' cells' : ' cell') : 'no space'].filter(Boolean).join(' · '),
+          stats: ['$' + p.c + 'M', p.m + ' t', p.p ? sg(p.p, 'kW') : '', p.d ? '+' + p.d + ' data' : '', p.l ? '3× data rate' : '', p.sup ? sg(p.sup, 't supplies') : '', p.cells ? p.cells + (p.cells > 1 ? ' cells' : ' cell') : 'no space'].filter(Boolean).join(' · '),
           toggle: () => {
             if (packed) { this.sfx('click'); this.setL1(s => ({ parts: s.parts.filter(x => x !== p.id), msg: '' })); return; }
             if (k.cells + p.cells > 9) { this.sfx('bad'); this.setL1({ msg: 'The hold is full. Unpack something first.' }); return; }
@@ -4037,7 +4116,7 @@ class Component extends DCLogic {
       ...(s === 13 ? this.l3Vals() : {}), isL3: s === 13,
       ...(s === 14 ? this.l4Vals() : {}), isL4: s === 14,
       ...(s === 15 ? this.l5Vals() : {}), isL5: s === 15,
-      isTitle: s === 0, isR1: s === 1, isR2: s === 2, isR3: s === 3, isR4: s === 4, isCrew: s === 5, isL1: s === 10, isL2: s === 11, isSrc: s === 12, isMap: s === 16, ...(s === 16 ? this.mapVals() : {}), openMap: () => { this.sfx('click'); this.setState({ screen: 16 }); }, closeMap: () => { this.sfx('click'); this.setState({ screen: 0 }); }, jumpLevels: [1, 2, 3, 4, 5].map(n => ({ n: String(n), go: () => this.jumpTo(n) })), voiceOn: this.state.voice, voiceLabel: this.state.voice ? 'Voice: on' : 'Voice: off', toggleVoice: () => { const on = !this.state.voice; this._said = ''; if (!on && window.speechSynthesis) window.speechSynthesis.cancel(); this.sfx('click'); this.setState({ voice: on }); }, openSources: () => { this.sfx('click'); this.setState(st => ({ srcBack: st.screen, screen: 12 })); }, closeSources: () => { this.sfx('click'); this.setState(st => ({ screen: st.srcBack || 0 })); }, ...this.diffVals(),
+      isTitle: s === 0, isR1: s === 1, isR2: s === 2, isR3: s === 3, isR4: s === 4, isCrew: s === 5, isLearn: s === 17, isL1: s === 10, isL2: s === 11, isSrc: s === 12, isMap: s === 16, ...(s === 16 ? this.mapVals() : {}), openMap: () => { this.sfx('click'); this.setState({ screen: 16 }); }, closeMap: () => { this.sfx('click'); this.setState({ screen: 0 }); }, jumpLevels: [1, 2, 3, 4, 5].map(n => ({ n: String(n), go: () => this.jumpTo(n) })), voiceOn: this.state.voice, voiceLabel: this.state.voice ? 'Voice: on' : 'Voice: off', toggleVoice: () => { const on = !this.state.voice; this._said = ''; if (!on && window.speechSynthesis) window.speechSynthesis.cancel(); this.sfx('click'); this.setState({ voice: on }); }, openSources: () => { this.sfx('click'); this.setState(st => ({ srcBack: st.screen, screen: 12 })); }, closeSources: () => { this.sfx('click'); this.setState(st => ({ screen: st.srcBack || 0 })); }, ...this.diffVals(),
       isIntro: s === 9, introMuted: !sound, bgRef: this.bgRef, vidA: this.vidA, vidB: this.vidB,
       introVoiceRef: this.introVoiceRef, introVoiceReady: this.introVoiceReady,
       introEnded: this.advanceIntro, introVideoError: this.introVideoError, introPlaying: this.introPlaying,
@@ -4057,9 +4136,11 @@ class Component extends DCLogic {
         if (s === 9) this.stopIntroPlayback();
         this.setState(s === 0 ? { screen: 9, clip: 0, sub: -1, introNeedsGesture: false }
           : s === 9 ? { screen: 1, introNeedsGesture: false }
+          : s === 4 ? { screen: 17 }
+          : s === 17 ? { screen: 5 }
           : { screen: Math.min(5, s + 1) });
       },
-      back: () => { this.sfx('click'); this.setState({ screen: s === 9 ? 0 : Math.max(0, s - 1) }); },
+      back: () => { this.sfx('click'); this.setState({ screen: s === 9 ? 0 : s === 17 ? 4 : s === 5 ? 17 : Math.max(0, s - 1) }); },
       seats: this.state.crew.map((c, i) => {
         const r = this.roles[i], humanNo = this.state.crew.slice(0, i + 1).filter(x => x.human).length;
         return {
