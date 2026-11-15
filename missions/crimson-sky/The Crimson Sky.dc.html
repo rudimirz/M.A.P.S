@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;600;700&family=IBM+Plex+Sans:wght@400;600&family=Cormorant+Garamond:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<style>
+*{font-variant-ligatures:none;font-feature-settings:"liga" 0,"clig" 0;}
+html,body{margin:0;height:100%;background:#07060b;overflow:hidden;-webkit-user-select:none;user-select:none;}
+a{color:#ff7a6b;} a:hover{color:#ffb0a4;}
+@keyframes blinkCaret{0%,49%{opacity:1}50%,100%{opacity:0}}
+@keyframes pulseDot{0%,100%{opacity:1}50%{opacity:.35}}
+@keyframes auroraBreath{0%,100%{opacity:.18}50%{opacity:.5}}
+@keyframes titleDrift{0%{transform:scale(1) translate(0,0)}100%{transform:scale(1.06) translate(-1.5%,-1%)}}
+</style>
+</helmet>
+<div style="position:fixed; inset:0; background:#07060b; font-family:'Pixelify Sans', monospace; color:#f4ecdf; overflow:hidden; touch-action:none;">
+  <div ref="{{ mountRef }}" style="position:absolute; inset:0;"></div>
+  <div style="position:absolute; inset:0; pointer-events:none; background:radial-gradient(ellipse at 50% 45%, rgba(0,0,0,0) 55%, rgba(4,2,8,0.55) 100%);"></div>
+  <div ref="{{ fadeRef }}" style="position:absolute; inset:0; background:#000; opacity:0; pointer-events:none;"></div>
+
+  <sc-if value="{{ chapter }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute; inset:0; background:#07060b; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; text-align:center; padding:24px; pointer-events:none;">
+      <div style="font-size:14px; letter-spacing:.3em; text-transform:uppercase; color:#ff7a6b;">{{ chapter.num }}</div>
+      <div style="font-size:clamp(30px, 5.5vw, 58px); font-weight:700; line-height:1.05; text-wrap:balance; text-shadow:0 4px 0 #6b2433;">{{ chapter.title }}</div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ cineOn }}" hint-placeholder-val="{{ false }}">
+    <div ref="{{ cineRef }}" style="position:absolute; inset:0; background:#000; overflow:hidden;">
+      <sc-for list="{{ cineShots }}" as="shot" hint-placeholder-count="0">
+        <div data-shot="{{ shot.key }}" style="position:absolute; inset:0; opacity:0; transform-origin:50% 50%; will-change:transform, opacity;">
+          <sc-if value="{{ shot.isSlot }}" hint-placeholder-val="{{ false }}">
+            <image-slot id="{{ shot.slot }}" placeholder="{{ shot.ph }}" shape="rect" style="position:absolute; inset:0; width:100%; height:100%; background:#140d16; color:#b9a9be;"></image-slot>
+          </sc-if>
+        </div>
+      </sc-for>
+      <div style="position:absolute; inset:0; z-index:3; pointer-events:none; background:radial-gradient(ellipse at 50% 45%, rgba(0,0,0,0) 50%, rgba(6,0,4,0.6) 100%);"></div>
+      <div style="position:absolute; left:0; right:0; bottom:0; height:48%; z-index:3; pointer-events:none; background:linear-gradient(to top, rgba(4,0,3,0.9), rgba(4,0,3,0));"></div>
+      <div style="position:absolute; left:0; right:0; top:0; height:7%; z-index:4; background:#000;"></div>
+      <div style="position:absolute; left:0; right:0; bottom:0; height:7%; z-index:4; background:#000;"></div>
+      <div onClick="{{ onCineClick }}" style="position:absolute; inset:0; z-index:5; cursor:pointer;"></div>
+      <div ref="{{ cineSubRef }}" style="position:absolute; left:5%; right:5%; bottom:12%; z-index:6; display:flex; flex-direction:column; align-items:center; gap:12px; pointer-events:none;"></div>
+      <div onClick="{{ onCineSkip }}" style="position:absolute; z-index:7; top:calc(7% + 12px); right:16px; padding:6px 12px 7px; background:rgba(15,11,22,0.72); border:1px solid rgba(241,230,214,0.4); font-size:14px; letter-spacing:.12em; text-transform:uppercase; cursor:pointer;" style-hover="background:rgba(42,20,32,0.92);">Skip ▸▸</div>
+      <div style="position:absolute; z-index:7; right:16px; bottom:0; height:7%; display:flex; align-items:center; font-family:'IBM Plex Sans', sans-serif; font-size:16px; color:rgba(244,236,223,0.75); pointer-events:none;">{{ cineKeys }}</div>
+    </div>
+  </sc-if>
+
+  <div style="position:absolute; top:18px; left:18px; transform:translateX({{ bannerX }}); transition:transform .45s cubic-bezier(.2,.8,.2,1); pointer-events:none; display:flex; flex-direction:column; gap:2px; background:#0f0b16; border:2px solid #f1e6d6; box-shadow:0 0 0 3px #0f0b16, 0 0 0 5px #6b2433; padding:8px 16px 9px;">
+    <div style="font-size:clamp(14px, 1.5vw, 17px); letter-spacing:.14em; text-transform:uppercase; color:#ff7a6b;">{{ bannerSub }}</div>
+    <div style="font-size:clamp(24px, 3vw, 32px); font-weight:700; letter-spacing:.02em; white-space:nowrap;">{{ bannerTitle }}</div>
+  </div>
+
+  <div ref="{{ hudRef }}" style="position:absolute; top:18px; right:18px; max-width:min(400px, 56vw); display:flex; flex-direction:column; align-items:flex-end; gap:16px; pointer-events:none;">
+    <sc-if value="{{ showMap }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex; flex-direction:column; gap:5px; background:#0f0b16; border:2px solid #f1e6d6; box-shadow:0 0 0 3px #0f0b16, 0 0 0 5px #6b2433; padding:5px 6px 6px;">
+        <canvas ref="{{ mapRef }}" style="width:clamp(176px, 22vw, 264px); aspect-ratio:176 / 128; height:auto; display:block;"></canvas>
+        <div style="display:flex; justify-content:space-between; align-items:baseline; gap:8px; width:clamp(176px, 22vw, 264px); font-size:clamp(14px, 1.5vw, 17px); letter-spacing:.1em; text-transform:uppercase;">
+          <span style="color:#ff7a6b; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ mapTitle }}</span>
+          <span style="color:rgba(244,236,223,0.5);">{{ mapKey }}</span>
+        </div>
+      </div>
+    </sc-if>
+    <sc-if value="{{ showObjective }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex; flex-direction:column; gap:4px; background:rgba(15,11,22,0.88); border:2px solid rgba(241,230,214,0.4); padding:10px 14px 12px; line-height:1.25;">
+        <span style="font-size:clamp(13px, 1.3vw, 15px); letter-spacing:.18em; text-transform:uppercase; color:#ff9a8a;">{{ objLabel }}</span>
+        <div style="display:flex; gap:10px; align-items:baseline; font-size:clamp(18px, 2vw, 23px);"><span style="color:#ff7a6b;">◆</span><span style="text-wrap:pretty;">{{ objective }}</span></div>
+      </div>
+    </sc-if>
+  </div>
+
+  <sc-if value="{{ alert }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ onA }}" style="position:absolute; top:16px; left:50%; transform:translateX(-50%); width:min(440px, calc(100% - 32px)); box-sizing:border-box; background:#f3efe8; color:#16121c; border-radius:16px; padding:14px 16px 12px; font-family:'IBM Plex Sans', system-ui, sans-serif; box-shadow:0 18px 50px rgba(0,0,0,.55); display:flex; flex-direction:column; gap:6px; cursor:pointer;">
+      <div style="display:flex; align-items:center; gap:8px; font-size:12px; font-weight:600; letter-spacing:.08em; text-transform:uppercase;">
+        <span style="width:9px; height:9px; border-radius:50%; background:#d6243a; animation:pulseDot 1s infinite;"></span>
+        <span style="color:#b3172c;">{{ alert.title }}</span>
+        <span style="margin-left:auto; color:#6a6470; font-weight:400; letter-spacing:0; text-transform:none;">now</span>
+      </div>
+      <div style="font-size:12px; color:#6a6470;">{{ alert.src }}</div>
+      <div style="font-size:15px; line-height:1.4; text-wrap:pretty;">{{ alert.body }}</div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ mgOn }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute; left:50%; top:12px; transform:translateX(-50%); width:min(820px, calc(100% - 20px)); max-height:{{ mgMaxH }}; overflow:auto; box-sizing:border-box; display:flex; flex-direction:column; gap:10px; background:#0f0b16; border:2px solid #f1e6d6; box-shadow:0 0 0 4px #0f0b16, 0 0 0 6px #6b2433, 0 24px 60px rgba(0,0,0,.6); padding:12px 14px;">
+      <div style="display:flex; align-items:baseline; gap:4px 14px; flex-wrap:wrap;">
+        <span style="font-size:14px; letter-spacing:.16em; text-transform:uppercase; color:#ff7a6b;">{{ mgTag }}</span>
+        <span style="font-size:clamp(22px, 2.6vw, 28px); font-weight:700;">{{ mgTitle }}</span>
+        <span style="margin-left:auto; font-family:'IBM Plex Sans', sans-serif; font-size:17px; color:#e2d4c4;">{{ mgCount }}</span>
+      </div>
+      <sc-if value="{{ mgHint }}" hint-placeholder-val="{{ false }}">
+        <div style="font-family:'IBM Plex Sans', sans-serif; font-size:clamp(16px, 1.8vw, 19px); line-height:1.4; color:#e2d4c4; text-wrap:pretty;">{{ mgHint }}</div>
+      </sc-if>
+      <canvas ref="{{ mgCanvasRef }}" onPointerMove="{{ onMgMove }}" onPointerDown="{{ onMgMove }}" onClick="{{ onMgClick }}" style="width:100%; box-sizing:border-box; aspect-ratio:{{ mgAspect }}; max-height:clamp(110px, calc(100vh - 420px), 330px); display:block; border:1px solid #2a3450; cursor:crosshair; touch-action:none;"></canvas>
+      <div style="display:flex; gap:6px 16px; flex-wrap:wrap; align-items:center; font-family:'IBM Plex Sans', sans-serif; font-size:16px; color:#e2d4c4;">
+        <sc-for list="{{ mgLegend }}" as="lg" hint-placeholder-count="0">
+          <span style="display:flex; align-items:center; gap:6px;"><span style="width:14px; height:3px; background:{{ lg.color }};"></span>{{ lg.label }}</span>
+        </sc-for>
+        <span style="margin-left:auto; padding:3px 8px; background:rgba(241,230,214,0.12); color:#fff3e8;">{{ mgKeys }}</span>
+      </div>
+      <sc-if value="{{ mgCards }}" hint-placeholder-val="{{ false }}">
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(150px, 1fr)); gap:8px;">
+          <sc-for list="{{ mgCards }}" as="c" hint-placeholder-count="4">
+            <div onClick="{{ c.onClick }}" onPointerEnter="{{ c.onEnter }}" style="display:flex; flex-direction:column; gap:4px; padding:10px 12px; border:2px solid {{ c.border }}; background:{{ c.bg }}; cursor:pointer;">
+              <span style="font-size:20px;">{{ c.q }}</span>
+              <span style="font-family:'IBM Plex Sans', sans-serif; font-size:15px; color:{{ c.statusColor }};">{{ c.status }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+      <sc-if value="{{ mgChips }}" hint-placeholder-val="{{ false }}">
+        <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(118px, 1fr)); gap:5px;">
+          <sc-for list="{{ mgChips }}" as="c" hint-placeholder-count="12">
+            <div onClick="{{ c.onClick }}" onPointerEnter="{{ c.onEnter }}" style="display:flex; flex-direction:column; gap:0; padding:4px 7px; border:2px solid {{ c.border }}; background:{{ c.bg }}; cursor:pointer; opacity:{{ c.op }};">
+              <span style="font-family:'IBM Plex Sans', sans-serif; font-size:13px; font-weight:600; line-height:1.25; color:{{ c.color }}; text-decoration:{{ c.deco }};">{{ c.name }}</span>
+              <span style="font-family:'IBM Plex Sans', sans-serif; font-size:11.5px; line-height:1.3; color:#b9a9be;">{{ c.status }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+      <sc-if value="{{ mgRunOn }}" hint-placeholder-val="{{ false }}">
+        <div onClick="{{ onMgRun }}" style="align-self:flex-start; padding:9px 18px; background:#c23440; border:2px solid #f1e6d6; font-size:17px; font-weight:700; cursor:pointer;" style-hover="background:#d8404c;">Run global simulation ▸</div>
+      </sc-if>
+      <sc-if value="{{ mgShowReads }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <sc-if value="{{ mgReadout }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex; gap:8px; flex-wrap:wrap; font-family:'IBM Plex Sans', sans-serif; font-size:17px;">
+              <span style="color:#cdbfd2;">Monitor now:</span>
+              <span style="font-weight:600; color:{{ mgReadout.color }};">{{ mgReadout.text }}</span>
+            </div>
+          </sc-if>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <sc-for list="{{ mgReads }}" as="r" hint-placeholder-count="0">
+              <span style="font-family:'IBM Plex Sans', sans-serif; font-size:15px; padding:4px 8px; border:1px solid {{ r.color }}; color:{{ r.color }};">Reading {{ r.n }} · {{ r.text }}</span>
+            </sc-for>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ mgMsg }}" hint-placeholder-val="{{ false }}">
+        <div style="font-family:'IBM Plex Sans', sans-serif; font-size:17px; color:#ffb0a4;">{{ mgMsg }}</div>
+      </sc-if>
+    </div>
+  </sc-if>
+
+  <div ref="{{ promptRef }}" style="position:absolute; left:0; top:0; display:none; transform:translate(-50%, -100%); align-items:center; gap:6px; padding:3px 12px 4px 4px; background:#0f0b16; border:2px solid #f1e6d6; box-shadow:0 0 0 2px #0f0b16, 0 6px 14px rgba(0,0,0,.45); font-size:clamp(17px, 1.8vw, 20px); color:#fff3e8; pointer-events:none; white-space:nowrap;">
+    <span style="display:flex; align-items:center; justify-content:center; width:26px; height:26px; background:#c23440; color:#fff3e8; font-weight:700; font-size:17px;">{{ promptCap }}</span>
+    <span data-label="1">Talk</span>
+  </div>
+
+  <sc-if value="{{ talkOn }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ onA }}" style="position:absolute; inset:0; opacity:{{ talkOp }}; transition:opacity .42s ease; background:linear-gradient(to bottom, rgba(8,4,12,0.5), rgba(8,4,12,0.84)); backdrop-filter:blur(10px) saturate(1.2); -webkit-backdrop-filter:blur(10px) saturate(1.2); cursor:pointer;">
+      <div style="position:absolute; left:0; right:0; top:0; height:7%; background:#000;"></div>
+      <div style="position:absolute; left:0; right:0; bottom:0; height:7%; background:#000;"></div>
+      <div style="position:absolute; left:0; right:0; bottom:190px; height:2px; background:rgba(241,230,214,0.18);"></div>
+      <sc-if value="{{ talkLArt }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute; left:max(-2%, calc(50% - 700px)); bottom:7%; width:min(46vw, 640px); transform:translateX({{ talkLX }}); transition:transform .38s cubic-bezier(.2,.8,.2,1); pointer-events:none;">
+          <div style="transform:{{ talkLT }}; filter:{{ talkLF }}; transform-origin:50% 100%; transition:transform .18s ease, filter .18s ease;">
+            <div style="width:100%; aspect-ratio:820 / 754; background-image:{{ talkLBg }}; background-size:contain; background-repeat:no-repeat; background-position:50% 100%; filter:drop-shadow(0 18px 30px rgba(0,0,0,0.55));"></div>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ talkRArt }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute; right:max(-2%, calc(50% - 700px)); bottom:7%; width:min(46vw, 640px); transform:translateX({{ talkRX }}); transition:transform .38s cubic-bezier(.2,.8,.2,1); pointer-events:none;">
+          <div style="transform:{{ talkRT }}; filter:{{ talkRF }}; transform-origin:50% 100%; transition:transform .18s ease, filter .18s ease;">
+            <div style="width:100%; aspect-ratio:820 / 754; background-image:{{ talkRBg }}; background-size:contain; background-repeat:no-repeat; background-position:50% 100%; transform:scaleX(-1); filter:drop-shadow(0 18px 30px rgba(0,0,0,0.55));"></div>
+          </div>
+        </div>
+      </sc-if>
+      <div style="position:absolute; left:max(4%, calc(50% - 470px)); bottom:190px; display:flex; flex-direction:column; align-items:center; opacity:{{ talkLPixOp }}; transform:translateX({{ talkLX }}); transition:transform .38s cubic-bezier(.2,.8,.2,1);">
+        <div style="position:relative; transform:{{ talkLT }}; filter:{{ talkLF }}; transform-origin:50% 100%; transition:transform .18s ease, filter .18s ease;">
+          <canvas ref="{{ talkLRef }}" width="40" height="48" style="display:block; height:min(50vh, 400px); aspect-ratio:40 / 48; image-rendering:pixelated;"></canvas>
+          <image-slot data-port="Lm" id="{{ talkLSlotM }}" fit="contain" placeholder="" style="position:absolute; inset:0; width:100%; height:100%; opacity:0; pointer-events:none;"></image-slot>
+          <image-slot data-port="Ln" id="{{ talkLSlotN }}" fit="contain" placeholder="" style="position:absolute; inset:0; width:100%; height:100%; opacity:0; pointer-events:none;"></image-slot>
+        </div>
+        <div style="width:120%; height:16px; margin-top:-8px; background:radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0.55), rgba(0,0,0,0) 70%);"></div>
+      </div>
+      <div style="position:absolute; right:max(4%, calc(50% - 470px)); bottom:190px; display:flex; flex-direction:column; align-items:center; opacity:{{ talkRPixOp }}; transform:translateX({{ talkRX }}); transition:transform .38s cubic-bezier(.2,.8,.2,1);">
+        <div style="position:relative; transform:{{ talkRT }}; filter:{{ talkRF }}; transform-origin:50% 100%; transition:transform .18s ease, filter .18s ease;">
+          <canvas ref="{{ talkRRef }}" width="40" height="48" style="display:block; height:min(50vh, 400px); aspect-ratio:40 / 48; image-rendering:pixelated; transform:scaleX(-1);"></canvas>
+          <image-slot data-port="Rm" id="{{ talkRSlotM }}" fit="contain" placeholder="" style="position:absolute; inset:0; width:100%; height:100%; opacity:0; pointer-events:none; transform:scaleX(-1);"></image-slot>
+          <image-slot data-port="Rn" id="{{ talkRSlotN }}" fit="contain" placeholder="" style="position:absolute; inset:0; width:100%; height:100%; opacity:0; pointer-events:none; transform:scaleX(-1);"></image-slot>
+        </div>
+        <div style="width:120%; height:16px; margin-top:-8px; background:radial-gradient(ellipse at 50% 50%, rgba(0,0,0,0.55), rgba(0,0,0,0) 70%);"></div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ dlg }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ onA }}" style="position:absolute; left:50%; bottom:{{ dlgBottom }}; transform:translateX(-50%); width:min(980px, calc(100% - 32px)); box-sizing:border-box; background:#0f0b16; border:2px solid #f1e6d6; box-shadow:0 0 0 4px #0f0b16, 0 0 0 6px #6b2433, 0 20px 40px rgba(0,0,0,.5); padding:24px 26px 20px; cursor:pointer;">
+      <sc-if value="{{ dlg.who }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute; top:-18px; left:16px; background:#c23440; color:#fff3e8; padding:2px 14px 4px; font-size:clamp(16px, 1.8vw, 20px); font-weight:700; letter-spacing:.08em; text-transform:uppercase; border:2px solid #f1e6d6;">{{ dlg.who }}</div>
+      </sc-if>
+      <div style="display:flex; gap:16px; align-items:flex-start;">
+        <sc-if value="{{ dlgPort }}" hint-placeholder-val="{{ false }}">
+          <div style="position:relative; flex:none; background:#1c1626; border:2px solid rgba(241,230,214,0.35); margin-top:2px;">
+            <canvas ref="{{ dlgPortRef }}" width="40" height="48" style="display:block; width:80px; height:96px; image-rendering:pixelated;"></canvas>
+            <image-slot data-port="Dm" id="{{ dlgSlotM }}" fit="contain" placeholder="" style="position:absolute; inset:0; width:100%; height:100%; opacity:0; pointer-events:none;"></image-slot>
+            <image-slot data-port="Dn" id="{{ dlgSlotN }}" fit="contain" placeholder="" style="position:absolute; inset:0; width:100%; height:100%; opacity:0; pointer-events:none;"></image-slot>
+            <sc-if value="{{ dlgArt }}" hint-placeholder-val="{{ false }}">
+              <div style="position:absolute; inset:0; background-color:#1c1626; background-image:{{ dlgBg }}; background-size:cover; background-position:62% 30%;"></div>
+            </sc-if>
+          </div>
+        </sc-if>
+        <div style="flex:1; min-width:0; font-size:clamp(20px, 2.9vw, 30px); line-height:1.38; min-height:2.76em; color:{{ dlgColor }}; text-wrap:pretty;">{{ dlg.text }}</div>
+      </div>
+      <sc-if value="{{ dlg.done }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute; right:14px; bottom:8px; display:flex; align-items:center; gap:6px; font-size:14px; color:#ffb0a4;">
+          <span>{{ nextKey }}</span>
+          <span style="width:0; height:0; border-left:6px solid transparent; border-right:6px solid transparent; border-top:8px solid #ff7a6b; animation:blinkCaret .8s infinite;"></span>
+        </div>
+      </sc-if>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ showLegend }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute; right:18px; bottom:16px; display:flex; flex-wrap:wrap; justify-content:flex-end; gap:8px 12px; max-width:calc(100% - 36px); font-size:clamp(16px, 1.7vw, 19px); color:#f4ecdf; pointer-events:none;">
+      <sc-for list="{{ legend }}" as="lgd" hint-placeholder-count="5">
+        <span style="display:flex; align-items:center; gap:8px; padding:6px 10px; background:rgba(15,11,22,0.8);">
+          <span style="padding:2px 8px 3px; background:#f1e6d6; color:#0f0b16; font-weight:700; font-size:clamp(14px, 1.5vw, 17px); box-shadow:0 3px 0 #8a7e72;">{{ lgd.k }}</span><span>{{ lgd.t }}</span>
+        </span>
+      </sc-for>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ help }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ onA }}" style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; padding:16px; box-sizing:border-box; background:rgba(7,4,10,0.6); cursor:pointer;">
+      <div style="width:min(620px, 100%); max-height:100%; overflow:hidden; box-sizing:border-box; display:flex; flex-direction:column; gap:clamp(10px, 2.2vh, 18px); background:#0f0b16; border:2px solid #f1e6d6; box-shadow:0 0 0 4px #0f0b16, 0 0 0 6px #6b2433, 0 24px 60px rgba(0,0,0,.6); padding:clamp(14px, 3vh, 24px) clamp(16px, 3vw, 28px);">
+        <div style="display:flex; flex-direction:column; gap:6px;">
+          <div style="font-size:13px; letter-spacing:.24em; text-transform:uppercase; color:#ff7a6b;">{{ help.tag }}</div>
+          <div style="font-size:clamp(24px, 3.4vw, 34px); font-weight:700; line-height:1.05;">{{ help.title }}</div>
+          <div style="font-family:'IBM Plex Sans', sans-serif; font-size:clamp(14px, 1.7vw, 17px); line-height:1.45; color:#e2d4c4; text-wrap:pretty;">{{ help.intro }}</div>
+        </div>
+        <div style="display:grid; grid-template-columns:auto 1fr; gap:clamp(6px, 1.4vh, 10px) 16px; align-items:center;">
+          <sc-for list="{{ help.rows }}" as="hr" hint-placeholder-count="5">
+            <div style="display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end;">
+              <sc-for list="{{ hr.keys }}" as="kk" hint-placeholder-count="1">
+                <span style="min-width:22px; text-align:center; padding:3px 8px 4px; background:#f1e6d6; color:#0f0b16; font-weight:700; font-size:16px; box-shadow:0 3px 0 #8a7e72;">{{ kk }}</span>
+              </sc-for>
+            </div>
+            <div style="font-size:clamp(16px, 1.9vw, 19px);">{{ hr.t }}</div>
+          </sc-for>
+        </div>
+        <div style="display:flex; gap:10px; align-items:baseline; padding:10px 12px; background:rgba(194,52,64,0.16); border:1px solid rgba(255,122,107,0.4);">
+          <span style="color:#ff7a6b;">◆</span>
+          <div style="display:flex; flex-direction:column; gap:3px; font-family:'IBM Plex Sans', sans-serif; font-size:clamp(14px, 1.6vw, 16px); line-height:1.4;">
+            <span style="color:#ffb0a4; font-weight:600;">{{ help.goalLabel }}</span>
+            <span style="text-wrap:pretty;">{{ help.goal }}</span>
+          </div>
+        </div>
+        <div style="align-self:flex-end; display:flex; align-items:center; gap:8px; font-size:16px; color:#ffb0a4;">{{ help.go }}<span style="width:0; height:0; border-left:6px solid transparent; border-right:6px solid transparent; border-top:8px solid #ff7a6b; animation:blinkCaret .8s infinite;"></span></div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ showTouch }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute; left:18px; bottom:22px; width:156px; height:156px; display:grid; grid-template-columns:repeat(3, 52px); grid-template-rows:repeat(3, 52px);">
+      <div onPointerDown="{{ tp.u1 }}" onPointerUp="{{ tp.u0 }}" onPointerLeave="{{ tp.u0 }}" onPointerCancel="{{ tp.u0 }}" style="grid-column:2; grid-row:1; background:rgba(15,11,22,0.78); border:2px solid rgba(241,230,214,0.5); border-radius:10px 10px 0 0; display:flex; align-items:center; justify-content:center; font-size:18px;">▲</div>
+      <div onPointerDown="{{ tp.l1 }}" onPointerUp="{{ tp.l0 }}" onPointerLeave="{{ tp.l0 }}" onPointerCancel="{{ tp.l0 }}" style="grid-column:1; grid-row:2; background:rgba(15,11,22,0.78); border:2px solid rgba(241,230,214,0.5); border-radius:10px 0 0 10px; display:flex; align-items:center; justify-content:center; font-size:18px;">◀</div>
+      <div style="grid-column:2; grid-row:2; background:rgba(15,11,22,0.78);"></div>
+      <div onPointerDown="{{ tp.r1 }}" onPointerUp="{{ tp.r0 }}" onPointerLeave="{{ tp.r0 }}" onPointerCancel="{{ tp.r0 }}" style="grid-column:3; grid-row:2; background:rgba(15,11,22,0.78); border:2px solid rgba(241,230,214,0.5); border-radius:0 10px 10px 0; display:flex; align-items:center; justify-content:center; font-size:18px;">▶</div>
+      <div onPointerDown="{{ tp.d1 }}" onPointerUp="{{ tp.d0 }}" onPointerLeave="{{ tp.d0 }}" onPointerCancel="{{ tp.d0 }}" style="grid-column:2; grid-row:3; background:rgba(15,11,22,0.78); border:2px solid rgba(241,230,214,0.5); border-radius:0 0 10px 10px; display:flex; align-items:center; justify-content:center; font-size:18px;">▼</div>
+    </div>
+    <div style="position:absolute; right:18px; bottom:30px; display:flex; gap:14px; align-items:flex-end;">
+      <div onPointerDown="{{ tp.b1 }}" onPointerUp="{{ tp.b0 }}" onPointerLeave="{{ tp.b0 }}" onPointerCancel="{{ tp.b0 }}" style="width:58px; height:58px; border-radius:50%; background:rgba(15,11,22,0.78); border:2px solid rgba(241,230,214,0.5); display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700;">{{ touchRun }}</div>
+      <div onPointerDown="{{ tp.a1 }}" style="width:74px; height:74px; border-radius:50%; background:#c23440; border:2px solid #f1e6d6; display:flex; flex-direction:column; align-items:center; justify-content:center; font-size:24px; font-weight:700; line-height:1; margin-bottom:28px;">A<span style="font-size:11px; font-weight:400; margin-top:3px;">{{ touchA }}</span></div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ showTitle }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute; inset:0; overflow:hidden; background:#07060b;">
+      <img src="film/stills/7.png" alt="" style="position:absolute; inset:-4%; width:108%; height:108%; object-fit:cover; object-position:30% 50%; animation:titleDrift 38s ease-in-out infinite alternate;">
+      <img src="film/stills/7.png" alt="" style="position:absolute; inset:-4%; width:108%; height:108%; object-fit:cover; object-position:30% 50%; filter:blur(22px) saturate(1.6) brightness(1.25); mix-blend-mode:screen; -webkit-mask-image:linear-gradient(to bottom, #000 0%, #000 45%, transparent 72%); mask-image:linear-gradient(to bottom, #000 0%, #000 45%, transparent 72%); animation:titleDrift 38s ease-in-out infinite alternate, auroraBreath 9s ease-in-out infinite;">
+      <canvas ref="{{ titleFxRef }}" style="position:absolute; inset:0; width:100%; height:100%; pointer-events:none;"></canvas>
+      <div style="position:absolute; inset:0; background:linear-gradient(90deg, rgba(7,3,8,0) 28%, rgba(7,3,8,0.72) 58%, rgba(7,3,8,0.93) 100%);"></div>
+      <div style="position:absolute; inset:0; background:linear-gradient(to top, rgba(7,3,8,0.85), rgba(7,3,8,0) 32%);"></div>
+      <div style="position:absolute; top:0; bottom:0; right:clamp(20px, 6vw, 96px); width:min(600px, calc(100% - 40px)); container-type:inline-size; display:flex; flex-direction:column; justify-content:safe center; gap:clamp(8px, 2.6vh, 40px); padding:clamp(10px, 2.4vh, 24px) 0; box-sizing:border-box; overflow:hidden;">
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <div style="font-size:14px; letter-spacing:.32em; text-transform:uppercase; color:#ff7a6b;">São Paulo · 2064 · 02:17</div>
+          <div style="font-size:min(13.5cqw, 10.5vh, 96px); font-weight:700; line-height:.92; white-space:nowrap; padding-top:.06em; letter-spacing:.01em; color:#fff3e8; text-shadow:0 5px 0 #6b2433, 0 0 48px rgba(255,50,80,0.45);">The Crimson<br>Sky</div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:2px;">
+          <sc-for list="{{ titleItems }}" as="it" hint-placeholder-count="3">
+            <div onClick="{{ it.onClick }}" onPointerEnter="{{ it.onEnter }}" style="display:flex; gap:12px; align-items:flex-start; padding:clamp(3px, 0.9vh, 10px) 14px clamp(4px, 1vh, 11px) 10px; background:{{ it.bg }}; border-left:3px solid {{ it.edge }}; cursor:pointer;">
+              <span style="width:14px; flex:none; font-size:16px; line-height:26px; color:#ff7a6b; opacity:{{ it.arrow }};">▶</span>
+              <div style="display:flex; flex-direction:column; gap:2px; min-width:0;">
+                <span style="font-size:13px; letter-spacing:.2em; text-transform:uppercase; color:#ff9a8a;">{{ it.tag }}</span>
+                <span style="font-size:clamp(18px, min(2.2vw, 3.6vh), 24px); line-height:1.15; color:#fff3e8;">{{ it.label }}</span>
+                <span style="font-family:'IBM Plex Sans', sans-serif; font-size:13px; color:rgba(244,236,223,0.68);">{{ it.sub }}</span>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+          <span style="font-size:12px; letter-spacing:.2em; text-transform:uppercase; color:#ff9a8a;">{{ langTitle }}</span>
+          <div style="display:flex; gap:4px;">
+            <sc-for list="{{ langItems }}" as="lg" hint-placeholder-count="3">
+              <div onClick="{{ lg.onClick }}" style="padding:4px 10px 5px; font-size:15px; border:1px solid {{ lg.border }}; background:{{ lg.bg }}; color:{{ lg.color }}; cursor:pointer;" style-hover="border-color:#ff7a6b;">{{ lg.label }}</div>
+            </sc-for>
+          </div>
+          <div onClick="{{ onMusicToggle }}" title="{{ musicTip }}" style="display:flex; align-items:center; gap:6px; padding:4px 10px 5px; font-size:15px; border:1px solid {{ musicBorder }}; background:rgba(15,11,22,0.55); color:{{ musicColor }}; text-decoration:{{ musicDeco }}; cursor:pointer;" style-hover="border-color:#ff7a6b;">
+            <span style="color:#ff7a6b; text-decoration:none;">♪</span><span>{{ musicLabel }}</span>
+          </div>
+          <div onClick="{{ onBoard }}" style="padding:4px 10px 5px; font-size:15px; border:1px solid rgba(241,230,214,0.3); background:rgba(15,11,22,0.55); color:#e9dccb; cursor:pointer;" style-hover="border-color:#ff7a6b;">{{ boardLabel }}</div>
+        </div>
+        <div style="font-size:14px; color:rgba(244,236,223,0.7);">{{ startLabel }}</div>
+        <sc-if value="{{ err }}" hint-placeholder-val="{{ false }}">
+          <div style="font-family:'IBM Plex Sans', sans-serif; font-size:13px; color:#ff9a8a;">{{ err }}</div>
+        </sc-if>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{ boardOn }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute; inset:0; background:#07060b; overflow:auto; touch-action:pan-y; padding:28px 24px 48px; box-sizing:border-box; display:flex; flex-direction:column; gap:26px;">
+      <div style="display:flex; align-items:flex-start; gap:16px; flex-wrap:wrap;">
+        <div style="display:flex; flex-direction:column; gap:6px; flex:1 1 320px;">
+          <div style="font-size:13px; letter-spacing:.3em; text-transform:uppercase; color:#ff7a6b;">Illustration slots</div>
+          <div style="font-size:clamp(26px, 4vw, 40px); font-weight:700; line-height:1.05; text-shadow:0 3px 0 #6b2433;">Stills the cinematics still need</div>
+          <div style="font-family:'IBM Plex Sans', sans-serif; font-size:15px; line-height:1.45; color:#cdbfd2; max-width:660px; text-wrap:pretty;">Drop each finished 16:9 illustration onto its slot; it shows up in the game's cinematic right away. The text under each slot is what plays over it.</div>
+        </div>
+        <div onClick="{{ onBoardClose }}" style="padding:10px 18px; border:2px solid #f1e6d6; background:#0f0b16; box-shadow:0 0 0 3px #0f0b16, 0 0 0 5px #6b2433; cursor:pointer; font-size:17px;" style-hover="background:#2a1420;">◂ Back</div>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:12px;">
+        <div style="font-size:18px; font-weight:700; color:#ffb0a4; letter-spacing:.04em;">Conversation portraits</div>
+        <div style="font-family:'IBM Plex Sans', sans-serif; font-size:14px; line-height:1.45; color:#cdbfd2; max-width:760px; text-wrap:pretty;">One bust per character and expression: waist up, facing right, transparent PNG, same size and framing for every file (5:6). The right-hand speaker is mirrored automatically. A missing expression falls back to that character's neutral bust, then to the pixel placeholder.</div>
+        <sc-for list="{{ portBoard }}" as="pc" hint-placeholder-count="0">
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <div style="font-size:15px; letter-spacing:.12em; text-transform:uppercase; color:#ff7a6b;">{{ pc.name }}</div>
+            <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(120px, 1fr)); gap:10px;">
+              <sc-for list="{{ pc.cells }}" as="pm" hint-placeholder-count="0">
+                <div style="display:flex; flex-direction:column; gap:4px;">
+                  <div style="position:relative; aspect-ratio:5 / 6; background:#140d16; border:1px solid {{ pm.border }};">
+                    <sc-if value="{{ pm.noArt }}" hint-placeholder-val="{{ true }}">
+                      <image-slot id="{{ pm.slot }}" placeholder="{{ pm.ph }}" fit="contain" shape="rect" style="position:absolute; inset:0; width:100%; height:100%; color:#b9a9be;"></image-slot>
+                    </sc-if>
+                    <sc-if value="{{ pm.art }}" hint-placeholder-val="{{ false }}">
+                      <div style="position:absolute; inset:0; background-image:{{ pm.bg }}; background-size:cover; background-position:62% 25%;"></div>
+                    </sc-if>
+                  </div>
+                  <div style="font-family:'IBM Plex Sans', sans-serif; font-size:12px; color:{{ pm.color }};">{{ pm.label }}</div>
+                  <sc-if value="{{ pm.file }}" hint-placeholder-val="{{ false }}">
+                    <div style="font-family:'IBM Plex Sans', sans-serif; font-size:11px; color:#a89cae; word-break:break-all;">{{ pm.file }}</div>
+                  </sc-if>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      <sc-for list="{{ boardGroups }}" as="grp" hint-placeholder-count="0">
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <div style="font-size:18px; font-weight:700; color:#ffb0a4; letter-spacing:.04em;">{{ grp.title }}</div>
+          <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:18px;">
+            <sc-for list="{{ grp.shots }}" as="b" hint-placeholder-count="0">
+              <div style="display:flex; flex-direction:column; gap:8px; background:#0f0b16; border:1px solid rgba(241,230,214,0.22); padding:10px;">
+                <div style="position:relative; aspect-ratio:16 / 9; background:#140d16;">
+                  <image-slot id="{{ b.slot }}" placeholder="{{ b.ph }}" shape="rect" style="position:absolute; inset:0; width:100%; height:100%; color:#b9a9be;"></image-slot>
+                </div>
+                <div style="font-size:14px; letter-spacing:.12em; text-transform:uppercase; color:#ff7a6b;">{{ b.label }}</div>
+                <div style="font-family:'IBM Plex Sans', sans-serif; font-size:13px; line-height:1.45; color:#e2d4c4; text-wrap:pretty;">{{ b.text }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </sc-if>
+  <sc-if value="{{ coopPill }}" hint-placeholder-val="{{ false }}">
+    <div style="position:absolute; top:18px; left:50%; transform:translateX(-50%); z-index:150; pointer-events:none; display:flex; align-items:center; gap:10px; background:#0f0b16; border:2px solid {{ coopBorder }}; box-shadow:0 0 0 3px #0f0b16, 0 0 0 5px #6b2433; padding:6px 14px 7px; font-size:clamp(15px, 1.6vw, 18px); white-space:nowrap;">
+      <span style="width:10px; height:10px; background:{{ coopDot }};"></span>
+      <span>{{ coopText }}</span>
+    </div>
+  </sc-if>
+  <sc-if value="{{ creditsOn }}" hint-placeholder-val="{{ false }}">
+    <div data-keys-off="1" onClick="{{ endCredits }}" style="position:fixed; inset:0; z-index:400; background:#07050a; overflow:hidden; cursor:pointer;">
+      <div ref="{{ creditsRef }}" style="position:absolute; left:0; right:0; top:100%; display:flex; flex-direction:column; align-items:center; gap:64px; padding:0 24px; text-align:center; font-family:'IBM Plex Sans', sans-serif; will-change:transform;">
+        <span style="font-family:'Pixelify Sans', sans-serif; font-size:clamp(48px, 8vw, 92px); line-height:1; color:#fff3e8; text-shadow:0 4px 0 #6b2433;">The Crimson Sky</span>
+        <div style="display:flex; flex-direction:column; align-items:center; gap:10px;">
+          <span style="font-size:13px; letter-spacing:.24em; text-transform:uppercase; color:#ff9a8a;">Based on</span>
+          <span style="font-family:'Pixelify Sans', sans-serif; font-size:clamp(24px, 3vw, 34px); color:#fff3e8; line-height:1.25;">The original science-fiction novel</span>
+        </div>
+        <div style="display:flex; flex-direction:column; align-items:center; gap:10px;">
+          <span style="font-size:13px; letter-spacing:.24em; text-transform:uppercase; color:#ff9a8a;">Illustrations and portraits</span>
+          <span style="font-family:'Pixelify Sans', sans-serif; font-size:clamp(24px, 3vw, 34px); color:#fff3e8; line-height:1.25;">Solomon</span>
+        </div>
+        <div style="display:flex; flex-direction:column; align-items:center; gap:10px;">
+          <span style="font-size:13px; letter-spacing:.24em; text-transform:uppercase; color:#ff9a8a;">The crew</span>
+          <span style="font-family:'Pixelify Sans', sans-serif; font-size:clamp(24px, 3vw, 34px); color:#fff3e8; line-height:1.25;">Kiran Rao</span>
+          <span style="font-family:'Pixelify Sans', sans-serif; font-size:clamp(24px, 3vw, 34px); color:#fff3e8; line-height:1.25;">Mateo Reyes</span>
+          <span style="font-family:'Pixelify Sans', sans-serif; font-size:clamp(24px, 3vw, 34px); color:#fff3e8; line-height:1.25;">Leila Haddad</span>
+          <span style="font-family:'Pixelify Sans', sans-serif; font-size:clamp(24px, 3vw, 34px); color:#fff3e8; line-height:1.25;">Naomi Chen</span>
+        </div>
+        <div style="display:flex; flex-direction:column; align-items:center; gap:10px;">
+          <span style="font-size:13px; letter-spacing:.24em; text-transform:uppercase; color:#ff9a8a;">São Paulo</span>
+          <span style="font-family:'Pixelify Sans', sans-serif; font-size:clamp(24px, 3vw, 34px); color:#fff3e8; line-height:1.25;">Lucas Almeida</span>
+          <span style="font-family:'Pixelify Sans', sans-serif; font-size:clamp(24px, 3vw, 34px); color:#fff3e8; line-height:1.25;">Mariana Almeida</span>
+          <span style="font-family:'Pixelify Sans', sans-serif; font-size:clamp(24px, 3vw, 34px); color:#fff3e8; line-height:1.25;">Elena Reyes</span>
+        </div>
+        <div style="display:flex; flex-direction:column; align-items:center; gap:10px;">
+          <span style="font-size:13px; letter-spacing:.24em; text-transform:uppercase; color:#ff9a8a;">Aegis Horizon</span>
+          <span style="font-family:'Pixelify Sans', sans-serif; font-size:clamp(24px, 3vw, 34px); color:#fff3e8; line-height:1.25;">Adrian Voss</span>
+          <span style="font-family:'Pixelify Sans', sans-serif; font-size:clamp(24px, 3vw, 34px); color:#fff3e8; line-height:1.25;">Dr. Evelyn Park</span>
+        </div>
+        <div style="display:flex; flex-direction:column; align-items:center; gap:10px;">
+          <span style="font-size:13px; letter-spacing:.24em; text-transform:uppercase; color:#ff9a8a;">The lab</span>
+          <span style="font-family:'Pixelify Sans', sans-serif; font-size:clamp(24px, 3vw, 34px); color:#fff3e8; line-height:1.25;">Rafael</span>
+          <span style="font-family:'Pixelify Sans', sans-serif; font-size:clamp(24px, 3vw, 34px); color:#fff3e8; line-height:1.25;">Mercer</span>
+        </div>
+        <span style="font-family:'Cormorant Garamond', serif; font-style:italic; font-size:clamp(26px, 3.2vw, 38px); color:#f1e6d6; max-width:720px; text-wrap:pretty; padding-bottom:45vh;">Thank you for playing.</span>
+      </div>
+      <span style="position:absolute; right:20px; bottom:16px; font-size:13px; color:#a89cae; font-family:'IBM Plex Sans', sans-serif;">Click or press any key to skip</span>
+    </div>
+  </sc-if>
+  <sc-if value="{{ missionsOn }}" hint-placeholder-val="{{ false }}">
+    <div data-keys-off="1" style="position:fixed; inset:0; z-index:200; overflow:auto; background:#0f0b16; display:{{ missionsDisplay }};">
+      <dc-import name="The Crimson Sky - Missions" coop="{{ missionsCoop }}" on-coop="{{ onCoop }}" from-story="{{ missionsFromStory }}" on-exit="{{ closeMissions }}" on-solo-story="{{ soloStory }}" on-epilogue="{{ startEpilogue }}" hint-size="100%,100%"></dc-import>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;titleMusic&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Title&quot;},&quot;minimap&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Controls&quot;},&quot;cinematicAdvance&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;auto&quot;,&quot;press&quot;],&quot;default&quot;:&quot;auto&quot;,&quot;tsType&quot;:&quot;'auto'|'press'&quot;,&quot;section&quot;:&quot;Cinematics&quot;},&quot;uiSounds&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Controls&quot;},&quot;pixelScale&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:3,&quot;min&quot;:1,&quot;max&quot;:5,&quot;step&quot;:1,&quot;unit&quot;:&quot;x&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Look&quot;},&quot;camera&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;dynamic&quot;,&quot;options&quot;:[&quot;dynamic&quot;,&quot;fixed&quot;],&quot;tsType&quot;:&quot;'dynamic'|'fixed'&quot;,&quot;section&quot;:&quot;Camera&quot;},&quot;touchControls&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;auto&quot;,&quot;options&quot;:[&quot;auto&quot;,&quot;on&quot;,&quot;off&quot;],&quot;tsType&quot;:&quot;'auto'|'on'|'off'&quot;,&quot;section&quot;:&quot;Controls&quot;},&quot;showObjective&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Controls&quot;}}">
+class Component extends DCLogic {
+  state = { chapter: null, started: false, loading: true, dlg: null, alert: null, bannerOn: false, bannerTitle: '', bannerSub: '', objective: '', coarse: false, err: null, cine: null, mg: null, board: false, mapHidden: false, mapTitle: '', help: null, titleSel: 0, missionsCoop: false, missionsHidden: false, coopCtl: null, coopNudge: false, lang: (() => { const requested = new URLSearchParams(location.search).get('lang'); if (['en', 'es', 'pt'].includes(requested)) return requested; try { const v = localStorage.getItem('tcs-lang'); if (['en', 'es', 'pt'].includes(v)) return v; } catch (e) {} const n = (navigator.language || 'en').slice(0, 2); return n === 'es' || n === 'pt' ? n : 'en'; })(), musicOn: false, musicMuted: false, talk: null, talkIn: false };
+  mountRef = React.createRef();
+  fadeRef = React.createRef();
+  cineRef = React.createRef();
+  cineSubRef = React.createRef();
+  mgCanvasRef = React.createRef();
+  mapRef = React.createRef();
+  hudRef = React.createRef();
+  talkLRef = React.createRef();
+  talkRRef = React.createRef();
+  dlgPortRef = React.createRef();
+  titleFxRef = React.createRef();
+  promptRef = React.createRef();
+  moods = {};
+  tp = (() => {
+    const g = () => this.game;
+    const dir = (d) => [(e) => { e.preventDefault(); g() && g().press(d); }, () => g() && g().release(d)];
+    const [d1, d0] = dir(0), [u1, u0] = dir(1), [l1, l0] = dir(2), [r1, r0] = dir(3);
+    return { d1, d0, u1, u0, l1, l0, r1, r0,
+      a1: (e) => { e.preventDefault(); g() && g().pressA(); },
+      b1: (e) => { e.preventDefault(); g() && g().setRun(true); }, b0: () => g() && g().setRun(false) };
+  })();
+  async componentDidMount() {
+    this.setState({ coarse: !!(window.matchMedia && matchMedia('(pointer: coarse)').matches) });
+    window.__tcsLang = this.state.lang;
+    import(new URL('game/title-music.js', document.baseURI).href).then((m) => { if (!this._dead) this.musicMod = m; }).catch((e) => console.warn(e));
+    import(new URL('game/music.js', document.baseURI).href).then((m) => { if (this._dead) return; this.score = m.music(); if (this.score.muted) this.setState({ musicMuted: true }); }).catch((e) => console.warn(e));
+    this.armMusic = () => { if (this.state.started || this.state.musicMuted || !(this.props.titleMusic ?? true)) return; this.musicStart(); };
+    window.addEventListener('pointerdown', this.armMusic, true); window.addEventListener('keydown', this.armMusic, true);
+    this.fxLoop = () => { if (this._dead) return; this.fxRaf = requestAnimationFrame(this.fxLoop); if (!this.state.started) this.drawTitleFx(performance.now() / 1000); };
+    this.fxRaf = requestAnimationFrame(this.fxLoop);
+    try {
+      const url = (p) => new URL(p, document.baseURI).href;
+      const [THREE, mod, cine, ui, portraits, coopMod] = await Promise.all([
+        import('https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js'),
+        import(url('game/ch1-engine.js')), import(url('game/cinematic.js')), import(url('game/ch1-ui.js')), import(url('game/portraits.js')), import(url('game/coop.js')),
+      ]);
+      if (this._dead) return;
+      this.cineMod = cine; this.ui = ui; this.portraits = portraits; this.coopMod = coopMod;
+      Object.values(portraits.ART).forEach((a) => Object.keys(a).forEach((k) => { if (k !== 'dir') { const im = new Image(); im.src = a.dir + a[k]; } }));
+      this.game = mod.createGame(THREE, {
+        container: this.mountRef.current, fadeEl: this.fadeRef.current, promptEl: this.promptRef.current,
+        pixelScale: this.props.pixelScale ?? 3,
+        dynamicCam: (this.props.camera ?? 'dynamic') === 'dynamic',
+        sounds: this.props.uiSounds ?? true,
+        titleMenu: true,
+        hooks: {
+          onDialog: (d) => {
+            if (d && d.mood) { if (typeof d.mood === 'string') { if (d.who) this.moods[d.who] = d.mood; } else Object.assign(this.moods, d.mood); }
+            else if (d && d.who && !this.state.talk) this.moods[d.who] = 'neutral';
+            this.setState({ dlg: d });
+          },
+          onTalk: (t) => {
+            clearTimeout(this.talkTo);
+            if (t) { this.moods[t.L] = 'neutral'; this.moods[t.R] = 'neutral'; this.setState({ talk: t, talkIn: false }); requestAnimationFrame(() => requestAnimationFrame(() => this.setState({ talkIn: true }))); }
+            else { this.setState({ talkIn: false }); this.talkTo = setTimeout(() => this.setState({ talk: null }), 260); }
+          },
+          onAlert: (a) => this.setState({ alert: a }),
+          onBanner: (b) => this.setState(b ? { bannerOn: true, bannerTitle: b.title, bannerSub: b.sub } : { bannerOn: false }),
+          onObjective: (o) => this.setState({ objective: o }),
+          onStarted: () => { if (this.music) this.music.stop(2.5); this.setState({ started: true, board: false, musicOn: false }); },
+          onChapter: (c) => this.setState({ chapter: c }), onMusic: (n) => this.score && this.score.play(n),
+          onChapterEnd: () => (this.coop ? this.coopMissions() : this.openMissions(true)), onEpilogueEnd: () => this.rollCredits(),
+          onCinematic: (id) => new Promise((res) => { this.cineRes = res; this.setState({ cine: id }); }),
+          onCineA: () => this.player && this.player.advance(),
+          onCineSkip: () => this.player && this.player.skip(),
+          onMinigame: (m) => this.setState({ mg: m }),
+          onHelp: (h) => this.setState({ help: h }),
+        },
+      });
+      window.__game = this.game;
+      this.ro = new ResizeObserver(() => this.drawMG());
+      const loop = () => {
+        if (this._dead) return;
+        this.mapRaf = requestAnimationFrame(loop);
+        const hud = this.hudRef.current, fade = this.fadeRef.current;
+        if (hud && fade) hud.style.opacity = String(1 - (parseFloat(fade.style.opacity) || 0));
+        const now = performance.now() / 1000, d = this.state.dlg, flap = Math.floor(now * 9) % 2 === 1, P = this.portraits;
+        const drawP = (el, who) => { if (!el || !who) return; P.drawPortrait(el, who, this.moods[who] || 'neutral', { blink: (now + who.length * 0.77) % 3.4 < 0.12, talk: !!d && !d.done && d.who === who && flap }); };
+        // An illustrated portrait wins when its slot is filled: this mood, else the character's neutral, else the pixel bust.
+        const pick = (k, cv) => { const m = document.querySelector('[data-port="' + k + 'm"]'), n = document.querySelector('[data-port="' + k + 'n"]');
+          const useM = !!m && m.hasAttribute('data-filled'), useN = !useM && !!n && n.hasAttribute('data-filled');
+          if (m) m.style.opacity = useM ? '1' : '0'; if (n) n.style.opacity = useN ? '1' : '0'; if (cv) cv.style.opacity = useM || useN ? '0' : '1'; };
+        if (this.state.talk) { drawP(this.talkLRef.current, this.state.talk.L); drawP(this.talkRRef.current, this.state.talk.R); pick('L', this.talkLRef.current); pick('R', this.talkRRef.current); }
+        else if (d && d.who) { drawP(this.dlgPortRef.current, d.who); pick('D', this.dlgPortRef.current); }
+        const cv = this.mapRef.current, info = cv && this.game.mapInfo();
+        if (!info) return;
+        this.ui.drawMinimap(cv, info, performance.now() / 1000);
+        if (info.title !== this.state.mapTitle) this.setState({ mapTitle: info.title });
+      };
+      this.mapRaf = requestAnimationFrame(loop);
+      this.onMapKey = (e) => { if ((e.key === 'm' || e.key === 'M') && !e.repeat && this.state.started && !(e.target && /INPUT|TEXTAREA/.test(e.target.tagName))) this.setState((st) => ({ mapHidden: !st.mapHidden })); };
+      window.addEventListener('keydown', this.onMapKey);
+      this.onTitleKey = (e) => {
+        const st = this.state; if (st.missions || st.started || st.loading || (e.target && /INPUT|TEXTAREA/.test(e.target.tagName))) return;
+        if (st.board) { if (e.key === 'Escape') this.setState({ board: false }); return; }
+        if (['ArrowUp', 'w', 'W'].includes(e.key)) { this.setState((q) => ({ titleSel: (q.titleSel + 2) % 3 })); if (this.music && this.music.on) this.music.tick(); e.preventDefault(); }
+        else if (['ArrowDown', 's', 'S'].includes(e.key)) { this.setState((q) => ({ titleSel: (q.titleSel + 1) % 3 })); if (this.music && this.music.on) this.music.tick(); e.preventDefault(); }
+        else if (['ArrowLeft', 'a', 'A', 'ArrowRight', 'd', 'D'].includes(e.key)) { const L = ['en', 'es', 'pt'], k = L.indexOf(st.lang), dir = /Left|a|A/.test(e.key) ? 2 : 1; this.setLang(L[(k + dir) % 3]); e.preventDefault(); }
+        else if (['z', 'Z', 'Enter', ' '].includes(e.key) && !e.repeat) { this.titleAct(st.titleSel); e.preventDefault(); }
+      };
+      window.addEventListener('keydown', this.onTitleKey);
+      if (new URLSearchParams(location.search).has('demo')) this.game.demo();
+      this.setState({ loading: false }, () => {
+        const params = new URLSearchParams(location.search);
+        const sessionId = params.get('session');
+        if (window.parent !== window && params.get('from') === 'maps' && sessionId) {
+          window.parent.postMessage({ type: 'maps:ready', campaignId: 'solomon', sessionId }, location.origin);
+        }
+      });
+    } catch (e) { console.error(e); this.setState({ err: 'Could not load the game: ' + e.message }); }
+  }
+  componentDidUpdate(pp) {
+    if (this.game && pp) {
+      if (pp.pixelScale !== this.props.pixelScale) this.game.setPixelScale(this.props.pixelScale ?? 3);
+      if (pp.camera !== this.props.camera) this.game.setDynamicCam((this.props.camera ?? 'dynamic') === 'dynamic');
+      if (pp.uiSounds !== this.props.uiSounds) this.game.setSounds(this.props.uiSounds ?? true);
+    }
+    const c = this.state.cine;
+    if (c !== this._lastCine) { this._lastCine = c; if (c) this.startCine(); }
+    const cv = this.mgCanvasRef.current;
+    if (cv !== this._cv) { if (this.ro) { this.ro.disconnect(); if (cv) this.ro.observe(cv); } this._cv = cv; }
+    if (this.state.mg !== this._lastMg) { this._lastMg = this.state.mg; this.drawMG(); }
+  }
+  componentWillUnmount() { this._dead = true; if (this.cinePump) this.cinePump(); clearTimeout(this.talkTo); cancelAnimationFrame(this.fxRaf); window.removeEventListener('pointerdown', this.armMusic, true); window.removeEventListener('keydown', this.armMusic, true); if (this.music) this.music.destroy(); cancelAnimationFrame(this.mapRaf); if (this.onMapKey) window.removeEventListener('keydown', this.onMapKey); if (this.onTitleKey) window.removeEventListener('keydown', this.onTitleKey); if (this.player) this.player.stop(); if (this.ro) this.ro.disconnect(); if (this.game) this.game.destroy(); }
+  creditsRef = React.createRef();
+  // Credits roll after "The End"; any key or click (after a beat) returns to the title.
+  rollCredits() {
+    if (this.state.credits) return; this.setState({ credits: true, missionsHidden: true }); if (this.score) this.score.play('epilogue');
+    const t0 = performance.now();
+    const step = () => { if (this._dead || !this.state.credits) return; const el = this.creditsRef.current;
+      if (el) { const y = ((performance.now() - t0) / 1000) * 44; el.style.transform = 'translateY(' + -y + 'px)'; if (y > el.offsetHeight + window.innerHeight) return this.endCredits(); }
+      requestAnimationFrame(step); };
+    requestAnimationFrame(step);
+    setTimeout(() => { if (!this._dead) window.addEventListener('keydown', this.endCredits, { once: true }); }, 1500);
+  }
+  endCredits = () => { if (this._creditsEnd) return; this._creditsEnd = true; window.removeEventListener('keydown', this.endCredits); location.reload(); };
+  titleAct(i) { if (this.music && this.music.on) this.music.select(); if (i === 0) this.openMissions(false, true); else if (this.game) this.game.start(i); }
+  openMissions(fromStory, coop) { if (this.music) this.music.stop(1.2); this.setState({ missions: true, missionsFromStory: !!fromStory, missionsCoop: !!coop, musicOn: false }); }
+  setLang(l) { try { localStorage.setItem('tcs-lang', l); } catch (e) {} window.__tcsLang = l; if (this.music && this.music.on) this.music.tick(); this.setState({ lang: l }); }
+  musicStart() { if (!this.musicMod) return; if (!this.music) this.music = this.musicMod.createTitleMusic(); if (this.music && !this.music.on) { this.music.start(0.7); this.setState({ musicOn: true }); } }
+  drawTitleFx(t) {
+    const cv = this.titleFxRef.current; if (!cv) return;
+    const w = cv.clientWidth, h = cv.clientHeight; if (!w || !h) return;
+    if (cv.width !== w || cv.height !== h) { cv.width = w; cv.height = h; }
+    if (!this.motes) { this.motes = []; for (let i = 0; i < 70; i++) this.motes.push({ x: Math.random(), y: Math.random(), s: 0.6 + Math.random() * 1.8, v: 0.004 + Math.random() * 0.012, ph: Math.random() * 6.28, hue: Math.random() }); }
+    const g = cv.getContext('2d'); g.clearRect(0, 0, w, h);
+    const dt = this._fxT ? Math.min(0.05, t - this._fxT) : 0; this._fxT = t;
+    this.motes.forEach((m) => {
+      m.y -= m.v * dt; m.x += Math.sin(t * 0.3 + m.ph) * 0.0006; if (m.y < -0.02) { m.y = 1.02; m.x = Math.random(); }
+      const a = (0.35 + 0.65 * (0.5 + 0.5 * Math.sin(t * 1.3 + m.ph * 3))) * Math.min(1, (1 - m.y) * 3) * 0.75;
+      g.fillStyle = m.hue < 0.6 ? 'rgba(255,120,110,' + a + ')' : m.hue < 0.85 ? 'rgba(255,200,170,' + a + ')' : 'rgba(255,90,170,' + a + ')';
+      const px = Math.round(m.x * w), py = Math.round(m.y * h), sz = Math.max(1, Math.round(m.s * Math.max(1, w / 900)));
+      g.fillRect(px, py, sz, sz);
+    });
+  }
+  startCine() {
+    const root = this.cineRef.current, sub = this.cineSubRef.current, shots = this.cineMod && this.cineMod.CINEMATICS[this.state.cine];
+    if (this.player) this.player.stop();
+    if (!root || !sub || !shots) { this.cineDone(); return; }
+    this.player = this.cineMod.playCinematic({ root, sub, shots, auto: (this.props.cinematicAdvance ?? 'auto') === 'auto', onEnd: () => this.cineDone() });
+  }
+  // Co-op: only the host's cinematic decides when it ends; every screen closes it on the same tick.
+  cineDone() { if (this.coop) { if (this.coop.isHost()) this.coop.input({ k: 'cineEnd' }); return; } this.endCine(); }
+  coopEndCine() { if (!this.cineRes && !this.state.cine) return; const p = this.player; this.player = null; if (p) { try { p.stop(); } catch (e) { /* ignore */ } } this.endCine(); }
+  onCoop = (info) => {
+    this.coopInfo = info;
+    const go = () => {
+      if (this._dead || this.coop) return;
+      if (!this.game || !this.coopMod) { setTimeout(go, 200); return; }
+      try { if (document.activeElement && document.activeElement.blur) document.activeElement.blur(); } catch (e) { /* ignore */ }
+      if (this.music) this.music.stop(1.2);
+      const api = info.api;
+      this.coop = this.coopMod.createCoop({ game: this.game, host: info.host, me: info.me, hostId: info.hostId,
+        send: (m) => api.send(m), sendTo: (id, m) => api.sendTo && api.sendTo(id, m), broadcast: (m) => api.broadcast(m), seats: () => api.seats(), names: () => api.names(),
+        onApply: (ev) => { if (ev.k === 'cineEnd') this.coopEndCine(); else if (ev.k === 'epilogue') { this.coop.setPaused(false); this.setState({ missionsHidden: true }); } },
+        onCtl: (c) => this.setState({ coopCtl: c }),
+        onNudge: () => { clearTimeout(this.nudgeT); this.setState({ coopNudge: true }); this.nudgeT = setTimeout(() => this.setState({ coopNudge: false }), 700); } });
+      this.setState({ missionsHidden: true, musicOn: false });
+      api.onMsg((id, m) => this.coop && this.coop.onMsg(id, m));
+      if (api.onRelink) api.onRelink(() => this.coop && this.coop.resync());
+      if (api.onLink) api.onLink((ok) => this.setState({ coopLost: !ok }));
+      // The host's cinematic decides when it ends for everyone; keep it playing while the host's tab is hidden.
+      if (info.host && this.coopMod.bgTicker) this.cinePump = this.coopMod.bgTicker(() => { if (document.hidden && this.player && this.player.pump) this.player.pump(); }, 250);
+      this.coop.begin();
+    };
+    go();
+  };
+  coopMissions() { this.coop.setPaused(true); this.setState({ missionsHidden: false }); if (this.coop.isHost() && this.coopInfo) this.coopInfo.api.startMissions(); }
+  endCine() { this.player = null; const r = this.cineRes; this.cineRes = null; this.setState({ cine: null }); if (r) r(); }
+  drawMG() { const cv = this.mgCanvasRef.current; if (cv && this.state.mg && this.ui && this.game) this.ui.drawMinigame(cv, this.state.mg, this.game.data); }
+  mgPoint(e) {
+    const mg = this.state.mg; if (mg && mg.kind === 'regions' && this.game && this.ui && this.ui.regionAt) { const q = this.ui.viewPoint(e.currentTarget, mg, e.clientX, e.clientY); this.game.mg('hover', this.ui.regionAt(q.x, q.y)); return; }
+    if (!mg || !this.game || !this.ui || !mg.axis || mg.axis === 'list') return;
+    const p = this.ui.viewPoint(e.currentTarget, mg, e.clientX, e.clientY);
+    this.game.mg('set', mg.kind === 'front' ? (p.y - 20) / 260 : (p.x - 24) / 552);
+  }
+  renderVals() {
+    const s = this.state, tc = this.props.touchControls ?? 'auto', mg = s.mg, C = this.cineMod, D = this.game && this.game.data;
+    const touch = s.started && (tc === 'on' || (tc === 'auto' && s.coarse));
+    const cineShots = s.cine && C && C.CINEMATICS[s.cine] ? C.CINEMATICS[s.cine].map((sh) => ({ key: sh.key, isSlot: !!sh.slot, slot: sh.slot || '', ph: sh.ph || '' })) : [];
+    const lineText = (l) => (Array.isArray(l) ? l[0] + ': “' + l[1] + '”' : l);
+    const boardGroups = C ? C.BOARD.map((g) => ({ title: g.title, shots: g.shots.map((sh) => ({ slot: sh.slot, ph: sh.ph, label: sh.label, text: sh.lines.map(lineText).join(' ') })) })) : [];
+    const v = {
+      mountRef: this.mountRef, fadeRef: this.fadeRef, cineRef: this.cineRef, cineSubRef: this.cineSubRef, mgCanvasRef: this.mgCanvasRef, tp: this.tp,
+      mapRef: this.mapRef, hudRef: this.hudRef, mapTitle: s.mapTitle, mapKey: s.coarse ? '' : 'M',
+      showMap: s.started && (this.props.minimap ?? true) && !s.mapHidden && !s.cine && !mg && !s.chapter && !s.talk,
+      dlg: s.dlg, alert: s.alert, err: s.err,
+      dlgColor: s.dlg && !s.dlg.who ? '#e2d4c4' : '#f4ecdf', dlgBottom: '28px',
+      bannerX: s.bannerOn ? '0' : 'calc(-100% - 40px)', bannerTitle: s.bannerTitle, bannerSub: s.bannerSub,
+      objLabel: { en: 'Current goal', es: 'Objetivo actual', pt: 'Objetivo atual' }[s.lang] || 'Current goal',
+      objective: s.objective, showObjective: s.started && !!s.objective && (this.props.showObjective ?? true) && !s.cine && !mg && !s.talk,
+      showLegend: s.started && !touch && !s.dlg && !mg && !s.cine && !s.talk && !s.help && !s.chapter,
+      showTouch: touch && !s.dlg && !s.alert && !s.cine && !s.talk && !s.help,
+      ...(() => {
+        const L = s.lang === 'es' || s.lang === 'pt' ? s.lang : 'en';
+        const X = {
+          en: { walk: 'walk', run: 'run', talk: 'talk / look', map: 'map', help: 'help', next: 'next', runT: 'RUN', aT: 'talk', tag: 'How to play', goalLabel: 'Your goal', goK: 'Press E to start', goT: 'Tap to start',
+            street: ['Lucas Almeida, eight years old', 'The morning after the blackout. Walk around Rua Aurora, talk to people and find out what is happening to the city.'],
+            lab: ['Now you play as Kiran Rao', 'Physicist, awake all night. Examine the screens in the lab and analyse the data from the night of the red sky.'],
+            rows: [[['W A S D', '↑ ↓ ← →'], 'Walk'], [['Shift'], 'Hold to run'], [['E'], 'Talk to people · look at things · next line'], [['M'], 'Show or hide the map'], [['H'], 'Show these controls again']],
+            touchRows: [[['✚'], 'Pad: walk'], [['RUN'], 'Hold to run'], [['A'], 'Talk · look · next line']],
+            goalNote: 'It is always shown top-right; the red ◆ on the map marks where to go. When you face someone or something you can use, a tag appears above it.' },
+          es: { walk: 'caminar', run: 'correr', talk: 'hablar / mirar', map: 'mapa', help: 'ayuda', next: 'seguir', runT: 'CORRER', aT: 'hablar', tag: 'Cómo jugar', goalLabel: 'Tu objetivo', goK: 'Pulsa E para empezar', goT: 'Toca para empezar',
+            street: ['Lucas Almeida, ocho años', 'La mañana después del apagón. Recorre la Rua Aurora, habla con la gente y descubre qué le está pasando a la ciudad.'],
+            lab: ['Ahora juegas como Kiran Rao', 'Físico, despierto toda la noche. Examina las pantallas del laboratorio y analiza los datos de la noche del cielo rojo.'],
+            rows: [[['W A S D', '↑ ↓ ← →'], 'Caminar'], [['Shift'], 'Mantén pulsado para correr'], [['E'], 'Hablar con la gente · mirar objetos · siguiente línea'], [['M'], 'Mostrar u ocultar el mapa'], [['H'], 'Ver estos controles otra vez']],
+            touchRows: [[['✚'], 'Cruceta: caminar'], [['CORRER'], 'Mantén pulsado para correr'], [['A'], 'Hablar · mirar · siguiente línea']],
+            goalNote: 'Siempre aparece arriba a la derecha, y el ◆ rojo del mapa marca adónde ir. Cuando estés frente a alguien o algo que puedas usar, aparece una etiqueta encima.' },
+          pt: { walk: 'andar', run: 'correr', talk: 'falar / olhar', map: 'mapa', help: 'ajuda', next: 'seguir', runT: 'CORRER', aT: 'falar', tag: 'Como jogar', goalLabel: 'Seu objetivo', goK: 'Pressione E para começar', goT: 'Toque para começar',
+            street: ['Lucas Almeida, oito anos', 'A manhã depois do apagão. Ande pela Rua Aurora, fale com as pessoas e descubra o que está acontecendo com a cidade.'],
+            lab: ['Agora você joga como Kiran Rao', 'Físico, acordado a noite toda. Examine as telas do laboratório e analise os dados da noite do céu vermelho.'],
+            rows: [[['W A S D', '↑ ↓ ← →'], 'Andar'], [['Shift'], 'Segure para correr'], [['E'], 'Falar com as pessoas · olhar objetos · próxima fala'], [['M'], 'Mostrar ou esconder o mapa'], [['H'], 'Ver estes controles de novo']],
+            touchRows: [[['✚'], 'Direcional: andar'], [['CORRER'], 'Segure para correr'], [['A'], 'Falar · olhar · próxima fala']],
+            goalNote: 'Ele aparece sempre no canto superior direito, e o ◆ vermelho no mapa mostra aonde ir. Quando você estiver de frente para alguém ou algo que pode usar, aparece uma etiqueta em cima.' },
+        }[L];
+        const h = s.help, hk = h ? X[h.kind] || X.street : null;
+        return {
+          nextKey: touch ? 'A' : 'E', touchRun: X.runT, touchA: X.aT,
+          legend: [{ k: 'WASD', t: X.walk }, { k: 'Shift', t: X.run }, { k: 'E', t: X.talk }, { k: 'M', t: X.map }, { k: 'H', t: X.help }],
+          help: h ? { tag: X.tag, title: hk[0], intro: hk[1], rows: (touch ? X.touchRows : X.rows).map(([keys, t]) => ({ keys, t })), goalLabel: X.goalLabel,
+            goal: (h.objective ? h.objective + ' — ' : '') + X.goalNote, go: touch ? X.goT : X.goK } : null,
+        };
+      })(),
+      talkLRef: this.talkLRef, talkRRef: this.talkRRef, dlgPortRef: this.dlgPortRef, promptRef: this.promptRef, promptCap: touch ? 'A' : 'E',
+      ...(() => {
+        const P = this.portraits, id = (w, m) => (P && w ? P.slotId(w, m) : 'port-none'), t = s.talk, dw = s.dlg && s.dlg.who;
+        const A = (w) => { const r = P && w ? P.artFor(w, this.moods[w] || 'neutral') : null; return r ? r.src : ''; };
+        const la = A(t && t.L), ra = A(t && t.R);
+        const bg = (u) => (u ? 'url("' + u + '")' : 'none'), da = !t && dw ? A(dw) : '';
+        return { talkLArt: la, talkRArt: ra, talkLBg: bg(la), talkRBg: bg(ra), talkLPixOp: la ? 0 : 1, talkRPixOp: ra ? 0 : 1, dlgArt: da, dlgBg: bg(da),
+          talkLSlotM: id(t && t.L, t && this.moods[t.L]), talkLSlotN: id(t && t.L, 'neutral'), talkRSlotM: id(t && t.R, t && this.moods[t.R]), talkRSlotN: id(t && t.R, 'neutral'),
+          dlgSlotM: id(dw, dw && this.moods[dw]), dlgSlotN: id(dw, 'neutral') };
+      })(),
+      dlgPort: !!s.dlg && !s.talk && !!this.portraits && this.portraits.hasPortrait(s.dlg.who),
+      ...(() => {
+        const t = s.talk, who = s.dlg && s.dlg.who, on = (n) => (who === n ? 'translateY(-8px) scale(1.04)' : 'none');
+        const fl = (n) => (!who ? 'brightness(0.85)' : who === n ? 'none' : 'brightness(0.5) saturate(0.7)');
+        return { talkOn: !!t, talkOp: s.talkIn ? 1 : 0, talkLX: s.talkIn ? '0' : '-140%', talkRX: s.talkIn ? '0' : '140%',
+          talkLT: t ? on(t.L) : 'none', talkRT: t ? on(t.R) : 'none', talkLF: t ? fl(t.L) : 'none', talkRF: t ? fl(t.R) : 'none' };
+      })(),
+      showTitle: !s.started, chapter: s.chapter,
+      ...(() => {
+        const T = {
+          en: { lang: 'Language', fail: 'Game failed to load', load: 'Loading…', tap: 'Tap to choose', keys: '↑ ↓ choose · ← → language · Z / Enter select', on: 'Music on', off: 'Music off', armK: 'Press any key for music', armT: 'Tap anywhere for music',
+            items: [['New game', 'Play', 'The whole story · alone or with up to 3 friends, each on their own screen'], ['Chapter One', 'The First Seventy-Two Hours', 'Playable · Lucas and Kiran'], ['Chapter Two', 'The Room Without Answers', 'Playable · Geneva, the team forms']] },
+          es: { lang: 'Idioma', fail: 'El juego no se pudo cargar', load: 'Cargando…', tap: 'Toca para elegir', keys: '↑ ↓ elegir · ← → idioma · Z / Enter aceptar', on: 'Música activada', off: 'Música desactivada', armK: 'Pulsa una tecla para oír la música', armT: 'Toca la pantalla para oír la música',
+            items: [['Nueva partida', 'Jugar', 'Toda la historia · solo o con hasta 3 amigos, cada uno en su pantalla'], ['Capítulo Uno', 'Las primeras setenta y dos horas', 'Jugable · Lucas y Kiran'], ['Capítulo Dos', 'La sala sin respuestas', 'Jugable · Ginebra y el equipo']] },
+          pt: { lang: 'Idioma', fail: 'Não foi possível carregar o jogo', load: 'Carregando…', tap: 'Toque para escolher', keys: '↑ ↓ escolher · ← → idioma · Z / Enter confirmar', on: 'Música ligada', off: 'Música desligada', armK: 'Pressione uma tecla para ouvir a música', armT: 'Toque na tela para ouvir a música',
+            items: [['Novo jogo', 'Jogar', 'A história inteira · sozinho ou com até 3 amigos, cada um na sua tela'], ['Capítulo Um', 'As primeiras setenta e duas horas', 'Jogável · Lucas e Kiran'], ['Capítulo Dois', 'A sala sem respostas', 'Jogável · Genebra e a equipe']] },
+        }[s.lang] || null;
+        this._T = T;
+        return {
+          langTitle: T.lang,
+          langItems: [['en', 'English'], ['es', 'Español'], ['pt', 'Português']].map(([k, label]) => ({ label, border: s.lang === k ? '#ff7a6b' : 'rgba(241,230,214,0.3)', bg: s.lang === k ? 'rgba(194,52,64,0.45)' : 'rgba(15,11,22,0.55)', color: s.lang === k ? '#fff3e8' : 'rgba(244,236,223,0.75)', onClick: () => this.setLang(k) })),
+          startLabel: s.err ? T.fail : s.loading ? T.load : (s.coarse ? T.tap : T.keys),
+        };
+      })(),
+      titleFxRef: this.titleFxRef,
+      musicLabel: { en: 'Music', es: 'Música', pt: 'Música' }[s.lang] || 'Music',
+      musicTip: s.musicMuted ? this._T.off : s.musicOn ? this._T.on : (s.coarse ? this._T.armT : this._T.armK),
+      musicColor: s.musicMuted ? 'rgba(244,236,223,0.45)' : '#fff3e8', musicDeco: s.musicMuted ? 'line-through' : 'none',
+      musicBorder: s.musicOn ? '#ff7a6b' : 'rgba(241,230,214,0.3)',
+      onMusicToggle: (e) => {
+        if (e && e.stopPropagation) e.stopPropagation();
+        if (s.musicMuted) { if (this.score) this.score.setMuted(false); this.setState({ musicMuted: false }, () => this.musicStart()); }
+        else if (s.musicOn) { if (this.music) this.music.stop(0.8); if (this.score) this.score.setMuted(true); this.setState({ musicOn: false, musicMuted: true }); }
+        else this.musicStart();
+      },
+      titleItems: this._T.items.map(([tag, label, sub], i) => {
+        const sel = s.titleSel === i, it = { tag, label };
+        return { ...it, sub: typeof sub === 'function' ? sub(boardGroups.reduce((n, g) => n + g.shots.length, 0)) : sub,
+          bg: sel ? 'linear-gradient(90deg, rgba(194,52,64,0.42), rgba(194,52,64,0))' : 'transparent', edge: sel ? '#ff7a6b' : 'transparent', arrow: sel ? 1 : 0,
+          onClick: () => this.titleAct(i), onEnter: () => { if (this.state.titleSel !== i) this.setState({ titleSel: i }); } };
+      }),
+      onA: () => this.game && this.game.pressA(),
+      onBoard: () => this.setState({ board: true }), boardLabel: 'Extras',
+      startEpilogue: () => { if (this.coop) { this.coop.input({ k: 'epilogue' }); return; } this.setState({ missions: false }); if (this.game) this.game.epilogue(); },
+      missionsCoop: !!s.missionsCoop, onCoop: this.onCoop, missionsDisplay: s.missionsHidden ? 'none' : 'block',
+      coopPill: !!s.coopCtl && s.started && s.missionsHidden, coopDot: s.coopLost ? '#ff6b6b' : s.coopCtl && s.coopCtl.mine ? '#7fd6a4' : '#a89cae', coopBorder: s.coopNudge ? '#ff7a6b' : '#f1e6d6',
+      coopText: (() => { const c = s.coopCtl; if (!c) return ''; const st = c.seat ? ' · ' + c.seat : '', L = s.lang;
+        if (s.coopLost) return L === 'es' ? 'Reconectando…' : L === 'pt' ? 'Reconectando…' : 'Reconnecting…';
+        if (c.mine) return (L === 'es' ? 'Tu turno' : L === 'pt' ? 'Sua vez' : 'Your turn') + st;
+        return (L === 'es' ? 'Juega ' + c.name : L === 'pt' ? c.name + ' está jogando' : c.name + ' is playing') + st; })(),
+      creditsOn: !!s.credits, creditsRef: this.creditsRef, endCredits: this.endCredits,
+      missionsOn: !!this.state.missions, soloStory: () => { this.setState({ missions: false, missionsCoop: false }); if (this.game) this.game.start(0); }, missionsFromStory: !!this.state.missionsFromStory, closeMissions: () => { if (this.state.started) { location.reload(); return; } this.setState({ missions: false }); },
+      cineOn: !!s.cine && cineShots.length > 0, cineShots,
+      cineKeys: s.coarse ? 'Tap — next' : 'Z / click — next · Esc — skip',
+      onCineClick: () => this.game && this.game.cineA(),
+      onCineSkip: (e) => { if (e && e.stopPropagation) e.stopPropagation(); if (this.game) this.game.cineSkip(); },
+      portBoard: this.portraits ? this.portraits.NAMES.map((n) => ({ name: n, cells: this.portraits.MOODS.map((m) => {
+        const used = (this.portraits.USED[n] || []).includes(m);
+        const A = this.portraits.ART[n], file = A && A[m] ? A[m] : '';
+        return { slot: this.portraits.slotId(n, m), ph: n + ' · ' + m, art: file ? A.dir + file : '', bg: file ? 'url("' + A.dir + file + '")' : 'none', noArt: !file,
+          label: (file ? '✓ ' : '') + m + (used ? ' · Ch. 1' : ''), file, color: file ? '#9ae0c0' : used ? '#ffb0a4' : '#a89cae',
+          border: file ? 'rgba(154,224,192,0.6)' : used ? 'rgba(255,122,107,0.55)' : 'rgba(241,230,214,0.18)' };
+      }) })) : [],
+      boardOn: s.board && !s.started, boardGroups, slotCount: boardGroups.reduce((n, g) => n + g.shots.length, 0),
+      onBoardOpen: () => this.setState({ board: true }), onBoardClose: () => this.setState({ board: false }),
+      onMgMove: (e) => this.mgPoint(e),
+      onMgClick: () => { if (mg && mg.kind === 'regions' && mg.listening && this.game) { this.game.mg('pick', mg.idx); return; } if (mg && mg.axis && mg.axis !== 'list' && this.game) this.game.mg('ok'); },
+      onMgRun: () => this.game && this.game.mg('pick', 0),
+      mgOn: false, mgTag: '', mgTitle: '', mgHint: '', mgMsg: '', mgCount: '', mgKeys: '', mgLegend: [], mgAspect: '600 / 230',
+      mgCards: null, mgRunOn: false, mgShowReads: false, mgReadout: null, mgReads: [],
+    };
+    if (mg) {
+      const Q = ['Sensor problem?', 'Timing error?', 'Bad input?', 'Computer problem?'], A = ['Checked', 'Checked', 'Checked', 'Three independent codes'];
+      const KC = { calm: '#7ab0ff', moderate: '#ffc24a', intense: '#ff5a6a' };
+      const fmt = (k) => (D ? 'Bz ' + D.READ[k].bz + ' nT · ' + D.READ[k].v + ' km/s · ' + k : k);
+      const cell = Math.max(0, Math.min(9, Math.floor((mg.cursor || 0) * 10)));
+      const keys = !mg.listening ? '' : mg.kind === 'trim' ? (s.coarse ? 'Tap an instrument to remove or restore it' : '← → choose · Z remove / restore · or click') : mg.kind === 'regions' ? (s.coarse ? 'Tap a region to place a probe' : '← → choose a region · Z place a probe · or click') : mg.kind === 'pattern' && mg.stage === 'run' ? 'Z — run'
+        : mg.axis === 'x' ? (s.coarse ? 'Tap the curve' : '← → move · Z mark · or click the curve')
+        : mg.axis === 'y' ? (s.coarse ? 'Tap along the orbit to take a reading' : '↑ ↓ move the monitor · Z take a reading')
+        : (s.coarse ? 'Tap to choose' : '← → choose · Z select');
+      Object.assign(v, {
+        mgOn: true, mgMaxH: mg.kind === 'trim' && mg.listening ? 'calc(100% - 24px)' : 'calc(100% - 200px)',
+        mgTag: { pattern: 'Analysis · Ground magnetometers', diagnose: 'Analysis · Model vs observation', front: 'Analysis · Upstream monitor', regions: 'Presentation · Where to measure', epi: 'Analysis · Spacecraft dataset', trim: 'Mission review · One modest satellite' }[mg.kind] || 'Analysis',
+        mgTitle: mg.title || '', mgHint: mg.hint || '', mgMsg: mg.msg || '', mgKeys: keys,
+        mgCount: mg.kind === 'pattern' && mg.stage === 'find' ? mg.marks.length + ' / 3 marked'
+          : mg.kind === 'diagnose' && mg.stage === 'pick' ? mg.checked.length + ' / 4 checked'
+          : mg.kind === 'front' ? mg.reads.length + (mg.reads.length === 1 ? ' reading' : ' readings') : mg.kind === 'regions' ? (mg.placed || []).length + ' / 3 probes' : mg.kind === 'trim' ? (mg.items || []).filter((x) => x.on).length + ' of 12 instruments' : '',
+        mgLegend: mg.kind === 'trim' ? [{ color: '#7fd6a4', label: 'Fits' }, { color: '#ff6b6b', label: 'Over' }, { color: '#ffd27a', label: 'Limit' }] : mg.kind === 'regions' ? [{ color: '#9ae0c0', label: 'Probe' }, { color: '#ffc27a', label: 'Solar wind' }, { color: '#6ad8ff', label: 'Magnetosphere' }] : mg.kind === 'front' ? [{ color: KC.calm, label: 'Calm' }, { color: KC.moderate, label: 'Moderate' }, { color: KC.intense, label: 'Intense' }]
+          : [{ color: '#ffa04a', label: 'Observed' }].concat(mg.modelProg > 0 ? [{ color: '#5ad0ff', label: 'Model' }] : []),
+        mgAspect: mg.kind === 'front' ? '2 / 1' : mg.kind === 'trim' ? '600 / 104' : '600 / 230',
+        mgChips: mg.kind === 'trim' ? (mg.items || []).map((it, i) => { const sel = mg.listening && mg.idx === i;
+          return { name: it.n, status: it.on ? it.m + ' kg · ' + it.p + ' W · $' + it.c + 'M' : 'Removed', color: it.on ? '#fff3e8' : '#8f8396', deco: it.on ? 'none' : 'line-through', op: it.on ? 1 : 0.6,
+            border: sel ? '#ff7a6b' : it.on ? 'rgba(241,230,214,0.3)' : 'rgba(241,230,214,0.12)', bg: sel ? '#2a1420' : '#14101c',
+            onClick: () => this.game && this.game.mg('pick', i), onEnter: () => this.game && this.game.mg('hover', i) }; }) : null,
+        mgCards: mg.kind === 'regions' ? [['Upstream conditions “not properly constrained”', 1, 'Sun–Earth L1 · the external driving'], ['The “external magnetospheric response”', 4, 'Low orbit · the response near Earth'], ['A plasma distribution “we haven’t measured”', 5, 'Magnetotail · the distant tail']].map(([q, k, ans]) => {
+          const done = (mg.placed || []).includes(k);
+          return { q, status: done ? '✓ ' + ans : 'Open question', statusColor: done ? '#9ae0c0' : '#a89cae', border: done ? 'rgba(154,224,192,0.5)' : 'rgba(241,230,214,0.3)', bg: '#14101c', onClick: () => {}, onEnter: () => {} };
+        }) : mg.kind === 'diagnose' && mg.stage === 'pick' ? Q.map((q, i) => {
+          const done = mg.checked.includes(i), sel = mg.listening && mg.idx === i;
+          return { q, status: done ? '✓ ' + A[i] : 'Not checked yet', statusColor: done ? '#9ae0c0' : '#a89cae',
+            border: sel ? '#ff7a6b' : done ? 'rgba(154,224,192,0.5)' : 'rgba(241,230,214,0.3)', bg: sel ? '#2a1420' : '#14101c',
+            onClick: () => this.game && this.game.mg('pick', i), onEnter: () => this.game && this.game.mg('hover', i) };
+        }) : null,
+        mgRunOn: mg.kind === 'pattern' && mg.stage === 'run' && mg.listening,
+        mgShowReads: mg.kind === 'front',
+        mgReadout: mg.kind === 'front' && D && mg.listening ? { text: fmt(D.FRONT[cell]), color: KC[D.FRONT[cell]] } : null,
+        mgReads: mg.kind === 'front' ? mg.reads.map((r, k) => ({ n: k + 1, text: fmt(r.kind), color: KC[r.kind] })) : [],
+      });
+    }
+    return v;
+  }
+}
+</script>
+</body>
+</html>

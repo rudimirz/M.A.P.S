@@ -1,5 +1,5 @@
 {
-  "project": "M.A.P.S. · Moon Mission",
+  "project": "M.A.P.S.",
   "challenge": "NASA Space Apps Challenge 2026 · Space Mission Design Game",
   "contributors": [
     "Rubén Mauricio Romero",
@@ -22,6 +22,26 @@
         "OpenAI Codex"
       ],
       "usage": "AI assistance with game design, implementation and documentation."
+    }
+  },
+  "campaigns": {
+    "luna": {
+      "title": "Moon Mission: The Rocket’s Fine Print",
+      "author": "Rubén Mauricio Romero",
+      "entry": "missions/luna/"
+    },
+    "ganimedes": {
+      "title": "Ganymede: The Integrated Front",
+      "author": "Soumya Shree",
+      "entry": "missions/ganimedes/",
+      "si_disclosure": "Introductory videos and character art are AI-generated. The campaign includes credited NASA imagery."
+    },
+    "crimson-sky": {
+      "title": "The Crimson Sky",
+      "author": "Solomon Perriyil",
+      "entry": "missions/crimson-sky/",
+      "credits": "missions/crimson-sky/README.md",
+      "si_disclosure": "OpenAI Codex assisted with integration and verification."
     }
   }
 }

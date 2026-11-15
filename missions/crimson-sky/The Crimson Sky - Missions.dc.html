@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <title>The Crimson Sky — The Missions</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;600;700&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet">
+  <style>
+*{font-variant-ligatures:none;font-feature-settings:"liga" 0,"clig" 0;}
+    html, body { margin: 0; background: #0f0b16; color: #f1e6d6; }
+    * { box-sizing: border-box; }
+    a { color: #ff9a8a; }
+    a:hover { color: #fff3e8; }
+    button, input { font: inherit; }
+  </style>
+</helmet>
+<div style="min-height:100vh; background:#0f0b16; color:#f1e6d6; font-family:'IBM Plex Sans', sans-serif; font-size:15px; line-height:1.45;">
+  <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed; top:14px; left:50%; transform:translateX(-50%); z-index:50; padding:10px 16px; background:#6b2433; border:1px solid #ff7a6b; color:#fff3e8; font-size:14px; max-width:90vw;">{{ toast }}</div>
+  </sc-if>
+
+  <sc-if value="{{ isStart }}" hint-placeholder-val="{{ true }}">
+    <div style="position:relative; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:40px 20px; overflow:hidden;">
+      <img src="film/stills/1.png" alt="" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0.34;">
+      <div style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(15,11,22,0.5), rgba(15,11,22,0.94));"></div>
+      <div style="position:relative; width:100%; max-width:900px; display:flex; flex-direction:column; gap:26px;">
+        <sc-if value="{{ hasExit }}" hint-placeholder-val="{{ false }}">
+          <div><button onClick="{{ onExit }}" style="padding:8px 14px; background:transparent; border:1px solid rgba(241,230,214,0.35); color:#f1e6d6; cursor:pointer;">{{ exitLabel }}</button></div>
+        </sc-if>
+        <sc-if value="{{ fromStory }}" hint-placeholder-val="{{ false }}">
+          <div style="padding:12px 14px; border-left:3px solid #ff7a6b; background:rgba(107,36,51,0.35); font-size:15px; color:#fff3e8; max-width:660px;">Chapter Three is complete. The four of them have a plan — the team’s first mission, Project Sentinel.</div>
+        </sc-if>
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <sc-if value="{{ notCoopStart }}" hint-placeholder-val="{{ true }}">
+            <span style="font-size:13px; letter-spacing:.24em; text-transform:uppercase; color:#ff9a8a;">The Crimson Sky · Chapters 4–30</span>
+            <span style="font-family:'Pixelify Sans', sans-serif; font-size:clamp(46px, 7vw, 78px); line-height:1; color:#fff3e8; text-shadow:0 4px 0 #6b2433;">The Missions</span>
+            <span style="font-size:17px; color:#e2d4c4; max-width:660px; text-wrap:pretty;">Design and fly the four missions of the book as Kiran, Mateo, Leila and Naomi. Up to four players, each on their own screen. Empty seats are played by AI teammates. What you decide carries all the way to the ending.</span>
+          </sc-if>
+          <sc-if value="{{ isCoopStart }}" hint-placeholder-val="{{ false }}">
+            <span style="font-size:13px; letter-spacing:.24em; text-transform:uppercase; color:#ff9a8a;">The Crimson Sky · Prologue to epilogue</span>
+            <span style="font-family:'Pixelify Sans', sans-serif; font-size:clamp(46px, 7vw, 78px); line-height:1; color:#fff3e8; text-shadow:0 4px 0 #6b2433;">Play</span>
+            <span style="font-size:17px; color:#e2d4c4; max-width:660px; text-wrap:pretty;">The whole story, alone or with up to three friends on their own screens. Together, you control your character whenever they are on screen, speaking or doing the task; Naomi’s player also walks Lucas. AI teammates take any empty seat in the missions.</span>
+          </sc-if>
+        </div>
+        <label style="display:flex; flex-direction:column; gap:6px; max-width:320px;">
+          <span style="font-size:12px; letter-spacing:.2em; text-transform:uppercase; color:#ff9a8a;">Your name</span>
+          <input value="{{ nameVal }}" onChange="{{ onName }}" maxlength="20" placeholder="Player" style="padding:10px 12px; background:rgba(15,11,22,0.85); border:1px solid rgba(241,230,214,0.3); color:#fff3e8; font-size:16px;">
+        </label>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:12px;">
+          <button onClick="{{ onSolo }}" style="text-align:left; display:flex; flex-direction:column; gap:6px; padding:18px; background:rgba(15,11,22,0.82); border:1px solid rgba(255,122,107,0.55); color:#f1e6d6; cursor:pointer;" style-hover="background:rgba(107,36,51,0.55);">
+            <sc-if value="{{ notCoopStart }}" hint-placeholder-val="{{ true }}">
+              <span style="font-family:'Pixelify Sans', sans-serif; font-size:24px; color:#fff3e8;">Play solo</span>
+              <span style="font-size:14px; color:#cdbfd2;">You take one role; three AI teammates take the others. You can open the room to friends later.</span>
+            </sc-if>
+            <sc-if value="{{ isCoopStart }}" hint-placeholder-val="{{ false }}">
+              <span style="font-family:'Pixelify Sans', sans-serif; font-size:24px; color:#fff3e8;">Start now</span>
+              <span style="font-size:14px; color:#cdbfd2;">Just you. The story begins right away; AI teammates take the other seats in the missions.</span>
+            </sc-if>
+          </button>
+          <button onClick="{{ onHost }}" style="text-align:left; display:flex; flex-direction:column; gap:6px; padding:18px; background:rgba(15,11,22,0.82); border:1px solid rgba(241,230,214,0.25); color:#f1e6d6; cursor:pointer;" style-hover="background:rgba(107,36,51,0.55);">
+            <span style="font-family:'Pixelify Sans', sans-serif; font-size:24px; color:#fff3e8;">Host a room</span>
+            <span style="font-size:14px; color:#cdbfd2;">Get a 5-letter code. Up to three friends join from their own devices.</span>
+          </button>
+          <div style="display:flex; flex-direction:column; gap:10px; padding:18px; background:rgba(15,11,22,0.82); border:1px solid rgba(241,230,214,0.25);">
+            <span style="font-family:'Pixelify Sans', sans-serif; font-size:24px; color:#fff3e8;">Join a room</span>
+            <div style="display:flex; gap:8px;">
+              <input value="{{ joinVal }}" onChange="{{ onJoinCode }}" onKeyDown="{{ onJoinKey }}" maxlength="5" placeholder="CODE" style="flex:1; min-width:0; padding:10px 12px; background:#0f0b16; border:1px solid rgba(241,230,214,0.3); color:#fff3e8; font-family:'Pixelify Sans', sans-serif; font-size:20px; letter-spacing:.2em; text-transform:uppercase;">
+              <button onClick="{{ onJoin }}" style="padding:10px 16px; background:#c23440; border:none; color:#fff3e8; cursor:pointer;">Join</button>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex; flex-wrap:wrap; align-items:center; gap:14px;">
+          <sc-if value="{{ hasSave }}" hint-placeholder-val="{{ false }}">
+            <button onClick="{{ onContinue }}" style="padding:10px 16px; background:transparent; border:1px solid rgba(241,230,214,0.35); color:#f1e6d6; cursor:pointer;">Continue saved campaign</button>
+          </sc-if>
+          <span style="font-size:14px; color:#ffd27a;">{{ startStatus }}</span>
+        </div>
+        <span style="font-size:12.5px; color:#a89cae;">Illustrations by Solomon.</span>
+      </div>
+    </div>
+  </sc-if>
+
+
+  <sc-if value="{{ isRoom }}" hint-placeholder-val="{{ false }}">
+    <div style="display:flex; flex-direction:column; height:100vh; overflow:hidden;">
+      <div style="position:relative; z-index:6; flex:none; display:flex; flex-wrap:wrap; align-items:center; gap:12px 22px; padding:12px 20px; border-bottom:1px solid rgba(241,230,214,0.12); background:#140d16;">
+        <div style="display:flex; flex-direction:column; min-width:0;">
+          <span style="font-size:11px; letter-spacing:.22em; text-transform:uppercase; color:#ff9a8a;">The Crimson Sky · {{ chapters }}</span>
+          <span style="font-family:'Pixelify Sans', sans-serif; font-size:23px; color:#fff3e8; line-height:1.1;">{{ missionName }}</span>
+        </div>
+        <div style="display:flex; gap:4px; flex-wrap:wrap;">
+          <sc-for list="{{ steps }}" as="p" hint-placeholder-count="4">
+            <span style="padding:4px 10px; font-size:12.5px; border:1px solid {{ p.bd }}; color:{{ p.col }}; background:{{ p.bg }};">{{ p.label }}</span>
+          </sc-for>
+        </div>
+        <div style="flex:1;"></div>
+        <div style="display:flex; gap:16px; flex-wrap:wrap;">
+          <sc-for list="{{ chips }}" as="c" hint-placeholder-count="5">
+            <div style="display:flex; flex-direction:column; min-width:52px;">
+              <span style="font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; color:#a89cae;">{{ c.label }}</span>
+              <span style="font-family:'Pixelify Sans', sans-serif; font-size:21px; line-height:1.1; color:{{ c.color }};">{{ c.value }}</span>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+          <sc-if value="{{ showCode }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex; flex-direction:column; padding:4px 10px; border:1px solid #ff7a6b;">
+              <span style="font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:#ff9a8a;">Room code</span>
+              <span style="font-family:'Pixelify Sans', sans-serif; font-size:22px; letter-spacing:.18em; color:#fff3e8; line-height:1.1;">{{ code }}</span>
+            </div>
+          </sc-if>
+          <span style="font-size:12.5px; color:#b9a9be; max-width:240px;">{{ status }}</span>
+          <sc-if value="{{ canOpenRoom }}" hint-placeholder-val="{{ false }}">
+            <button onClick="{{ onOpenRoom }}" style="padding:8px 12px; background:transparent; border:1px solid rgba(241,230,214,0.35); color:#f1e6d6; cursor:pointer; font-size:13px;">Open to other players</button>
+          </sc-if>
+          <sc-if value="{{ isHost }}" hint-placeholder-val="{{ false }}">
+            <button onClick="{{ onPause }}" style="padding:8px 12px; background:transparent; border:1px solid rgba(241,230,214,0.35); color:#f1e6d6; cursor:pointer; font-size:13px;">{{ pauseLabel }}</button>
+          </sc-if>
+        </div>
+      </div>
+      <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}">
+        <div style="flex:none; padding:8px 20px; background:#6b2433; color:#fff3e8; font-size:14px;">Paused by the host. Timers are stopped.</div>
+      </sc-if>
+
+      <div style="position:relative; flex:1; min-height:0;">
+        <div ref="{{ worldRef }}" style="position:absolute; inset:0; background:#0a0910;"></div>
+        <sc-if value="{{ worldHud }}" hint-placeholder-val="{{ false }}">
+          <sc-if value="{{ hudIntro }}" hint-placeholder-val="{{ false }}">
+            <div style="position:absolute; left:0; right:0; top:12%; display:flex; flex-direction:column; align-items:center; gap:6px; pointer-events:none; text-align:center; padding:0 16px;">
+              <span style="font-size:12px; letter-spacing:.24em; text-transform:uppercase; color:#ff9a8a;">{{ introChapter }}</span>
+              <span style="font-family:'Pixelify Sans', sans-serif; font-size:clamp(28px, 4.4vw, 46px); line-height:1.05; color:#fff3e8; text-shadow:0 3px 0 #6b2433;">{{ introTitle }}</span>
+              <span style="padding:3px 10px; font-size:14px; color:#e2d4c4; background:rgba(15,11,22,0.7);">{{ introPlace }}</span>
+            </div>
+          </sc-if>
+          <div style="position:absolute; left:0; right:0; bottom:12px; display:flex; flex-direction:column; align-items:center; gap:8px; padding:0 12px; pointer-events:none;">
+            <div style="max-width:min(640px, 100%); display:flex; flex-direction:column; gap:3px; padding:8px 14px; background:rgba(15,11,22,0.88); border-left:3px solid {{ hudColor }};">
+              <span style="font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:#ff9a8a;">{{ hudKicker }}</span>
+              <span style="font-size:14.5px; line-height:1.4; color:#fff3e8; text-wrap:pretty;">{{ hudGoal }}</span>
+            </div>
+            <div style="padding:8px 14px; background:rgba(15,11,22,0.9); border:1px solid {{ hudPromptBd }}; color:#fff3e8; font-size:14px; text-align:center;">{{ hudPrompt }}</div>
+            <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:6px; pointer-events:auto;">
+              <sc-for list="{{ hudStations }}" as="b" hint-placeholder-count="5">
+                <button onClick="{{ b.onClick }}" style="padding:7px 11px; min-height:36px; background:rgba(15,11,22,0.9); border:1px solid {{ b.bd }}; color:{{ b.col }}; cursor:pointer; font-size:13px;" style-hover="background:rgba(107,36,51,0.7);">{{ b.label }}</button>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+        <div style="position:absolute; inset:0; z-index:4; overflow:auto; display:{{ panelDisp }}; background:rgba(15,11,22,0.9);">
+          <sc-if value="{{ canClosePanel }}" hint-placeholder-val="{{ false }}">
+            <div style="position:sticky; top:0; z-index:2; display:flex; flex-wrap:wrap; align-items:center; gap:8px 14px; padding:10px 20px; background:rgba(20,13,22,0.97); border-bottom:1px solid rgba(241,230,214,0.12);">
+              <button onClick="{{ closePanel }}" style="padding:8px 14px; background:transparent; border:1px solid rgba(241,230,214,0.35); color:#f1e6d6; cursor:pointer; font-size:13px;">← Back to the hall (Esc)</button>
+              <span style="font-size:13px; color:#b9a9be;">{{ panelPlace }}</span>
+            </div>
+          </sc-if>
+      <div style="display:flex; flex-wrap:wrap; gap:20px; padding:20px; align-items:flex-start;">
+        <div style="flex:1 1 240px; display:flex; flex-direction:column; gap:10px; min-width:0;">
+          <span style="font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:#ff9a8a;">Crew</span>
+          <sc-for list="{{ crew }}" as="c" hint-placeholder-count="4">
+            <div onClick="{{ c.onSelect }}" style="display:flex; gap:10px; padding:8px; border:1px solid {{ c.bd }}; background:{{ c.bg }}; cursor:pointer;">
+              <div style="width:64px; height:60px; flex:none; overflow:hidden; background:rgba(241,230,214,0.05); border-bottom:2px solid {{ c.color }};">
+                <sc-if value="{{ c.hasImg }}" hint-placeholder-val="{{ false }}">
+                  <div role="img" aria-label="{{ c.name }}" style="width:100%; height:100%; background-image:{{ c.imgBg }}; background-size:cover; background-position:50% 6%;"></div>
+                </sc-if>
+              </div>
+              <div style="display:flex; flex-direction:column; gap:1px; min-width:0; flex:1;">
+                <div style="display:flex; justify-content:space-between; gap:6px; align-items:baseline;">
+                  <span style="font-family:'Pixelify Sans', sans-serif; font-size:17px; color:{{ c.color }};">{{ c.name }}</span>
+                  <span style="font-size:11.5px; color:#a89cae;">{{ c.job }}</span>
+                </div>
+                <span style="font-size:13px; color:{{ c.ctrlColor }};">{{ c.ctrl }}</span>
+                <span style="font-size:12px; color:#b9a9be;">{{ c.state }}</span>
+                <div style="display:flex; gap:6px; flex-wrap:wrap; margin-top:3px;">
+                  <sc-if value="{{ c.canTake }}" hint-placeholder-val="{{ false }}">
+                    <button onClick="{{ c.onTake }}" style="padding:3px 9px; background:transparent; border:1px solid rgba(255,122,107,0.6); color:#ff9a8a; cursor:pointer; font-size:12px;">Take seat</button>
+                  </sc-if>
+                  <sc-if value="{{ c.canLeave }}" hint-placeholder-val="{{ false }}">
+                    <button onClick="{{ c.onLeave }}" style="padding:3px 9px; background:transparent; border:1px solid rgba(241,230,214,0.3); color:#cdbfd2; cursor:pointer; font-size:12px;">Hand to AI</button>
+                  </sc-if>
+                </div>
+              </div>
+            </div>
+          </sc-for>
+          <span style="font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:#ff9a8a; margin-top:8px;">Crew log</span>
+          <div style="display:flex; flex-direction:column; gap:6px;">
+            <sc-for list="{{ log }}" as="l" hint-placeholder-count="3">
+              <div style="font-size:12.5px; line-height:1.4; color:#cdbfd2;"><span style="color:{{ l.color }}; font-weight:600;">{{ l.who }}</span> · {{ l.text }}</div>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="flex:999 1 520px; min-width:0; display:flex; flex-direction:column; gap:18px;">
+
+          <sc-if value="{{ isLobby }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex; flex-direction:column; gap:18px;">
+              <div style="display:flex; flex-direction:column; gap:6px; max-width:720px;">
+                <span style="font-family:'Pixelify Sans', sans-serif; font-size:34px; color:#fff3e8; line-height:1.1;">Pick your seat</span>
+                <span style="font-size:15.5px; color:#e2d4c4; text-wrap:pretty;">Each player takes one role. Seats nobody takes are played by AI teammates, who make their choices with the same rules and calculations. You can take a seat from the AI, or hand yours back, at any time.</span>
+              </div>
+              <sc-if value="{{ showCode }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex; flex-wrap:wrap; align-items:center; gap:16px; padding:16px; border:1px solid #ff7a6b; background:rgba(107,36,51,0.25);">
+                  <span style="font-family:'Pixelify Sans', sans-serif; font-size:44px; letter-spacing:.2em; color:#fff3e8; line-height:1;">{{ code }}</span>
+                  <span style="font-size:14.5px; color:#e2d4c4; max-width:420px;">On another device, open The Crimson Sky, choose <b>Play with friends → Join a room</b> and enter this code.</span>
+                </div>
+              </sc-if>
+              <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(210px, 1fr)); gap:12px;">
+                <sc-for list="{{ lobbyRoles }}" as="c" hint-placeholder-count="4">
+                  <div style="display:flex; flex-direction:column; gap:8px; padding:12px; border:1px solid rgba(241,230,214,0.12); background:{{ c.bg }};">
+                    <div style="height:170px; overflow:hidden; background:rgba(241,230,214,0.04); border-bottom:2px solid {{ c.color }};">
+                      <sc-if value="{{ c.hasImg }}" hint-placeholder-val="{{ false }}">
+                        <div role="img" aria-label="{{ c.name }}" style="width:100%; height:100%; background-image:{{ c.imgBg }}; background-size:cover; background-position:50% 4%;"></div>
+                      </sc-if>
+                    </div>
+                    <div style="display:flex; justify-content:space-between; align-items:baseline; gap:8px;">
+                      <span style="font-family:'Pixelify Sans', sans-serif; font-size:22px; color:{{ c.color }};">{{ c.name }}</span>
+                      <span style="font-size:12.5px; color:#a89cae;">{{ c.job }}</span>
+                    </div>
+                    <span style="font-size:13.5px; color:#cdbfd2;">{{ c.does }}</span>
+                    <span style="font-size:13px; color:{{ c.ctrlColor }};">{{ c.ctrl }}</span>
+                    <div style="display:flex; gap:6px;">
+                      <sc-if value="{{ c.canTake }}" hint-placeholder-val="{{ false }}">
+                        <button onClick="{{ c.onTake }}" style="flex:1; min-height:40px; background:#c23440; border:none; color:#fff3e8; cursor:pointer;">Play as {{ c.name }}</button>
+                      </sc-if>
+                      <sc-if value="{{ c.canLeave }}" hint-placeholder-val="{{ false }}">
+                        <button onClick="{{ c.onLeave }}" style="flex:1; min-height:40px; background:transparent; border:1px solid rgba(241,230,214,0.3); color:#cdbfd2; cursor:pointer;">Hand to AI</button>
+                      </sc-if>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="display:flex; flex-wrap:wrap; align-items:center; gap:14px;">
+                <sc-if value="{{ canStart }}" hint-placeholder-val="{{ false }}">
+                  <button onClick="{{ onStart }}" style="padding:12px 22px; min-height:44px; background:#c23440; border:none; color:#fff3e8; cursor:pointer; font-family:'Pixelify Sans', sans-serif; font-size:20px;">{{ startLabel }}</button>
+                </sc-if>
+                <sc-if value="{{ canSkipStory }}" hint-placeholder-val="{{ false }}">
+                  <button onClick="{{ onSkipStory }}" style="padding:12px 18px; min-height:44px; background:transparent; border:1px solid rgba(241,230,214,0.35); color:#f1e6d6; cursor:pointer;">Skip to the missions</button>
+                </sc-if>
+                <span style="font-size:14px; color:#b9a9be;">{{ lobbyNote }}</span>
+              </div>
+              <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:10px; font-size:13.5px; color:#cdbfd2;">
+                <div style="display:flex; flex-direction:column; gap:3px;"><span style="color:#ff9a8a; font-weight:600;">1 · Briefing</span><span>The mission question and its budget.</span></div>
+                <div style="display:flex; flex-direction:column; gap:3px;"><span style="color:#ff9a8a; font-weight:600;">2 · Design</span><span>Each role owns its choices. Every change recalculates mass, power, data and money for everyone.</span></div>
+                <div style="display:flex; flex-direction:column; gap:3px;"><span style="color:#ff9a8a; font-weight:600;">3 · Operations</span><span>The book’s events. Each one is decided by one role. Optional timed tasks earn bonuses.</span></div>
+                <div style="display:flex; flex-direction:column; gap:3px;"><span style="color:#ff9a8a; font-weight:600;">4 · Report</span><span>Score, consequences, and what carries into the next mission. Retry from the checkpoint if you want.</span></div>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ isBrief }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex; flex-direction:column; gap:18px; max-width:860px;">
+              <div style="display:flex; flex-wrap:wrap; gap:6px;">
+                <sc-for list="{{ track }}" as="t" hint-placeholder-count="5">
+                  <div style="flex:1 1 140px; display:flex; flex-direction:column; gap:2px; padding:8px 10px; border-top:3px solid {{ t.col }}; background:rgba(241,230,214,0.03);">
+                    <span style="font-size:13.5px; color:{{ t.tc }}; font-weight:600;">{{ t.name }}</span>
+                    <span style="font-size:11.5px; color:#a89cae;">{{ t.ch }}</span>
+                    <span style="font-size:12px; color:{{ t.col }};">{{ t.state }}</span>
+                  </div>
+                </sc-for>
+              </div>
+              <span style="font-size:12px; letter-spacing:.2em; text-transform:uppercase; color:#ff9a8a;">{{ chapters }}</span>
+              <span style="font-family:'Pixelify Sans', sans-serif; font-size:clamp(32px, 4vw, 46px); color:#fff3e8; line-height:1.05;">{{ missionName }}</span>
+              <span style="font-size:20px; color:#ffb0a4; text-wrap:pretty;">{{ question }}</span>
+              <div style="display:flex; flex-direction:column; gap:10px;">
+                <sc-for list="{{ brief }}" as="b" hint-placeholder-count="2">
+                  <span style="font-size:16px; color:#e2d4c4; text-wrap:pretty;">{{ b.t }}</span>
+                </sc-for>
+                <sc-for list="{{ briefNotes }}" as="b" hint-placeholder-count="0">
+                  <span style="font-size:15px; color:#ffd27a;">{{ b.t }}</span>
+                </sc-for>
+              </div>
+              <span style="font-size:14px; color:#b9a9be;">{{ budgetLine }}</span>
+              <div>
+                <button onClick="{{ onBegin }}" style="padding:12px 22px; min-height:44px; background:#c23440; border:none; color:#fff3e8; cursor:pointer; font-family:'Pixelify Sans', sans-serif; font-size:20px;">{{ beginLabel }}</button>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ isDesign }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex; flex-wrap:wrap; gap:20px; align-items:flex-start;">
+              <div style="flex:999 1 420px; min-width:0; display:flex; flex-direction:column; gap:12px;">
+                <div style="display:flex; gap:4px; flex-wrap:wrap;">
+                  <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="4">
+                    <button onClick="{{ t.onClick }}" style="padding:8px 14px; min-height:40px; background:{{ t.bg }}; border:1px solid {{ t.bd }}; color:{{ t.col }}; cursor:pointer; display:flex; gap:8px; align-items:baseline;">
+                      <span style="font-family:'Pixelify Sans', sans-serif; font-size:17px;">{{ t.label }}</span>
+                      <span style="font-size:11px; color:#a89cae;">{{ t.mark }}</span>
+                    </button>
+                  </sc-for>
+                </div>
+                <div style="display:flex; gap:14px; align-items:center;">
+                  <div style="width:84px; height:78px; flex:none; overflow:hidden; background:rgba(241,230,214,0.04); border-bottom:2px solid {{ panelColor }};">
+                    <sc-if value="{{ panelHasImg }}" hint-placeholder-val="{{ false }}">
+                      <div role="img" aria-label="{{ panelRole }}" style="width:100%; height:100%; background-image:{{ panelBg }}; background-size:cover; background-position:50% 6%;"></div>
+                    </sc-if>
+                  </div>
+                  <div style="display:flex; flex-direction:column; gap:2px;">
+                    <span style="font-family:'Pixelify Sans', sans-serif; font-size:26px; color:{{ panelColor }}; line-height:1.1;">{{ panelRole }} · {{ panelJob }}</span>
+                    <span style="font-size:13.5px; color:#cdbfd2;">Delivers the {{ panelArtifact }}. {{ panelWho }}</span>
+                  </div>
+                </div>
+                <sc-if value="{{ panelNote }}" hint-placeholder-val="{{ false }}">
+                  <div style="padding:10px 12px; border:1px solid rgba(241,230,214,0.16); background:rgba(241,230,214,0.04); font-size:14px; color:#e2d4c4;">{{ panelNote }}</div>
+                </sc-if>
+                <div style="display:flex; flex-direction:column;">
+                  <sc-for list="{{ decisions }}" as="d" hint-placeholder-count="3">
+                    <div style="display:flex; flex-direction:column; gap:8px; padding:14px 0; border-top:1px solid rgba(241,230,214,0.1);">
+                      <div style="display:flex; align-items:baseline; justify-content:space-between; gap:4px 12px; flex-wrap:wrap;">
+                        <span style="font-family:'Pixelify Sans', sans-serif; font-size:18px; color:#fff3e8;">{{ d.label }}</span>
+                        <span style="font-size:13px; color:#b9a9be;">{{ d.help }}</span>
+                      </div>
+                      <div style="display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:8px;">
+                        <sc-for list="{{ d.options }}" as="o" hint-placeholder-count="2">
+                          <button onClick="{{ o.onClick }}" disabled="{{ o.locked }}" style="text-align:left; padding:10px 12px; min-height:44px; background:{{ o.bg }}; border:1px solid {{ o.bd }}; color:#f1e6d6; cursor:{{ o.cursor }}; display:flex; gap:10px;">
+                            <span style="font-size:13px; line-height:20px; color:{{ o.markColor }};">{{ o.mark }}</span>
+                            <span style="display:flex; flex-direction:column; gap:2px;">
+                              <span style="font-size:14.5px; font-weight:600;">{{ o.label }}</span>
+                              <span style="font-size:12.5px; color:#cdbfd2; line-height:1.35;">{{ o.sub }}</span>
+                            </span>
+                          </button>
+                        </sc-for>
+                      </div>
+                    </div>
+                  </sc-for>
+                </div>
+                <sc-if value="{{ panelMine }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex; gap:10px; flex-wrap:wrap; padding-top:6px; border-top:1px solid rgba(241,230,214,0.1);">
+                    <button onClick="{{ onSuggest }}" style="padding:10px 16px; min-height:44px; background:transparent; border:1px solid rgba(241,230,214,0.35); color:#f1e6d6; cursor:pointer;">Ask the AI for a suggestion</button>
+                    <sc-if value="{{ showReady }}" hint-placeholder-val="{{ false }}">
+                      <button onClick="{{ onReady }}" style="padding:10px 16px; min-height:44px; background:{{ readyBg }}; border:1px solid #7fd6a4; color:#fff3e8; cursor:pointer;">{{ readyLabel }}</button>
+                    </sc-if>
+                  </div>
+                </sc-if>
+              </div>
+
+              <div style="flex:1 1 300px; min-width:0; display:flex; flex-direction:column; gap:14px;">
+                <div style="display:flex; flex-direction:column; gap:8px; padding:14px; border:1px solid rgba(241,230,214,0.14); background:rgba(241,230,214,0.03);">
+                  <div style="display:flex; align-items:baseline; gap:10px;">
+                    <span style="font-family:'Pixelify Sans', sans-serif; font-size:40px; color:#fff3e8; line-height:1;">{{ scoreTotal }}</span>
+                    <span style="font-size:13px; color:#b9a9be;">{{ scoreNote }}</span>
+                  </div>
+                  <sc-for list="{{ scoreParts }}" as="p" hint-placeholder-count="5">
+                    <div style="display:grid; grid-template-columns:90px 1fr 44px; gap:8px; align-items:center; font-size:12.5px;">
+                      <span style="color:#cdbfd2;">{{ p.l }}</span>
+                      <div style="height:6px; background:rgba(241,230,214,0.1);"><div style="height:6px; width:{{ p.w }}; background:#ff7a6b;"></div></div>
+                      <span style="color:#e2d4c4; text-align:right;">{{ p.a }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+                <div style="display:flex; flex-direction:column; gap:8px;">
+                  <sc-for list="{{ metrics }}" as="x" hint-placeholder-count="5">
+                    <div style="display:flex; flex-direction:column; gap:4px; padding:10px 12px; border-left:3px solid {{ x.color }}; background:rgba(241,230,214,0.03);">
+                      <div style="display:flex; justify-content:space-between; gap:8px; flex-wrap:wrap;">
+                        <span style="font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:#a89cae;">{{ x.label }}</span>
+                        <span style="font-size:15px; font-weight:600; color:#fff3e8;">{{ x.value }}</span>
+                      </div>
+                      <div style="height:5px; background:rgba(241,230,214,0.1);"><div style="height:5px; width:{{ x.w }}; background:{{ x.color }};"></div></div>
+                      <span style="font-size:12px; color:#b9a9be;">{{ x.sub }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+                <div style="display:flex; flex-direction:column; gap:6px;">
+                  <span style="font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:#ff9a8a;">Gates</span>
+                  <sc-for list="{{ gates }}" as="g" hint-placeholder-count="5">
+                    <div style="display:grid; grid-template-columns:58px 1fr; gap:8px; font-size:13px; align-items:start;">
+                      <span style="font-size:11px; font-weight:600; letter-spacing:.08em; padding:2px 0; text-align:center; color:#0f0b16; background:{{ g.color }};">{{ g.tag }}</span>
+                      <span style="color:#e2d4c4;"><b style="color:#fff3e8;">{{ g.label }}.</b> {{ g.text }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+                <sc-if value="{{ hasAiNote }}" hint-placeholder-val="{{ false }}">
+                  <div style="padding:10px 12px; border:1px solid #ff6b6b; background:rgba(255,107,107,0.08); font-size:13.5px; color:#fff3e8;">{{ aiNote }}</div>
+                </sc-if>
+                <sc-if value="{{ hasLast }}" hint-placeholder-val="{{ false }}">
+                  <div style="padding:10px 12px; border:1px dashed rgba(241,230,214,0.25); font-size:13px; color:#e2d4c4;">{{ last }}</div>
+                </sc-if>
+                <div style="display:flex; flex-direction:column; gap:8px; padding:14px; border:1px solid {{ goBd }};">
+                  <span style="font-family:'Pixelify Sans', sans-serif; font-size:19px; color:#ffb0c8;">Launch authorization</span>
+                  <span style="font-size:13.5px; color:#e2d4c4;">{{ goText }}</span>
+                  <sc-if value="{{ isNaomi }}" hint-placeholder-val="{{ false }}">
+                    <button onClick="{{ onGo }}" disabled="{{ goDisabled }}" style="padding:12px 16px; min-height:44px; background:{{ goBg }}; border:none; color:#fff3e8; cursor:{{ goCursor }}; font-family:'Pixelify Sans', sans-serif; font-size:19px;">Authorize launch</button>
+                  </sc-if>
+                </div>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ isOps }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex; flex-wrap:wrap; gap:20px; align-items:flex-start;">
+              <div style="flex:999 1 480px; min-width:0; display:flex; flex-direction:column; gap:14px;">
+                <div style="display:flex; flex-wrap:wrap; gap:8px 14px; align-items:baseline;">
+                  <span style="font-size:12px; letter-spacing:.2em; text-transform:uppercase; color:#ff9a8a;">{{ evChapter }}</span>
+                  <span style="font-size:12px; color:#a89cae;">{{ evIdx }}</span>
+                  <sc-if value="{{ hasEvLabel }}" hint-placeholder-val="{{ false }}">
+                    <span style="font-size:11px; letter-spacing:.12em; padding:2px 8px; border:1px solid #d6b8ff; color:#d6b8ff;">{{ evLabel }}</span>
+                  </sc-if>
+                </div>
+                <span style="font-family:'Pixelify Sans', sans-serif; font-size:clamp(28px, 3.4vw, 38px); color:#fff3e8; line-height:1.05;">{{ evTitle }}</span>
+                <sc-if value="{{ evHidden }}" hint-placeholder-val="{{ false }}">
+                  <div style="padding:22px; border:1px solid rgba(241,230,214,0.16); background:rgba(241,230,214,0.03); font-size:16px; color:#e2d4c4;">{{ evPrivateText }}</div>
+                </sc-if>
+                <sc-if value="{{ evShown }}" hint-placeholder-val="{{ true }}">
+                  <div style="display:flex; flex-direction:column; gap:14px;">
+                    <sc-if value="{{ hasTalk }}" hint-placeholder-val="{{ false }}">
+                      <div style="display:flex; flex-wrap:wrap; gap:14px; align-items:flex-end; padding:14px; background:linear-gradient(180deg, rgba(107,36,51,0.18), rgba(15,11,22,0)); border-bottom:1px solid rgba(241,230,214,0.12);">
+                        <div style="width:150px; height:140px; flex:none; overflow:hidden;">
+                          <sc-if value="{{ hasTalkL }}" hint-placeholder-val="{{ false }}">
+                            <div style="width:100%; height:100%; background-image:{{ talkLBg }}; background-size:cover; background-position:50% 4%;"></div>
+                          </sc-if>
+                        </div>
+                        <div style="flex:1 1 240px; display:flex; flex-direction:column; gap:8px; min-width:0; padding-bottom:6px;">
+                          <sc-for list="{{ lines }}" as="l" hint-placeholder-count="2">
+                            <div style="font-size:16px; line-height:1.4; color:#fff3e8;"><span style="font-family:'Pixelify Sans', sans-serif; color:{{ l.color }};">{{ l.who }}</span> — {{ l.text }}</div>
+                          </sc-for>
+                        </div>
+                        <div style="width:150px; height:140px; flex:none; overflow:hidden; transform:scaleX(-1);">
+                          <sc-if value="{{ hasTalkR }}" hint-placeholder-val="{{ false }}">
+                            <div style="width:100%; height:100%; background-image:{{ talkRBg }}; background-size:cover; background-position:50% 4%;"></div>
+                          </sc-if>
+                        </div>
+                      </div>
+                    </sc-if>
+                    <span style="font-size:16.5px; color:#e2d4c4; text-wrap:pretty;">{{ evText }}</span>
+                    <span style="font-size:13.5px; color:{{ ownerColor }}; font-weight:600;">{{ ownerLine }}</span>
+                    <sc-if value="{{ pulseOn }}" hint-placeholder-val="{{ false }}">
+                      <div style="display:flex; flex-direction:column; gap:10px; padding:14px; background:#0b0710; border:1px solid #6b2433;">
+                        <div style="display:flex; flex-wrap:wrap; justify-content:space-between; gap:6px 14px; align-items:baseline;">
+                          <span style="font-family:'Pixelify Sans', sans-serif; font-size:22px; color:#fff3e8;">{{ pulseTitle }}</span>
+                          <span style="font-size:13px; color:#ffd27a;">{{ pulseCount }}</span>
+                        </div>
+                        <span style="font-size:14.5px; color:#e2d4c4; text-wrap:pretty;">{{ pulseHint }}</span>
+                        <canvas ref="{{ pulseRef }}" onClick="{{ onPulseFire }}" style="width:min(340px, 52vh, 100%); aspect-ratio:1 / 1; align-self:center; display:block; cursor:crosshair;"></canvas>
+                        <div style="display:flex; flex-wrap:wrap; gap:10px; align-items:center;">
+                          <button onClick="{{ onPulseFire }}" style="padding:12px 22px; min-height:44px; background:#c23440; border:none; color:#fff3e8; cursor:pointer; font-family:'Pixelify Sans', sans-serif; font-size:19px;">Fire the pulse (Space)</button>
+                          <span style="font-size:14px; color:{{ pulseMsgColor }};">{{ pulseMsg }}</span>
+                        </div>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ mgOn }}" hint-placeholder-val="{{ false }}">
+                      <div style="display:flex; flex-direction:column; gap:10px; padding:14px; background:#0b0710; border:1px solid #6b2433;">
+                        <span style="font-family:'Pixelify Sans', sans-serif; font-size:22px; color:#fff3e8;">{{ mgTitle }}</span>
+                        <span style="font-size:14.5px; color:#e2d4c4; text-wrap:pretty;">{{ mgHint }}</span>
+                        <sc-if value="{{ mgCanvas }}" hint-placeholder-val="{{ false }}">
+                          <canvas ref="{{ mgRef }}" onPointerDown="{{ onMgDown }}" onPointerMove="{{ onMgMove }}" onPointerUp="{{ onMgUp }}" style="width:100%; aspect-ratio:2 / 1; display:block; touch-action:none; cursor:{{ mgCursor }};"></canvas>
+                        </sc-if>
+                        <sc-if value="{{ mgTimer }}" hint-placeholder-val="{{ false }}">
+                          <div style="height:6px; background:rgba(241,230,214,0.1);"><div ref="{{ mgBarRef }}" style="height:100%; width:100%; background:#ffd27a;"></div></div>
+                        </sc-if>
+                        <sc-if value="{{ mgSortOn }}" hint-placeholder-val="{{ false }}">
+                          <div style="display:flex; flex-direction:column; gap:10px;">
+                            <span style="font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:#a89cae;">{{ mgCardIdx }}</span>
+                            <div style="padding:14px 16px; background:#f1e6d6; color:#2a2028; font-size:15.5px; line-height:1.45; text-wrap:pretty; min-height:64px;">{{ mgCardText }}</div>
+                            <div style="display:flex; flex-wrap:wrap; gap:8px;">
+                              <sc-for list="{{ mgBins }}" as="b" hint-placeholder-count="3">
+                                <button onClick="{{ b.onClick }}" style="flex:1 1 140px; padding:10px 14px; min-height:44px; background:rgba(241,230,214,0.04); border:1px solid rgba(255,122,107,0.6); color:#f1e6d6; cursor:pointer; display:flex; flex-direction:column; gap:2px; text-align:left;" style-hover="background:rgba(107,36,51,0.35);">
+                                  <span style="font-family:'Pixelify Sans', sans-serif; font-size:17px;">{{ b.label }}</span>
+                                  <span style="font-size:12px; color:#cdbfd2;">{{ b.sub }}</span>
+                                </button>
+                              </sc-for>
+                            </div>
+                          </div>
+                        </sc-if>
+                        <sc-if value="{{ mgTalkOn }}" hint-placeholder-val="{{ false }}">
+                          <div style="display:flex; flex-direction:column; gap:10px;">
+                            <span style="font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:#a89cae;">{{ mgRoundIdx }}</span>
+                            <sc-if value="{{ mgHasPre }}" hint-placeholder-val="{{ false }}">
+                              <span style="font-size:14px; color:#cdbfd2; font-style:italic;">{{ mgPre }}</span>
+                            </sc-if>
+                            <div style="display:flex; flex-direction:column; gap:4px; padding:12px 14px; background:rgba(241,230,214,0.04); border:1px solid rgba(241,230,214,0.14);">
+                              <span style="font-size:12px; font-weight:600; color:#ff9a8a;">Voss</span>
+                              <span style="font-size:16px; color:#fff3e8; text-wrap:pretty;">{{ mgVossLine }}</span>
+                            </div>
+                            <div style="display:flex; flex-direction:column; gap:8px;">
+                              <sc-for list="{{ mgReplies }}" as="o" hint-placeholder-count="3">
+                                <button onClick="{{ o.onClick }}" disabled="{{ o.dis }}" style="text-align:left; padding:12px 14px; min-height:44px; background:{{ o.bg }}; border:1px solid {{ o.bd }}; color:#f1e6d6; cursor:{{ o.cursor }}; font-size:15px; text-wrap:pretty;">{{ o.label }}</button>
+                              </sc-for>
+                            </div>
+                          </div>
+                        </sc-if>
+                        <div style="display:flex; flex-wrap:wrap; gap:10px; align-items:center;">
+                          <sc-if value="{{ mgStartable }}" hint-placeholder-val="{{ false }}">
+                            <button onClick="{{ onMgStart }}" style="padding:12px 22px; min-height:44px; background:#c23440; border:none; color:#fff3e8; cursor:pointer; font-family:'Pixelify Sans', sans-serif; font-size:19px;">{{ mgStartLabel }}</button>
+                          </sc-if>
+                          <sc-if value="{{ mgMark }}" hint-placeholder-val="{{ false }}">
+                            <button onClick="{{ onMgMark }}" disabled="{{ mgMarkDis }}" style="padding:12px 22px; min-height:44px; background:{{ mgMarkBg }}; border:none; color:#fff3e8; cursor:{{ mgMarkCursor }}; font-family:'Pixelify Sans', sans-serif; font-size:19px;">Mark this interval</button>
+                          </sc-if>
+                          <sc-if value="{{ mgHold }}" hint-placeholder-val="{{ false }}">
+                            <div style="display:flex; gap:10px;">
+                              <button onPointerDown="{{ onMgHoldUp }}" onPointerUp="{{ onMgRelease }}" onPointerLeave="{{ onMgRelease }}" onPointerCancel="{{ onMgRelease }}" style="padding:12px 20px; min-height:44px; background:rgba(241,230,214,0.06); border:1px solid rgba(255,122,107,0.6); color:#fff3e8; cursor:pointer; font-family:'Pixelify Sans', sans-serif; font-size:18px; touch-action:none; user-select:none;">{{ mgUpLabel }}</button>
+                              <button onPointerDown="{{ onMgHoldDown }}" onPointerUp="{{ onMgRelease }}" onPointerLeave="{{ onMgRelease }}" onPointerCancel="{{ onMgRelease }}" style="padding:12px 20px; min-height:44px; background:rgba(241,230,214,0.06); border:1px solid rgba(255,122,107,0.6); color:#fff3e8; cursor:pointer; font-family:'Pixelify Sans', sans-serif; font-size:18px; touch-action:none; user-select:none;">{{ mgDownLabel }}</button>
+                            </div>
+                          </sc-if>
+                          <span style="font-size:14px; color:{{ mgMsgColor }};">{{ mgMsg }}</span>
+                        </div>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ mgWait }}" hint-placeholder-val="{{ false }}">
+                      <span style="font-size:14px; color:#ffd27a;">{{ mgWaitText }}</span>
+                    </sc-if>
+                    <sc-if value="{{ hasGameRes }}" hint-placeholder-val="{{ false }}">
+                      <div style="display:flex; flex-direction:column; gap:4px; padding:10px 12px; background:rgba(241,230,214,0.03); border:1px solid rgba(241,230,214,0.14);">
+                        <span style="font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:{{ gameResColor }};">{{ gameResTag }}</span>
+                        <span style="font-size:14.5px; color:#e2d4c4; text-wrap:pretty;">{{ gameRes }}</span>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ showOptions }}" hint-placeholder-val="{{ true }}">
+                      <div style="display:flex; flex-direction:column; gap:8px;">
+                        <sc-for list="{{ evOptions }}" as="o" hint-placeholder-count="2">
+                          <button onClick="{{ o.onClick }}" disabled="{{ o.dis }}" style="text-align:left; padding:12px 14px; min-height:44px; background:rgba(241,230,214,0.03); border:1px solid {{ o.bd }}; color:#f1e6d6; cursor:{{ o.cursor }}; opacity:{{ o.op }}; display:flex; flex-direction:column; gap:2px;" style-hover="background:rgba(107,36,51,0.35);">
+                            <span style="font-size:15px; font-weight:600;">{{ o.label }}</span>
+                            <span style="font-size:12.5px; color:#cdbfd2;">{{ o.sub }}</span>
+                          </button>
+                        </sc-for>
+                        <span style="font-size:13px; color:#b9a9be;">{{ waitText }}</span>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ chosen }}" hint-placeholder-val="{{ false }}">
+                      <div style="display:flex; flex-direction:column; gap:6px; padding:14px; border-left:3px solid #ff7a6b; background:rgba(255,122,107,0.07);">
+                        <span style="font-size:13px; color:#ff9a8a;">{{ chosenBy }}</span>
+                        <span style="font-size:15px; font-weight:600; color:#fff3e8;">{{ chosenLabel }}</span>
+                        <span style="font-size:15px; color:#e2d4c4;">{{ chosenText }}</span>
+                      </div>
+                    </sc-if>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ canNext }}" hint-placeholder-val="{{ false }}">
+                  <div>
+                    <button onClick="{{ onNext }}" style="padding:12px 22px; min-height:44px; background:#c23440; border:none; color:#fff3e8; cursor:pointer; font-family:'Pixelify Sans', sans-serif; font-size:19px;">{{ nextLabel }}</button>
+                  </div>
+                </sc-if>
+              </div>
+
+              <div style="flex:1 1 300px; min-width:0; display:flex; flex-direction:column; gap:14px;">
+                <sc-if value="{{ hasTimed }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex; flex-direction:column; gap:10px; padding:14px; border:1px solid #ffd27a; background:rgba(255,210,122,0.05);">
+                    <div style="display:flex; justify-content:space-between; gap:8px; flex-wrap:wrap;">
+                      <span style="font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:#ffd27a;">Optional · {{ tmRole }} · {{ tmSecs }}</span>
+                      <sc-if value="{{ tmRunning }}" hint-placeholder-val="{{ false }}">
+                        <span style="font-family:'Pixelify Sans', sans-serif; font-size:22px; color:#fff3e8; line-height:1;">{{ tmLeft }}</span>
+                      </sc-if>
+                    </div>
+                    <span style="font-family:'Pixelify Sans', sans-serif; font-size:19px; color:#fff3e8;">{{ tmTitle }}</span>
+                    <span style="font-size:13.5px; color:#e2d4c4;">Reward: {{ tmReward }}</span>
+                    <sc-if value="{{ tmRunning }}" hint-placeholder-val="{{ false }}">
+                      <div style="height:5px; background:rgba(241,230,214,0.12);"><div style="height:5px; width:{{ tmPct }}; background:#ffd27a;"></div></div>
+                    </sc-if>
+                    <sc-if value="{{ tmCanAccept }}" hint-placeholder-val="{{ false }}">
+                      <button onClick="{{ onAccept }}" style="padding:10px 14px; min-height:44px; background:transparent; border:1px solid #ffd27a; color:#ffd27a; cursor:pointer;">Accept — the clock starts now</button>
+                    </sc-if>
+                    <sc-if value="{{ tmShowQ }}" hint-placeholder-val="{{ false }}">
+                      <div style="display:flex; flex-direction:column; gap:8px;">
+                        <span style="font-size:14.5px; color:#fff3e8;">{{ tmQ }}</span>
+                        <sc-for list="{{ tmChoices }}" as="q" hint-placeholder-count="3">
+                          <button onClick="{{ q.onClick }}" style="text-align:left; padding:9px 12px; min-height:44px; background:rgba(241,230,214,0.04); border:1px solid rgba(241,230,214,0.2); color:#f1e6d6; cursor:pointer; font-size:14px;" style-hover="border-color:#ffd27a;">{{ q.c }}</button>
+                        </sc-for>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ tmWatch }}" hint-placeholder-val="{{ false }}">
+                      <span style="font-size:13.5px; color:#cdbfd2;">{{ tmRole }} is working on it.</span>
+                    </sc-if>
+                    <sc-if value="{{ hasTmNote }}" hint-placeholder-val="{{ false }}">
+                      <span style="font-size:13px; color:#b9a9be;">{{ tmNote }}</span>
+                    </sc-if>
+                    <sc-if value="{{ tmDone }}" hint-placeholder-val="{{ false }}">
+                      <span style="font-size:14px; color:{{ tmResColor }};">{{ tmResult }}</span>
+                    </sc-if>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ hasResults }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex; flex-direction:column; gap:8px;">
+                    <span style="font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:#ff9a8a;">So far</span>
+                    <sc-for list="{{ results }}" as="x" hint-placeholder-count="2">
+                      <div style="display:flex; flex-direction:column; gap:2px; font-size:13px; padding-left:10px; border-left:2px solid rgba(241,230,214,0.2);">
+                        <span style="color:#fff3e8; font-weight:600;">{{ x.title }} — {{ x.label }}</span>
+                        <span style="color:#cdbfd2;">{{ x.text }}</span>
+                      </div>
+                    </sc-for>
+                  </div>
+                </sc-if>
+                <sc-for list="{{ opsMetrics }}" as="x" hint-placeholder-count="0">
+                  <div style="display:flex; justify-content:space-between; gap:8px; padding:8px 10px; border-left:3px solid {{ x.color }}; background:rgba(241,230,214,0.03); font-size:13px;">
+                    <span style="color:#a89cae;">{{ x.label }}</span>
+                    <span style="color:#fff3e8;">{{ x.value }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ isReport }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex; flex-direction:column; gap:18px; max-width:900px;">
+              <span style="font-size:12px; letter-spacing:.2em; text-transform:uppercase; color:#ff9a8a;">Mission report</span>
+              <span style="font-family:'Pixelify Sans', sans-serif; font-size:clamp(30px, 4vw, 42px); color:#fff3e8; line-height:1.05;">{{ repName }}</span>
+              <sc-if value="{{ repHasScore }}" hint-placeholder-val="{{ false }}">
+                <div style="display:flex; flex-wrap:wrap; gap:20px; align-items:center;">
+                  <div style="display:flex; flex-direction:column;">
+                    <span style="font-family:'Pixelify Sans', sans-serif; font-size:64px; color:#fff3e8; line-height:1;">{{ repTotal }}</span>
+                    <span style="font-size:13px; color:#b9a9be;">out of 100 · {{ repCost }}</span>
+                  </div>
+                  <div style="flex:1 1 300px; display:flex; flex-direction:column; gap:6px;">
+                    <sc-for list="{{ repParts }}" as="p" hint-placeholder-count="5">
+                      <div style="display:grid; grid-template-columns:100px 1fr 48px; gap:8px; align-items:center; font-size:13px;">
+                        <span style="color:#cdbfd2;">{{ p.l }}</span>
+                        <div style="height:7px; background:rgba(241,230,214,0.1);"><div style="height:7px; width:{{ p.w }}; background:#ff7a6b;"></div></div>
+                        <span style="color:#e2d4c4; text-align:right;">{{ p.a }}</span>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+              </sc-if>
+              <sc-if value="{{ repStory }}" hint-placeholder-val="{{ false }}">
+                <span style="font-size:15px; color:#cdbfd2;">A story chapter: no engineering score. What happened here still carries forward.</span>
+              </sc-if>
+              <div style="display:flex; flex-wrap:wrap; gap:20px;">
+                <div style="flex:2 1 340px; display:flex; flex-direction:column; gap:8px;">
+                  <span style="font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:#ff9a8a;">What happened</span>
+                  <sc-for list="{{ repResults }}" as="x" hint-placeholder-count="3">
+                    <div style="display:flex; flex-direction:column; gap:2px; font-size:14px; padding-left:10px; border-left:2px solid rgba(241,230,214,0.2);">
+                      <span style="color:#fff3e8; font-weight:600;">{{ x.title }} — {{ x.label }}</span>
+                      <span style="color:#cdbfd2;">{{ x.text }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+                <div style="flex:1 1 240px; display:flex; flex-direction:column; gap:8px;">
+                  <span style="font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:#ff9a8a;">Carried forward</span>
+                  <sc-for list="{{ repDeltas }}" as="x" hint-placeholder-count="3">
+                    <div style="display:flex; justify-content:space-between; gap:8px; font-size:14px; padding:6px 0; border-bottom:1px solid rgba(241,230,214,0.08);">
+                      <span style="color:#cdbfd2;">{{ x.k }}</span>
+                      <span style="color:{{ x.color }};">{{ x.from }} → {{ x.to }}</span>
+                    </div>
+                  </sc-for>
+                  <span style="font-size:13px; color:#b9a9be;">{{ repNote }}</span>
+                </div>
+              </div>
+              <div style="display:flex; flex-wrap:wrap; gap:10px;">
+                <button onClick="{{ onRetry }}" style="padding:12px 18px; min-height:44px; background:transparent; border:1px solid rgba(241,230,214,0.35); color:#f1e6d6; cursor:pointer;">Retry this mission from the checkpoint</button>
+                <button onClick="{{ onContinue }}" style="padding:12px 22px; min-height:44px; background:#c23440; border:none; color:#fff3e8; cursor:pointer; font-family:'Pixelify Sans', sans-serif; font-size:19px;">{{ contLabel }}</button>
+              </div>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{ isEnding }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex; flex-direction:column; gap:18px; max-width:820px;">
+              <span style="font-size:12px; letter-spacing:.2em; text-transform:uppercase; color:#ff9a8a;">Ending {{ endId }} of 4</span>
+              <span style="font-family:'Pixelify Sans', sans-serif; font-size:clamp(40px, 6vw, 64px); color:#fff3e8; line-height:1; text-shadow:0 4px 0 #6b2433;">{{ endTitle }}</span>
+              <span style="font-size:20px; color:#ffb0a4;">{{ endSub }}</span>
+              <div style="display:flex; flex-direction:column; gap:12px;">
+                <sc-for list="{{ endText }}" as="t" hint-placeholder-count="3">
+                  <span style="font-size:17px; color:#e2d4c4; text-wrap:pretty;">{{ t.t }}</span>
+                </sc-for>
+              </div>
+              <div style="display:flex; flex-wrap:wrap; gap:20px;">
+                <div style="flex:2 1 320px; display:flex; flex-direction:column; gap:6px;">
+                  <span style="font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:#ff9a8a;">Why this ending</span>
+                  <sc-for list="{{ endWhy }}" as="t" hint-placeholder-count="4">
+                    <span style="font-size:14px; color:#cdbfd2;">· {{ t.t }}</span>
+                  </sc-for>
+                </div>
+                <div style="flex:1 1 220px; display:flex; flex-direction:column; gap:6px;">
+                  <span style="font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:#ff9a8a;">Missions · average {{ endAvg }}</span>
+                  <sc-for list="{{ endScores }}" as="x" hint-placeholder-count="5">
+                    <div style="display:flex; justify-content:space-between; font-size:14px; padding:4px 0; border-bottom:1px solid rgba(241,230,214,0.08);">
+                      <span style="color:#cdbfd2;">{{ x.name }}</span>
+                      <span style="color:#fff3e8;">{{ x.score }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+              <sc-if value="{{ hasEpi }}" hint-placeholder-val="{{ false }}">
+                <div>
+                  <button onClick="{{ onEpi }}" style="padding:12px 22px; min-height:44px; background:#c23440; border:none; color:#fff3e8; cursor:pointer; font-family:'Pixelify Sans', sans-serif; font-size:19px;">Epilogue · The Last Field</button>
+                </div>
+              </sc-if>
+              <sc-if value="{{ canReset }}" hint-placeholder-val="{{ false }}">
+                <div>
+                  <button onClick="{{ onReset }}" style="padding:12px 22px; min-height:44px; background:#c23440; border:none; color:#fff3e8; cursor:pointer; font-family:'Pixelify Sans', sans-serif; font-size:19px;">Play again with the same crew</button>
+                </div>
+              </sc-if>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+      <div style="padding:10px 20px; border-top:1px solid rgba(241,230,214,0.1); font-size:12px; color:#8f8396;">Illustrations: Solomon</div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;aiSpeed&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;calm&quot;,&quot;normal&quot;,&quot;fast&quot;],&quot;default&quot;:&quot;normal&quot;,&quot;tsType&quot;:&quot;'calm'|'normal'|'fast'&quot;,&quot;section&quot;:&quot;AI teammates&quot;},&quot;timedTasks&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;timed&quot;,&quot;untimed&quot;],&quot;default&quot;:&quot;timed&quot;,&quot;tsType&quot;:&quot;'timed'|'untimed'&quot;,&quot;section&quot;:&quot;Accessibility&quot;}}">
+class Component extends DCLogic {
+  state = { screen: 'start', mode: null, code: '', S: null, name: '', joinCode: '', status: '', toast: '', selRole: null, ready: false, hasSave: false, panel: false, station: null, closedEv: null, prompt: null };
+
+  // The Mission Hall (game/hq-world.js) mounts on this element; stable callback so React only calls it on mount/unmount.
+  worldRef = (el) => {
+    if (el === this._wEl) return;
+    this._wEl = el; if (this.W) { this.W.destroy(); this.W = null; }
+    if (!el) return;
+    const tok = (this._wTok = (this._wTok || 0) + 1);
+    Promise.all([import('https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js'), import(new URL('game/hq-world.js', document.baseURI).href)])
+      .then(([THREE, M]) => {
+        if (this._dead || tok !== this._wTok || this._wEl !== el) return;
+        this.W = M.createHQ(THREE, { container: el, pixelScale: 3, hooks: { onStation: (id) => this.openStation(id), onPrompt: (id) => this.setState({ prompt: id }) } });
+        this.syncWorld();
+      })
+      .catch((err) => console.warn('Mission Hall failed to load', err));
+  };
+  SETMAP = { owned: 'office', capture: 'cabin', three: 'lab', watch: 'apartment', breath: 'apartment', antenna: 'office', offer: 'office', promise: 'office', house: 'office', ashamed: 'hospital', review: 'briefing', last: 'office', open: 'lab', letter: 'lab', elena: 'hospital', archive: 'archive', blame: 'lab', findings: 'briefing', proposal: 'briefing', go: 'cabin', storm: 'cabin', eva: 'cabin', node: 'cabin', pulse1: 'cabin', pulse2: 'cabin', return: 'cabin' };
+  SETVAR = { capture: 'moon', watch: 'pad', breath: 'aurora', promise: 'nohost', go: 'pad', storm: 'sun', eva: 'moon', node: 'moon', pulse1: 'tail', pulse2: 'tail', return: 'earth' };
+  PLACE = { owned: 'Aegis Horizon \u00b7 Voss\u2019s office, late at night', capture: 'Aboard Bridge \u00b7 lunar rendezvous', three: 'The independent lab \u00b7 without Mateo', promise: 'Aegis Horizon · the corridor outside Voss\u2019s office', house: 'Aegis Horizon · the assembly halls', review: 'Emergency mission review', layout: 'Integration hall · Bridge', gloves: 'Integration hall · crew training', last: 'A regulatory office · three days before launch', open: 'The observatory · months after Breakpoint', letter: 'The observatory · evening' };
+  SETNAME = { apartment: 'S\u00e3o Paulo \u00b7 the Almeidas\u2019 apartment', office: 'Aegis Horizon · Adrian Voss\u2019s office', hospital: 'Hospital · São Paulo', archive: 'Aegis Horizon · the archive', lab: 'Plasma Physics Lab · night', briefing: 'Geneva', cabin: 'Aboard Bridge' };
+  stageOf(S, myRole) { const e = S && S.phase === 'ops' ? this.E.curEvent(S) : null; if (!e) return { e: null, set: null, cast: [], speaker: null };
+    let tl = []; try { tl = e.talk ? e.talk(S) : []; } catch (err) { tl = []; }
+    const hidden = !!(e.private && myRole !== e.private), set = hidden ? null : this.SETMAP[e.id] || null;
+    const cast = e.cast ? e.cast.slice() : [...new Set([e.owner, ...tl.map((x) => x[0])])].filter((n) => n && n !== 'Room');
+    return { e, set, cast: set === 'cabin' ? [...new Set([...cast, 'Kiran', 'Mateo', 'Leila', 'Naomi'])] : cast, speaker: tl.length ? tl[tl.length - 1][0] : null, variant: this.SETVAR[e.id] || null }; }
+  // Climax precision minigame (Ch. 27–28). Local to the deciding player; a hit unlocks the event's options.
+  pulseRef = React.createRef();
+  pulseState(key, id) { if (!this.pz || this.pz.key !== key) this.pz = { key, id, tries: 0, msg: '', color: '#cdbfd2', done: false, busy: false, t0: performance.now(), fired: null }; return this.pz; }
+  pulseGeom(t) { const T = Math.PI * 2, th = ((t / 3.2) % 1) * T; return this.pz.id === 'pulse1' ? { th, c: 0.62 * T, hw: 0.085 * T } : { th, c: (0.3 + 0.05 * Math.sin(t * 0.9) + 0.03 * Math.sin(t * 2.3)) * T, hw: 0.045 * T }; }
+  firePulse() {
+    const z = this.pz; if (!z || z.done || z.busy) return;
+    const t = (performance.now() - z.t0) / 1000, g = this.pulseGeom(t), T = Math.PI * 2, d = Math.abs(((((g.th - g.c) % T) + T * 1.5) % T) - T / 2), hit = d <= g.hw;
+    z.tries++; z.fired = { th: g.th, at: t };
+    const finish = (ms) => { z.busy = true; setTimeout(() => { z.busy = false; z.done = true; this._pulseLive = false; this.forceUpdate(); }, ms); };
+    if (z.id === 'pulse1') { z.msg = hit ? 'On the predicted phase \u2014 but the node had already moved.' : 'Off the predicted phase \u2014 and the node had moved anyway.'; z.color = '#ff9a8a'; finish(2200); }
+    else if (hit) { z.msg = 'Phase locked. The pulse lands on the node.'; z.color = '#7fd6a4'; finish(1500); }
+    else { z.msg = 'Missed the phase by ' + Math.max(1, Math.round(((d - g.hw) * 180) / Math.PI)) + '\u00b0. The window is still open.'; z.color = '#ffd27a'; z.fired = null; }
+    this.forceUpdate();
+  }
+  pulseTick = () => { this._praf = 0; if (this._dead || !this._pulseLive) return; this.drawPulse(); this._praf = requestAnimationFrame(this.pulseTick); };
+  drawPulse() {
+    const cv = this.pulseRef.current, z = this.pz; if (!cv || !z) return;
+    const W = cv.clientWidth, dpr = Math.min(2, window.devicePixelRatio || 1); if (!W) return; const b = Math.round(W * dpr); if (cv.width !== b) { cv.width = b; cv.height = b; }
+    const now = (performance.now() - z.t0) / 1000, frozen = z.fired && z.busy, t = frozen ? z.fired.at : now, G = this.pulseGeom(t), g = cv.getContext('2d'), R = b * 0.36, c = b / 2, T = Math.PI * 2;
+    g.fillStyle = '#0b0710'; g.fillRect(0, 0, b, b);
+    const gl = g.createRadialGradient(c, c, R * 0.1, c, c, R * 1.3); gl.addColorStop(0, 'rgba(194,52,64,0.35)'); gl.addColorStop(1, 'rgba(194,52,64,0)'); g.fillStyle = gl; g.fillRect(0, 0, b, b);
+    g.strokeStyle = 'rgba(241,230,214,0.28)'; g.lineWidth = 2 * dpr; g.beginPath(); g.arc(c, c, R, 0, T); g.stroke();
+    for (let i = 0; i < 48; i++) { const a = (i / 48) * T, r0 = R * (i % 4 ? 0.94 : 0.88); g.beginPath(); g.moveTo(c + Math.cos(a) * r0, c + Math.sin(a) * r0); g.lineTo(c + Math.cos(a) * R, c + Math.sin(a) * R); g.stroke(); }
+    const arc = (m, hw, col, dash) => { g.strokeStyle = col; g.lineWidth = 12 * dpr; g.setLineDash(dash ? [6 * dpr, 5 * dpr] : []); g.beginPath(); g.arc(c, c, R, m - hw, m + hw); g.stroke(); g.setLineDash([]); };
+    arc(G.c, G.hw, z.id === 'pulse1' ? '#ffc24a' : '#7fd6a4', false);
+    if (z.id === 'pulse1' && z.fired) arc(G.c + 0.17 * T, 0.07 * T, '#ff5a6a', true);
+    const th = z.fired ? z.fired.th : G.th;
+    g.strokeStyle = '#fff3e8'; g.lineWidth = 3 * dpr; g.beginPath(); g.moveTo(c, c); g.lineTo(c + Math.cos(th) * R * 1.08, c + Math.sin(th) * R * 1.08); g.stroke();
+    g.fillStyle = '#ff4a5a'; g.beginPath(); g.arc(c, c, R * 0.14 * (1 + 0.08 * Math.sin(now * 6)), 0, T); g.fill();
+    if (frozen) { const k = Math.min(1, now - z.fired.at); g.strokeStyle = 'rgba(255,243,232,' + (1 - k).toFixed(2) + ')'; g.lineWidth = 4 * dpr; g.beginPath(); g.arc(c, c, R * (0.15 + k * 1.2), 0, T); g.stroke(); }
+    g.font = '600 ' + Math.round(12 * dpr) + 'px "IBM Plex Sans", sans-serif'; g.textAlign = 'center'; g.fillStyle = '#cdbfd2';
+    g.fillText(z.id === 'pulse1' ? 'PREDICTED WEAK PHASE' : 'RECALIBRATED WEAK PHASE', c, b - 12 * dpr);
+    if (z.id === 'pulse1' && z.fired) { g.fillStyle = '#ff9a8a'; g.fillText('ACTUAL NODE PHASE \u2014 THE STRUCTURE HAD SHIFTED', c, 18 * dpr); }
+  }
+  // Sprint 2 minigames (Ch. 8, 23, 29). Local to the event owner's screen; the grade goes to the host as a GAME command and feeds the legacy values.
+  mgRef = React.createRef();
+  mgState(key, eid, kind, P, seed) {
+    if (this.mz && this.mz.key === key) return this.mz;
+    const rnd = (k) => { const x = Math.sin(seed * 12.9898 + k * 78.233) * 43758.5453; return x - Math.floor(x); };
+    const now = performance.now(), z = { key, eid, kind, P: P || {}, t0: now, last: now, msg: '', color: '#cdbfd2', done: false, sent: false, hold: 0, started: kind === 'eighteen', tt: 0, trail: [] };
+    if (kind === 'eighteen') {
+      z.s = 140 + Math.round(rnd(1) * 50); z.dz = 30 + Math.round(rnd(2) * 50); z.dl = 12; z.sel = null; z.drag = null; z.sig = new Float32Array(960);
+      for (let i = 0; i < 960; i++) { const m = i / 4, h = Math.sin(i * 91.7 + seed) * 43758.5, n = h - Math.floor(h) - 0.5, bg = 0.28 * Math.sin(m / 23 + seed) + 0.18 * Math.sin(m / 9.3 + seed * 2) + n * 0.32;
+        const quiet = m >= z.s && m < z.s + 18, drop = m >= z.dz && m < z.dz + z.dl;
+        z.sig[i] = drop ? 0 : bg + (quiet ? 0 : 0.75 * Math.sin((2 * Math.PI * m) / 3.1) * (0.65 + 0.35 * Math.sin((2 * Math.PI * m) / 26))); }
+    }
+    const shuffle = (arr, k0) => { for (let i = arr.length - 1; i > 0; i--) { const j = Math.floor(rnd(10 + i + k0 * 17) * (i + 1)), t = arr[i]; arr[i] = arr[j]; arr[j] = t; } return arr; };
+    if (kind === 'sort') { z.cards = shuffle(z.P.cards.slice(), 0); z.i = 0; z.ok = 0; z.T = 75; z.fb = ''; }
+    if (kind === 'negotiate') { z.rounds = z.P.rounds.map((r, k) => ({ voss: r.voss, pre: r.pre, opts: shuffle(r.opts.slice(), k + 1) })); z.i = 0; z.pts = 0; z.firm = 0; z.T = 9; z.wait = 0; z.picked = null; z.fb = ''; }
+    if (kind === 'capture') { z.d = 40; z.v = 0.34; z.fuel = 100; z.out = 0; }
+    if (kind === 'entry') { z.a = -6.3 + (rnd(3) > 0.5 ? 1 : -1) * (0.6 + rnd(4) * 0.4); z.fuel = z.P.fuel || 100; z.T = 20; z.ph = rnd(5) * 6; }
+    this.mz = z; return z;
+  }
+  mgStart() { const z = this.mz; if (!z || z.started) return; z.started = true; z.t0 = z.last = performance.now(); this.forceUpdate(); }
+  mgFinish(grade, val, msg) {
+    const z = this.mz; if (!z || z.done) return; z.done = true; z.hold = 0; z.msg = msg; z.color = grade === 'good' ? '#7fd6a4' : grade === 'ok' ? '#ffd27a' : '#ff6b6b'; this.forceUpdate();
+    setTimeout(() => { if (this._dead || this.mz !== z || z.sent) return; z.sent = true; this.send({ type: 'GAME', e: z.eid, grade, v: val == null ? null : val }); }, 1700);
+  }
+  mgTick = () => { this._mraf = 0; if (this._dead || !this._mgLive) return; this.stepMG(); this.drawMG(); this._mraf = requestAnimationFrame(this.mgTick); };
+  stepMG() {
+    const z = this.mz; if (!z) return; const now = performance.now(), dt = Math.min(0.05, (now - z.last) / 1000); z.last = now; if (z.done || !z.started) return;
+    const el = (now - z.t0) / 1000;
+    if (z.kind === 'capture') {
+      if (z.hold && z.fuel > 0) { z.v += z.hold * 0.07 * dt; z.fuel = Math.max(0, z.fuel - 12 * dt); }
+      z.d -= z.v * 15 * dt; if (z.v > 0.03 + 0.012 * Math.max(0, z.d) || z.v < 0) z.out += dt;
+      if ((z.tt += dt) > 0.12) { z.tt = 0; z.trail.push([z.d, z.v]); if (z.trail.length > 500) z.trail.shift(); }
+      if (z.d <= 0) { z.d = 0; const v = z.v; let gr = v <= 0.05 ? 'good' : v <= 0.12 ? 'ok' : 'bad'; if (gr === 'good' && z.out > 2.5) gr = 'ok';
+        this.mgFinish(gr, v, 'Contact at ' + v.toFixed(3) + ' m/s' + (gr === 'good' ? '. Captured.' : gr === 'ok' ? ': firm, within limits.' : ': too fast.')); }
+      else if (z.d > 52 || el > 90) this.mgFinish('bad', null, 'Bridge drifted out of the approach window.');
+    } else if (z.kind === 'entry') {
+      z.a += (0.55 * Math.sin(el * 0.7 + z.ph) + 0.35 * Math.sin(el * 1.9 + z.ph * 2)) * dt;
+      if (z.hold && z.fuel > 0) { z.a += z.hold * 1.1 * dt; z.fuel = Math.max(0, z.fuel - 9 * dt); }
+      z.a = Math.max(-10, Math.min(-3, z.a)); z.T = Math.max(0, 20 - el);
+      if (z.T <= 0) { const a = z.a, gr = Math.abs(a + 6.3) <= 0.35 ? 'good' : a >= -7.4 && a <= -5.2 ? 'ok' : 'bad';
+        this.mgFinish(gr, a, 'Entry interface at ' + a.toFixed(2) + '°' + (gr === 'good' ? ': dead centre.' : gr === 'ok' ? ': inside the corridor.' : ': outside the corridor.')); }
+    } else if (z.kind === 'sort') { z.T = Math.max(0, z.T - dt); this.mgBar(z.T / 75); if (z.T <= 0) this.mgSortEnd(); }
+    else if (z.kind === 'negotiate') {
+      if (z.wait > 0) { z.wait -= dt; if (z.wait <= 0) { z.i++; z.picked = null; z.fb = ''; z.T = 9; if (z.i >= z.rounds.length) this.mgTalkEnd(); else this.forceUpdate(); } }
+      else { z.T = Math.max(0, z.T - dt); this.mgBar(z.T / 9); if (z.T <= 0) this.mgReply(null); }
+    }
+  }
+  mgBarRef = React.createRef();
+  mgBar(p) { const b = this.mgBarRef.current; if (b) { b.style.width = (Math.round(p * 1000) / 10) + '%'; b.style.background = p < 0.25 ? '#ff6b6b' : '#ffd27a'; } }
+  mgSortPick(bin) {
+    const z = this.mz; if (!z || z.kind !== 'sort' || z.done || !z.started) return; const c = z.cards[z.i], ok = c.bin === bin, lab = z.P.bins.find((b) => b.id === c.bin).label.toLowerCase();
+    if (ok) z.ok++; z.fb = ok ? 'Right: ' + lab + '.' : 'No: that one is ' + lab + '.'; z.fbColor = ok ? '#7fd6a4' : '#ff6b6b'; z.i++;
+    if (z.i >= z.cards.length) this.mgSortEnd(); else this.forceUpdate();
+  }
+  mgSortEnd() { const z = this.mz, n = z.cards.length, gr = z.ok >= n - 1 ? 'good' : z.ok >= n - 3 ? 'ok' : 'bad'; this.mgFinish(gr, z.ok, (z.T <= 0 ? 'Shift change. ' : '') + 'Filed ' + z.ok + ' of ' + n + ' records correctly.'); }
+  mgReply(k) {
+    const z = this.mz; if (!z || z.kind !== 'negotiate' || z.done || !z.started || z.wait > 0) return; const o = k == null ? null : z.rounds[z.i].opts[k], kd = o ? o.k : 'none';
+    z.pts += { firm: 2, angry: 0, concede: -1, none: -1 }[kd]; if (kd === 'firm') z.firm++; z.fb = z.P.fb[kd]; z.fbColor = kd === 'firm' ? '#7fd6a4' : kd === 'angry' ? '#ffd27a' : '#ff6b6b'; z.picked = k; z.wait = 1.6; this.forceUpdate();
+  }
+  mgTalkEnd() { const z = this.mz, gr = z.pts >= 7 ? 'good' : z.pts >= 3 ? 'ok' : 'bad'; this.mgFinish(gr, z.firm, 'Naomi held the line in ' + z.firm + ' of ' + z.rounds.length + ' exchanges.'); }
+  mgPointer(ev, k) {
+    const z = this.mz, cv = this.mgRef.current; if (!z || !cv || z.kind !== 'eighteen' || z.done) return;
+    const r = cv.getBoundingClientRect(), m = Math.max(0, Math.min(240, ((ev.clientX - r.left - 10) / Math.max(1, r.width - 20)) * 240));
+    if (k === 'down') { z.drag = m; z.sel = [m, m]; try { cv.setPointerCapture(ev.pointerId); } catch (err) { /* ignore */ } }
+    else if (z.drag != null) { z.sel = [Math.min(z.drag, m), Math.max(z.drag, m)]; if (k === 'up') { z.drag = null; this.forceUpdate(); } }
+  }
+  mgMark() {
+    const z = this.mz; if (!z || z.done || !z.sel || z.sel[1] - z.sel[0] < 2) return; const a = z.sel[0], b = z.sel[1];
+    const iou = (lo, hi) => Math.max(0, Math.min(b, hi) - Math.max(a, lo)) / (Math.max(b, hi) - Math.min(a, lo));
+    const t = iou(z.s, z.s + 18), q = iou(z.dz, z.dz + z.dl), gr = q > t && q > 0.15 ? 'glitch' : t >= 0.6 ? 'good' : t >= 0.3 ? 'ok' : 'bad';
+    this.mgFinish(gr, t, gr === 'good' ? 'That’s it: valid data, the background moving, the signature gone.' : gr === 'ok' ? 'Close: the edges are loose.' : gr === 'glitch' ? 'That stretch has no valid data at all.' : 'Nothing unusual there.');
+  }
+  drawMG() {
+    const cv = this.mgRef.current, z = this.mz; if (!cv || !z) return;
+    const W = cv.clientWidth, H = Math.round(W / 2), dpr = Math.min(2, window.devicePixelRatio || 1); if (!W) return;
+    if (cv.width !== Math.round(W * dpr) || cv.height !== Math.round(H * dpr)) { cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); }
+    const g = cv.getContext('2d'), fs = Math.max(10, Math.round(W / 52)); g.setTransform(dpr, 0, 0, dpr, 0, 0); g.fillStyle = '#0b0710'; g.fillRect(0, 0, W, H);
+    g.font = '600 ' + fs + 'px "IBM Plex Sans", sans-serif'; g.lineWidth = 1; g.setLineDash([]);
+    if (z.kind === 'eighteen') this.drawEighteen(g, W, H, z, fs); else if (z.kind === 'capture') this.drawCapture(g, W, H, z, fs); else this.drawEntry(g, W, H, z, fs);
+    if (!z.started) { g.fillStyle = 'rgba(11,7,16,0.62)'; g.fillRect(0, 0, W, H); g.fillStyle = '#fff3e8'; g.textAlign = 'center'; g.fillText(z.kind === 'capture' ? 'Press “Begin approach” when ready' : 'Press “Begin entry” when ready', W / 2, H / 2); }
+  }
+  drawEighteen(g, W, H, z, fs) {
+    const x0 = 10, x1 = W - 10, y0 = fs * 3.2, yb = H * 0.7, mid = (y0 + yb) / 2, amp = (yb - y0) / 2.7, X = (m) => x0 + (m / 240) * (x1 - x0);
+    g.fillStyle = '#cdbfd2'; g.textAlign = 'left'; g.fillText('SELENE · MAGNETOMETER · 4 HOURS', x0, fs * 1.3);
+    g.strokeStyle = 'rgba(241,230,214,0.08)'; for (let m = 0; m <= 240; m += 30) { g.beginPath(); g.moveTo(X(m), y0); g.lineTo(X(m), yb); g.stroke(); }
+    if (z.sel) { const a = z.sel[0], b = z.sel[1]; g.fillStyle = 'rgba(255,243,232,0.12)'; g.fillRect(X(a), y0, X(b) - X(a), yb - y0); g.strokeStyle = '#fff3e8'; g.beginPath(); g.moveTo(X(a), y0); g.lineTo(X(a), yb); g.moveTo(X(b), y0); g.lineTo(X(b), yb); g.stroke();
+      if (!z.done) { g.fillStyle = '#fff3e8'; g.textAlign = 'center'; g.fillText(Math.round(b - a) + ' min', Math.max(x0 + fs * 2, Math.min(x1 - fs * 2, (X(a) + X(b)) / 2)), y0 - fs * 0.4); } }
+    g.strokeStyle = '#ffb0c8'; g.lineWidth = 1.2; g.beginPath(); for (let i = 0; i < z.sig.length; i++) { const x = X(i / 4), y = mid - z.sig[i] * amp; if (i) g.lineTo(x, y); else g.moveTo(x, y); } g.stroke(); g.lineWidth = 1;
+    const ys = H * 0.79, hs = Math.max(6, fs * 0.6); g.fillStyle = '#a89cae'; g.textAlign = 'left'; g.fillText('DATA QUALITY', x0, ys - fs * 0.35);
+    g.fillStyle = '#3a8a5a'; g.fillRect(x0, ys, x1 - x0, hs); g.fillStyle = '#c23440'; g.fillRect(X(z.dz), ys, X(z.dz + z.dl) - X(z.dz), hs);
+    g.fillStyle = '#a89cae'; for (let m = 0; m <= 240; m += 60) { g.textAlign = m === 0 ? 'left' : m === 240 ? 'right' : 'center'; g.fillText('0' + m / 60 + ':00', X(m), H - fs * 0.45); }
+    if (z.done) { const box = (lo, hi, col, label) => { g.strokeStyle = col; g.lineWidth = 2; g.strokeRect(X(lo), y0, X(hi) - X(lo), yb - y0); g.lineWidth = 1; g.fillStyle = col; g.textAlign = 'center'; g.fillText(label, Math.max(x0 + fs * 6, Math.min(x1 - fs * 6, (X(lo) + X(hi)) / 2)), y0 - fs * 0.4); };
+      box(z.s, z.s + 18, '#7fd6a4', 'THE EIGHTEEN MINUTES'); box(z.dz, z.dz + z.dl, '#ff6b6b', 'TELEMETRY DROPOUT'); }
+  }
+  drawCapture(g, W, H, z, fs) {
+    const x0 = fs * 3.4, x1 = W - fs * 1.4, y0 = fs * 3, y1 = H - fs * 2.4, VM = 0.6;
+    const X = (d) => x0 + (1 - Math.max(0, Math.min(45, d)) / 45) * (x1 - x0), Y = (v) => y1 - (Math.max(-0.04, Math.min(VM, v)) / VM) * (y1 - y0), C = (d) => 0.03 + 0.012 * d;
+    g.fillStyle = 'rgba(127,214,164,0.13)'; g.beginPath(); g.moveTo(X(45), Y(0)); for (let d = 45; d >= 0; d--) g.lineTo(X(d), Y(C(d))); g.lineTo(X(0), Y(0)); g.closePath(); g.fill();
+    g.strokeStyle = '#7fd6a4'; g.lineWidth = 1.5; g.beginPath(); for (let d = 45; d >= 0; d--) { if (d === 45) g.moveTo(X(d), Y(C(d))); else g.lineTo(X(d), Y(C(d))); } g.stroke(); g.lineWidth = 1;
+    g.fillStyle = 'rgba(127,214,164,0.45)'; g.fillRect(X(2), Y(0.05), X(0) - X(2), Y(0) - Y(0.05));
+    g.strokeStyle = 'rgba(241,230,214,0.35)'; g.beginPath(); g.moveTo(x0, y0); g.lineTo(x0, y1); g.lineTo(x1, y1); g.stroke();
+    g.fillStyle = '#a89cae'; g.textAlign = 'right'; [0, 0.2, 0.4, 0.6].forEach((v) => g.fillText(v.toFixed(1), x0 - fs * 0.4, Y(v) + fs * 0.35));
+    g.textAlign = 'center'; [40, 30, 20, 10, 0].forEach((d) => g.fillText(String(d), X(d), y1 + fs * 1.2)); g.fillText('RANGE TO SELENE (m)', (x0 + x1) / 2, H - fs * 0.3);
+    g.textAlign = 'left'; g.fillText('CLOSING RATE (m/s)', x0, y0 - fs * 0.5); g.textAlign = 'right'; g.fillStyle = '#7fd6a4'; g.fillText('CAPTURE < 0.05', x1, y0 - fs * 0.5);
+    g.fillStyle = 'rgba(255,243,232,0.35)'; z.trail.forEach((p) => g.fillRect(X(p[0]) - 1, Y(p[1]) - 1, 2, 2));
+    const inside = z.v >= 0 && z.v <= C(Math.max(0, z.d)); g.fillStyle = inside ? '#fff3e8' : '#ff6b6b'; g.beginPath(); g.arc(X(z.d), Y(z.v), fs * 0.45, 0, Math.PI * 2); g.fill();
+    g.fillStyle = '#fff3e8'; g.textAlign = 'left'; g.fillText('RANGE ' + Math.max(0, z.d).toFixed(1) + ' m   RATE ' + z.v.toFixed(3) + ' m/s   RCS ' + Math.round(z.fuel) + ' %', x0, fs * 1.3);
+  }
+  drawEntry(g, W, H, z, fs) {
+    const sx = W * 0.62, el = z.started ? Math.min(1, 1 - z.T / 20) : 0;
+    g.save(); g.beginPath(); g.rect(0, 0, sx, H); g.clip();
+    g.fillStyle = 'rgba(200,208,232,0.5)'; for (let i = 0; i < 40; i++) g.fillRect((i * 97) % sx, (i * 53) % (H * 0.6), 1, 1);
+    const R = W * 1.3, cx = sx * 0.5, cy = H * 0.7 + R;
+    g.fillStyle = 'rgba(122,170,255,0.2)'; g.beginPath(); g.arc(cx, cy, R + H * 0.09, 0, Math.PI * 2); g.fill();
+    g.fillStyle = '#1e5aa8'; g.beginPath(); g.arc(cx, cy, R, 0, Math.PI * 2); g.fill();
+    const th = (-z.a * 4 * Math.PI) / 180, ax = sx * 0.05, ay = H * 0.16, L = sx * 0.95, dx = Math.cos(th), dy = Math.sin(th);
+    g.strokeStyle = 'rgba(255,243,232,0.35)'; g.setLineDash([5, 5]); g.beginPath(); g.moveTo(ax, ay); g.lineTo(ax + dx * L, ay + dy * L); g.stroke(); g.setLineDash([]);
+    const px = ax + dx * L * el * 0.8, py = ay + dy * L * el * 0.8;
+    if (el > 0.6) { g.fillStyle = 'rgba(255,140,60,' + ((el - 0.6) * 1.5).toFixed(2) + ')'; g.beginPath(); g.arc(px, py, fs * 1.1, 0, Math.PI * 2); g.fill(); }
+    g.fillStyle = '#fff3e8'; g.beginPath(); g.arc(px, py, fs * 0.4, 0, Math.PI * 2); g.fill(); g.restore();
+    const gx = W * 0.7, gw = W * 0.08, gy0 = fs * 3, gy1 = H - fs * 1.4, A = (a) => gy0 + ((-4 - a) / 5) * (gy1 - gy0), band = (hi, lo, col) => { g.fillStyle = col; g.fillRect(gx, A(hi), gw, A(lo) - A(hi)); };
+    band(-4, -5.2, 'rgba(255,107,107,0.22)'); band(-5.2, -7.4, 'rgba(127,214,164,0.2)'); band(-5.95, -6.65, 'rgba(127,214,164,0.5)'); band(-7.4, -9, 'rgba(255,107,107,0.22)');
+    g.fillStyle = '#a89cae'; g.textAlign = 'right'; for (let a = -4; a >= -9; a--) g.fillText(a + '°', gx - fs * 0.4, A(a) + fs * 0.35);
+    g.textAlign = 'left'; const lx = gx + gw + fs * 0.5; g.fillStyle = '#ff6b6b'; g.fillText('SKIP OUT', lx, A(-4.6) + fs * 0.35); g.fillText('TOO STEEP', lx, A(-8.2) + fs * 0.35); g.fillStyle = '#7fd6a4'; g.fillText('−6.3°', lx, A(-6.3) + fs * 0.35);
+    g.strokeStyle = '#fff3e8'; g.lineWidth = 3; g.beginPath(); g.moveTo(gx - fs * 0.3, A(z.a)); g.lineTo(gx + gw + fs * 0.2, A(z.a)); g.stroke(); g.lineWidth = 1;
+    g.fillStyle = '#fff3e8'; g.textAlign = 'left'; g.fillText('ENTRY INTERFACE IN ' + Math.ceil(z.T) + ' s   γ ' + z.a.toFixed(2) + '°   RCS ' + Math.round(z.fuel) + ' %', fs * 0.6, fs * 1.3);
+  }
+  openStation(id) { const role = ['Kiran', 'Mateo', 'Leila', 'Naomi'].includes(id) ? id : null; this.setState((s) => ({ panel: true, station: id, closedEv: null, selRole: role || s.selRole })); }
+  closePanel() { const S = this.S; this.setState({ panel: false, station: null, closedEv: S && S.phase === 'ops' ? S.mi + ':' + S.ops.ei : null }); }
+  componentDidUpdate() {
+    if (this._pulseLive && !this._praf) this._praf = requestAnimationFrame(this.pulseTick);
+    if (this._mgLive && !this._mraf) this._mraf = requestAnimationFrame(this.mgTick);
+    const S = this.S, ph = S ? S.mi + ':' + S.phase : null;
+    if (ph !== this._lastPh) { this._lastPh = ph; if (this.state.panel || this.state.station) this.setState({ panel: false, station: null }); }
+    const evKey = S && S.phase === 'ops' ? S.mi + ':' + S.ops.ei : null;
+    if (evKey && evKey !== this._evIntro) { this._evIntro = evKey; this.setState({ closedEv: evKey, intro: evKey }); clearTimeout(this.introT); this.introT = setTimeout(() => { if (!this._dead && this.state.intro === evKey) this.setState((q) => ({ intro: null, closedEv: q.closedEv === evKey ? null : q.closedEv })); }, 2600); }
+    this.syncWorld(); this.scoreSync();
+  }
+  // Music follows the story: hall → 'missions'; story sets → their scene's track; storm, Node and pulses → 'climax'; ending → 'epilogue'.
+  scoreSync() {
+    const mu = this.score, S = this.S, E = this.E; if (!mu) return; let t = 'missions';
+    if (S && E && S.phase === 'ending') t = 'epilogue';
+    else if (S && E && S.phase === 'ops') {
+      const myRole = E.ROLES.find((x) => S.seats[x] === this.me) || null, g = this.stageOf(S, myRole), id = g.e && g.e.id;
+      if (/^(pulse1|pulse2|storm|node|breath)$/.test(id || '')) t = 'climax';
+      else if (/^(open|letter)$/.test(id || '')) t = 'epilogue';
+      else if (g.set) t = { office: 'aegis', archive: 'aegis', hospital: 'street', apartment: 'street', lab: 'lab', briefing: 'geneva' }[g.set] || 'missions';
+    }
+    mu.play(t);
+  }
+  syncWorld() {
+    const W = this.W, S = this.S, E = this.E; if (!W || !S || !E) return;
+    const R = E.ROLES, myRole = R.find((x) => S.seats[x] === this.me) || null, m = E.mission(S), ph = S.phase, story = !!m.story;
+    let r = null; try { r = !story && ph === 'design' ? E.evaluate(S) : null; } catch (err) { r = null; }
+    const e = ph === 'ops' ? E.curEvent(S) : null, SC = { pass: '#7fd6a4', check: '#ffd27a', fail: '#ff6b6b' }, open = e && !S.ops.chosen;
+    const crew = {}; R.forEach((x) => { crew[x] = ph === 'design' && !story ? (x === 'Naomi' ? null : !S.seats[x] || S.ready[x] ? 'ready' : 'work') : open && e.owner === x ? 'need' : null; });
+    const hl = {};
+    if (ph === 'design') { if (myRole && myRole !== 'Naomi' && !S.ready[myRole]) hl[myRole] = true; if (myRole === 'Naomi' || (r && r.red)) hl.board = true; }
+    else if (open) { hl[e.owner] = true; hl.bay = true; }
+    const bud = r ? r.metrics.find((x) => /budget|cost|money/i.test((x.k || '') + ' ' + (x.label || ''))) : null;
+    W.set({ mission: m.id, story, phase: ph, player: myRole || 'Kiran', crew, highlight: hl, red: !!(r && r.red), alert: !!open,
+      gauges: r ? r.metrics.slice(0, 4).map((x) => ({ pct: x.pct, color: SC[x.status] || '#ffd27a' })) : null,
+      gates: r ? r.gates.map((g) => SC[g.status] || '#ffd27a') : [], budget: bud ? bud.pct : null, paused: !!this._panelOpen, ...(() => { const g = this.stageOf(S, myRole); return { set: g.set, cast: g.cast, speaker: g.speaker, variant: g.variant }; })() });
+  }
+
+  componentDidMount() {
+    const url = (p) => new URL(p, document.baseURI).href;
+    import(url('game/music.js')).then((mm) => { if (this._dead) return; this.score = mm.music(); this.scoreSync(); }).catch((err) => console.warn(err));
+    let me = '';
+    try { me = sessionStorage.getItem('tlf-cid') || ''; if (!me) { me = 'c' + Math.random().toString(36).slice(2, 10); sessionStorage.setItem('tlf-cid', me); } } catch (e) { me = 'c' + Math.random().toString(36).slice(2, 10); }
+    this.me = me;
+    let name = '', hasSave = false;
+    try { name = localStorage.getItem('tlf-name') || ''; hasSave = !!localStorage.getItem('tlf-mlab-save'); } catch (e) { /* storage blocked */ }
+    this.setState({ name, hasSave });
+    Promise.all([import(url('game/mission-engine.js')), import(url('game/net.js')), import(url('game/portraits.js'))])
+      .then(([E, N, P]) => { if (this._dead) return; this.E = E; this.N = N; this.P = P; this.setState({ ready: true }); if (this.props.fromStory) this.autoStory(); })
+      .catch((e) => this.setState({ status: 'Could not load the game: ' + (e.message || e) }));
+    this.tickI = setInterval(() => this.onTick(), 1000);
+    import(url('game/bg-timer.js')).then((b) => { if (this._dead) return; clearInterval(this.tickI); this.tickI = 0; this.stopTick = b.bgTicker(() => this.onTick(), 1000); }).catch(() => {});
+    try { const rc = sessionStorage.getItem('tcs-room'); if (rc) this.setState({ joinCode: rc }); } catch (e) { /* ignore */ }
+    this.onVis = () => {
+      if (!this.isHost() || !this.S) return;
+      const T = this.S.ops && this.S.ops.timed;
+      if (document.hidden && T && T.state === 'running' && !this.S.paused) { this.autoPaused = true; this.hostDo({ type: 'PAUSE', v: true }, { host: true, id: this.me }); }
+      else if (!document.hidden && this.autoPaused) { this.autoPaused = false; this.hostDo({ type: 'PAUSE', v: false }, { host: true, id: this.me }); }
+    };
+    document.addEventListener('visibilitychange', this.onVis);
+    window.__mlab = this;
+    this.onEsc = (ev) => { if ((ev.key === ' ' || ev.key === 'Enter') && this._pulseLive && !(ev.target && ev.target.closest && ev.target.closest('button,input,textarea'))) { ev.preventDefault(); this.firePulse(); return; } if (ev.key === 'Escape' && this._panelCanClose) { ev.preventDefault(); this.closePanel(); } };
+    window.addEventListener('keydown', this.onEsc);
+    this.onMgKey = (ev) => { const z = this.mz; if (!this._mgLive || !z || !(z.kind === 'capture' || z.kind === 'entry') || z.done || !z.started) return; if (ev.target && ev.target.closest && ev.target.closest('input,textarea')) return;
+      const up = ev.key === 'ArrowUp' || ev.key === 'w' || ev.key === 'W', dn = ev.key === 'ArrowDown' || ev.key === 's' || ev.key === 'S'; if (!up && !dn) return; ev.preventDefault();
+      if (ev.type === 'keydown') z.hold = up ? 1 : -1; else if ((up && z.hold === 1) || (dn && z.hold === -1)) z.hold = 0; };
+    window.addEventListener('keydown', this.onMgKey); window.addEventListener('keyup', this.onMgKey);
+  }
+  componentWillUnmount() {
+    if (this.score) this.score.stop(1);
+    this._dead = true; cancelAnimationFrame(this._praf); clearTimeout(this.introT); window.removeEventListener('keydown', this.onEsc); window.removeEventListener('keydown', this.onMgKey); window.removeEventListener('keyup', this.onMgKey); cancelAnimationFrame(this._mraf); if (this.W) { this.W.destroy(); this.W = null; } clearInterval(this.tickI); clearTimeout(this.aiT); clearTimeout(this.toastT);
+    document.removeEventListener('visibilitychange', this.onVis); if (this.stopTick) this.stopTick(); clearInterval(this.tickI); clearTimeout(this.relinkT);
+    if (this.net) this.net.close(); if (this.link) this.link.close();
+  }
+
+  isHost() { return this.state.mode === 'host' || this.state.mode === 'solo'; }
+  toast(t) { clearTimeout(this.toastT); this.setState({ toast: t }); this.toastT = setTimeout(() => this.setState({ toast: '' }), 3500); }
+  actorFor(id) { const role = this.E.ROLES.find((r) => this.S.seats[r] === id) || null; return { id, role, host: id === this.me }; }
+  // Story mode (Play from the title): no start screen or seat picker. The player is Kiran in briefings and design reviews, and takes the seat of whoever decides each story event.
+  autoStory() {
+    if (this.S) return; this.story = true;
+    this.startHost(false);
+    this.hostDo({ type: 'CLAIM', role: 'Kiran', quiet: true }, this.actorFor(this.me));
+    this.hostDo({ type: 'START' }, this.actorFor(this.me));
+  }
+  storyFollow() {
+    const S = this.S, E = this.E; if (!this.story || !S || !E) return;
+    const want = S.phase === 'ops' ? ((E.curEvent(S) || {}).owner || null) : (S.phase === 'brief' || S.phase === 'design' || S.phase === 'lobby') ? 'Kiran' : null;
+    if (want && E.ROLES.includes(want) && S.seats[want] !== this.me && !S.seats[want]) this.hostDo({ type: 'CLAIM', role: want, quiet: true }, this.actorFor(this.me));
+  }
+  hostDo(cmd, actor) {
+    const r = this.E.reduce(this.S, cmd, actor);
+    if (r.err) { if (actor.system) return; if (actor.id === this.me) this.toast(r.err); else if (this.net) this.net.send(actor.id, { t: 'err', text: r.err }); return; }
+    if (r.S === this.S) return;
+    this.S = r.S;
+    try { if (this.S.phase !== 'lobby') { localStorage.setItem('tlf-mlab-save', JSON.stringify(this.S)); } } catch (e) { /* storage full */ }
+    if (this.net) this.net.broadcast({ t: 'state', S: this.E.publicState(this.S) });
+    this.setState({ S: this.S });
+    this.storyFollow();
+    this.scheduleAI();
+  }
+  scheduleAI() {
+    if (this.aiT) return;
+    const d = ({ calm: 2200, normal: 1200, fast: 450 })[this.props.aiSpeed ?? 'normal'] || 1200;
+    this.aiAt = Date.now() + d; this.aiT = setTimeout(() => this.runAI(), d);
+  }
+  runAI() { clearTimeout(this.aiT); this.aiT = null; if (!this.S || this._dead) return; const a = this.E.aiStep(this.S); if (a) this.hostDo(a, { system: true, host: true }); }
+  onTick() {
+    const now = Date.now();
+    // Hidden host tab: page timers are throttled, so an overdue AI step runs from this (worker-driven) tick.
+    if (this.aiT && now > this.aiAt + 1500) this.runAI();
+    // Heartbeat: the client pings every 4 s; 15 s of silence from the host means the link is gone.
+    if (this.state.mode === 'client' && this.link && !this.relinking) { if (now - (this.pingAt || 0) > 4000) { this.pingAt = now; this.link.send({ t: 'ping' }); } if (this.link.mode === 'online' && this.lastPong && now - this.lastPong > 15000) this.lostHost(); }
+    if (this.isHost() && this.seen) for (const [id, t] of this.seen) if (now - t > 20000) { this.seen.delete(id); if (this.live && this.live.has(id)) this.onHostMsg(id, { t: 'bye' }); }
+    if (!this.isHost() || !this.S) return;
+    const T = this.S.ops && this.S.ops.timed;
+    if (T && T.state === 'running' && (this.props.timedTasks ?? 'timed') === 'timed') this.hostDo({ type: 'TICK' }, { system: true });
+  }
+  send(cmd) {
+    if (this.state.mode === 'client') { if (this.link) this.link.send({ t: 'cmd', cmd }); }
+    else this.hostDo(cmd, this.actorFor(this.me));
+  }
+  onHostMsg(id, m) {
+    if (!this.S || !m) return;
+    if (!this.live) this.live = new Set();
+    if (m.t !== 'bye') (this.seen || (this.seen = new Map())).set(id, Date.now());
+    if (m.t === 'ls') { this.lsIn(id, m); return; }
+    if (m.t === 'ping') { this.net.send(id, { t: 'pong' }); return; }
+    if (m.t === 'hello') { this.live.add(id);
+      if (!this.S.players[id]) { this.hostDo({ type: 'JOIN', name: m.name }, { id }); const r = this.seatMemo && this.seatMemo[id]; if (r && !this.S.seats[r]) this.hostDo({ type: 'CLAIM', role: r, quiet: true }, this.actorFor(id)); }
+      else this.net.send(id, { t: 'state', S: this.E.publicState(this.S) });
+      if (this.coopOn) this.net.send(id, { t: 'ls', k: 'go', hostId: this.me });
+      return; }
+    if (m.t === 'bye') { this.live.delete(id); setTimeout(() => { if (this._dead || this.live.has(id) || !this.S) return; const r = this.E.ROLES.find((x) => this.S.seats[x] === id); if (r) (this.seatMemo || (this.seatMemo = {}))[id] = r; this.hostDo({ type: 'LEAVE' }, { id }); }, 120000); return; }
+    if (m.t === 'cmd' && m.cmd && typeof m.cmd.type === 'string' && !['TICK', 'PAUSE', 'RESET'].includes(m.cmd.type)) this.hostDo(m.cmd, this.actorFor(id));
+  }
+  // Co-op story: the same room carries the story chapters' lockstep messages (t: 'ls') to the main game page.
+  lsIn(id, m) {
+    if (m.k === 'go') { if (!this.isHost()) this.coopStart(false, m.hostId); return; }
+    if (this.lsFn) this.lsFn(id, m); else (this.lsBuf || (this.lsBuf = [])).push([id, m]);
+  }
+  coopStart(host, hostId) {
+    if (this.coopOn) return; this.coopOn = true;
+    const api = {
+      send: (x) => { if (this.link) this.link.send({ ...x, t: 'ls' }); },
+      broadcast: (x) => { if (this.net) this.net.broadcast({ ...x, t: 'ls' }); },
+      onMsg: (fn) => { this.lsFn = fn; const b = this.lsBuf || []; this.lsBuf = null; b.forEach(([i, x]) => fn(i, x)); },
+      sendTo: (id, x) => { if (this.net) this.net.send(id, { ...x, t: 'ls' }); },
+      onRelink: (fn) => { this.relinkFn = fn; }, onLink: (fn) => { this.linkFn = fn; },
+      seats: () => (this.S && this.S.seats) || {},
+      names: () => { const P = (this.S && this.S.players) || {}, o = {}; Object.keys(P).forEach((k) => (o[k] = (P[k] && P[k].name) || 'Player')); return o; },
+      startMissions: () => { if (this.isHost() && this.S && this.S.phase === 'lobby') this.hostDo({ type: 'START' }, this.actorFor(this.me)); },
+    };
+    this.forceUpdate();
+    if (this.props.onCoop) this.props.onCoop({ host, me: this.me, hostId: hostId || this.me, api });
+  }
+  coopGo() { if (!this.isHost() || this.coopOn) return; if (this.net) this.net.broadcast({ t: 'ls', k: 'go', hostId: this.me }); this.coopStart(true, this.me); }
+  startHost(online, fromSave) {
+    if (!this.E) return;
+    const E = this.E, name = (this.state.name || '').trim() || 'Host';
+    try { localStorage.setItem('tlf-name', name); } catch (e) { /* ignore */ }
+    let S = E.newState(Math.floor(Math.random() * 1e9));
+    if (fromSave) { try { const sv = JSON.parse(localStorage.getItem('tlf-mlab-save')); if (sv && sv.phase) { S = sv; S.players = {}; S.seats = { Kiran: null, Mateo: null, Leila: null, Naomi: null }; S.paused = false; } } catch (e) { /* bad save */ } }
+    this.S = S;
+    this.setState({ screen: 'room', mode: 'solo', code: '', S, status: 'Solo — AI teammates take the empty seats' });
+    this.hostDo({ type: 'JOIN', name }, { id: this.me, host: true });
+    if (online) this.openRoom();
+  }
+  async openRoom() {
+    if (this.net) return;
+    const code = this.N.makeCode();
+    this.setState({ status: 'Opening the room…', code, mode: 'host' });
+    this.net = await this.N.openHost(code, (id, m) => this.onHostMsg(id, m));
+    this.setState({ status: this.net.online ? 'Room open — share the code' : `Online rooms unavailable (${this.net.error}). Other tabs on this device can still join.` });
+  }
+  async join() {
+    if (!this.N) return;
+    const code = (this.state.joinCode || '').trim().toUpperCase();
+    if (code.length < 5) { this.toast('Enter the 5-letter room code'); return; }
+    const name = (this.state.name || '').trim() || 'Player';
+    try { localStorage.setItem('tlf-name', name); } catch (e) { /* ignore */ }
+    this.setState({ status: 'Connecting…' });
+    try {
+      await this.connect(code, name);
+      try { sessionStorage.setItem('tcs-room', code); } catch (e) { /* ignore */ }
+      this.setState({ mode: 'client', code, status: this.link.mode === 'local' ? 'Connected (same device)' : 'Connected' });
+    } catch (e) { this.setState({ status: 'Could not join: ' + this.N.errText(e) }); }
+  }
+  async connect(code, name) {
+    let link = null;
+    link = await this.N.joinRoom(code, this.me, (m) => this.onClientMsg(m), () => { if (link && this.link === link) this.lostHost(); });
+    this.link = link; this.lastPong = Date.now(); link.send({ t: 'hello', name }); return link;
+  }
+  onClientMsg(m) {
+    this.lastPong = Date.now(); if (!m) return;
+    if (m.t === 'ls') { this.lsIn(null, m); return; }
+    if (m.t === 'state') { this.S = m.S; this.setState({ S: m.S, screen: 'room' }); } else if (m.t === 'err') this.toast(m.text);
+  }
+  // Lost the host: retry with the same player id every 3 s for two minutes; the host keeps the seat that long.
+  lostHost() {
+    if (this.relinking || this._dead) return; this.relinking = true;
+    const old = this.link; this.link = null; try { if (old) old.close(); } catch (e) { /* ignore */ }
+    if (this.linkFn) this.linkFn(false);
+    const code = this.state.code, name = (this.state.name || '').trim() || 'Player'; let n = 0;
+    const attempt = async () => {
+      if (this._dead) return; n++; this.setState({ status: 'Connection lost — reconnecting (' + n + ')…' });
+      try { await this.connect(code, name); this.relinking = false; this.setState({ status: 'Reconnected' }); if (this.linkFn) this.linkFn(true); if (this.relinkFn) this.relinkFn(); }
+      catch (e) { if (n < 40) this.relinkT = setTimeout(attempt, 3000); else { this.relinking = false; this.setState({ status: 'Lost the host — rejoin with the same code' }); } }
+    };
+    this.relinkT = setTimeout(attempt, 1000);
+  }
+  imgFor(who, mood) {
+    const P = this.P; if (!P || !who || !P.ART || !P.ART[who]) return '';
+    const a = P.ART[who], al = (P.ALIAS && P.ALIAS[who]) || {};
+    const k = mood && a[mood] ? mood : mood && al[mood] && a[al[mood]] ? al[mood] : (((P.FALLBACK || {})[mood]) || []).find((x) => a[x]) || 'neutral';
+    return a[k] ? a.dir + a[k] : '';
+  }
+
+  renderVals() {
+    const s = this.state, E = this.E, S = s.S;
+    const v = {
+      toast: s.toast, isStart: s.screen === 'start' && !this.props.fromStory, isRoom: s.screen === 'room' && !!S && !!E,
+      nameVal: s.name, onName: (e) => this.setState({ name: e.target.value }),
+      joinVal: s.joinCode, onJoinCode: (e) => this.setState({ joinCode: e.target.value.toUpperCase() }), onJoinKey: (e) => { if (e.key === 'Enter') this.join(); },
+      onSolo: () => (this.props.coop && this.props.onSoloStory ? this.props.onSoloStory() : this.startHost(false)), onHost: () => this.startHost(true), onJoin: () => this.join(),
+      isCoopStart: !!this.props.coop, notCoopStart: !this.props.coop, hasExit: typeof this.props.onExit === 'function', exitLabel: this.props.fromStory ? '← Back to the title (restarts the game)' : '← Back to the title', onExit: () => this.props.onExit && this.props.onExit(), fromStory: !!this.props.fromStory,
+      hasSave: s.hasSave && !!s.ready, onContinue: () => this.startHost(false, true), startStatus: s.ready ? s.status : (s.status || 'Loading…'),
+    };
+    if (!v.isRoom) return v;
+    const R = E.ROLES, me = this.me, myRole = R.find((r) => S.seats[r] === me) || null, host = this.isHost();
+    const m = E.mission(S), ph = S.phase, story = !!m.story, money = E.money;
+    const r = !story && (ph === 'design' || ph === 'ops') ? E.evaluate(S) : null;
+    const pname = (id) => (S.players[id] || {}).name || 'Player';
+    const SC = { pass: '#7fd6a4', check: '#ffd27a', fail: '#ff6b6b' }, SL = { pass: 'PASS', check: 'CHECK', fail: 'FAIL' };
+    const RC = { Kiran: '#9ae0c0', Mateo: '#ffd27a', Leila: '#9ac8ff', Naomi: '#ffb0c8', Voss: '#d6b8ff', Elena: '#ffc89a', Room: '#a89cae' };
+    const e = ph === 'ops' ? E.curEvent(S) : null;
+    const talk = e && e.talk ? e.talk(S) : [];
+    const moodOf = (who) => { const l = talk.filter((x) => x[0] === who).pop(); return l ? l[2] : 'neutral'; };
+    const selRole = s.selRole || myRole || 'Kiran';
+    const stop = (ev) => { if (ev && ev.stopPropagation) ev.stopPropagation(); };
+    const bgOf = (p) => (p ? 'url("' + p + '")' : 'none');
+
+    v.crew = R.map((role) => {
+      const id = S.seats[role], mine = id === me, img = this.imgFor(role, moodOf(role));
+      return { name: role, job: E.ROLE_INFO[role].job, color: RC[role], img, imgBg: bgOf(img), hasImg: !!img, does: E.ROLE_INFO[role].does,
+        ctrl: mine ? 'You' : id ? pname(id) : 'AI teammate', ctrlColor: mine ? '#fff3e8' : id ? '#e2d4c4' : '#a89cae',
+        state: ph === 'design' ? (id ? (role === 'Naomi' ? 'Authorizes the launch' : S.ready[role] ? 'Ready' : 'Working…') : 'AI · always ready') : E.ROLE_INFO[role].does,
+        canTake: !id, canLeave: mine,
+        onTake: (ev) => { stop(ev); this.send({ type: 'CLAIM', role }); this.setState({ selRole: role }); },
+        onLeave: (ev) => { stop(ev); this.send({ type: 'RELEASE' }); },
+        onSelect: () => this.setState({ selRole: role }),
+        bd: ph === 'design' && role === selRole ? RC[role] : 'rgba(241,230,214,0.12)', bg: mine ? 'rgba(255,122,107,0.08)' : 'rgba(241,230,214,0.03)' };
+    });
+    v.lobbyRoles = v.crew;
+    v.missionName = ph === 'lobby' ? 'Crew' : ph === 'ending' ? 'The ending' : m.name;
+    v.chapters = ph === 'lobby' ? 'Before the campaign' : ph === 'ending' ? 'Epilogue' : m.chapters;
+    const stepsDef = story ? ['Briefing', 'Story', 'Report'] : ['Briefing', 'Design', 'Operations', 'Report'];
+    const cur = { brief: 0, design: 1, ops: story ? 1 : 2, report: story ? 2 : 3 }[ph];
+    v.steps = cur == null ? [] : stepsDef.map((label, i) => ({ label, bd: i === cur ? '#ff7a6b' : 'rgba(241,230,214,0.14)', col: i === cur ? '#fff3e8' : i < cur ? '#cdbfd2' : '#7d7186', bg: i === cur ? 'rgba(255,122,107,0.14)' : 'transparent' }));
+    const L = S.legacy;
+    v.chips = [['Evidence', L.evidence, '#9ae0c0'], ['Trust', L.trust, '#ffb0c8'], ['Risk', L.risk, L.risk >= 45 ? '#ff6b6b' : '#ffd27a'], ['Bond', L.bond, '#ffd27a'], ['Aegis', L.aegis, L.aegis >= 25 ? '#ff6b6b' : '#d6b8ff']]
+      .concat(L.dose ? [['Dose', L.dose, L.dose > 50 ? '#ff6b6b' : '#9ac8ff']] : []).map(([label, value, color]) => ({ label, value: String(value), color }));
+    v.showCode = !!s.code; v.code = s.code; v.status = s.status; v.isHost = host; v.canOpenRoom = s.mode === 'solo';
+    v.onOpenRoom = () => this.openRoom();
+    v.paused = !!S.paused; v.pauseLabel = S.paused ? 'Resume' : 'Pause'; v.onPause = () => this.hostDo({ type: 'PAUSE', v: !S.paused }, { host: true, id: me });
+    v.log = S.log.slice(-8).reverse().map((x) => ({ who: x.who, text: x.text, color: RC[x.who] || '#a89cae' }));
+    v.isLobby = ph === 'lobby'; v.isBrief = ph === 'brief'; v.isDesign = ph === 'design' && !!r; v.isOps = ph === 'ops' && !!e; v.isReport = ph === 'report' && !!S.report; v.isEnding = ph === 'ending' && !!S.ending;
+
+    const coop = !!this.props.coop && !this.story && !this.coopOn;
+    v.canStart = host; v.startLabel = coop ? 'Start the story together' : 'Start the campaign';
+    v.onStart = () => (coop ? this.coopGo() : this.send({ type: 'START' }));
+    v.canSkipStory = host && coop; v.onSkipStory = () => this.send({ type: 'START' });
+    v.lobbyNote = coop
+      ? (host ? (myRole ? `You play ${myRole}. Everyone plays the whole story together, from the prologue: whoever's character is on screen, speaking or doing the task takes the controls. AI teammates take the empty seats.` : 'No seat taken: you will drive the story and the AI crew plays the missions.') : 'Waiting for the host to start the story.')
+      : host ? (myRole ? `You play ${myRole}. AI teammates take the empty seats.` : 'No seat taken: you will watch the AI crew play.') : 'Waiting for the host to start.';
+
+    v.track = E.CAMPAIGN.map((id, i) => { const mm = E.MISSIONS[id], h = S.history[i];
+      return { name: mm.name, ch: mm.chapters, state: i < S.mi ? (h && h.score != null ? `${h.score}/100` : 'Done') : i === S.mi ? 'Now' : '', col: i === S.mi ? '#ff7a6b' : i < S.mi ? '#7fd6a4' : 'rgba(241,230,214,0.18)', tc: i <= S.mi ? '#fff3e8' : '#7d7186' }; });
+    v.question = m.question; v.brief = m.brief.map((t) => ({ t }));
+    v.briefNotes = m.id === 'bridge' ? [L.trust < 35 ? 'Trust is low: the board cut $400M from the budget.' : '', L.aegis >= 25 ? 'Aegis has leverage: launch services cost $100M more.' : '', L.evidence < 55 ? `Evidence is ${L.evidence}/100 — aiming the pulse will be uncertain.` : `Evidence is ${L.evidence}/100.`].filter(Boolean).map((t) => ({ t })) : [];
+    v.budgetLine = m.total ? `Budget ${money(m.total)} · protected reserve ${money(m.reserve)}` : 'Story chapter — no budget';
+    v.onBegin = () => this.send({ type: 'BEGIN' }); v.beginLabel = story ? 'Begin the chapter' : 'Open the design review';
+
+    if (r && ph === 'design') {
+      const canEdit = myRole === selRole;
+      v.tabs = R.map((role) => ({ label: role, onClick: () => this.setState({ selRole: role }), bd: role === selRole ? RC[role] : 'rgba(241,230,214,0.14)', col: role === selRole ? '#fff3e8' : '#b9a9be', bg: role === selRole ? 'rgba(241,230,214,0.06)' : 'transparent', mark: S.seats[role] ? (S.seats[role] === me ? 'you' : pname(S.seats[role])) : 'AI' }));
+      v.panelRole = selRole; v.panelJob = E.ROLE_INFO[selRole].job; v.panelColor = RC[selRole]; v.panelArtifact = E.ROLE_INFO[selRole].artifact.toLowerCase();
+      v.panelImg = this.imgFor(selRole, 'neutral'); v.panelHasImg = !!v.panelImg; v.panelBg = bgOf(v.panelImg); v.panelMine = canEdit;
+      v.panelWho = canEdit ? 'Your seat.' : S.seats[selRole] ? `Played by ${pname(S.seats[selRole])}.` : 'Played by an AI teammate.';
+      v.panelNote = canEdit ? '' : S.seats[selRole] ? `Only ${pname(S.seats[selRole])} can change these. Talk to them!` : `An AI teammate is choosing these and re-plans whenever someone else changes something. Take the seat to decide yourself.`;
+      v.decisions = m.decisions.filter((d) => d.role === selRole).map((d) => ({ label: d.label, help: d.help, options: d.options.map((o) => { const on = S.choices[d.id] === o.id;
+        return { label: o.label, sub: o.sub || '', locked: !canEdit, bg: on ? 'rgba(255,122,107,0.16)' : 'rgba(241,230,214,0.03)', bd: on ? '#ff7a6b' : 'rgba(241,230,214,0.14)', cursor: canEdit && !on ? 'pointer' : 'default', mark: on ? '●' : '○', markColor: on ? '#ff7a6b' : '#7d7186',
+          onClick: () => { if (canEdit && !on) this.send({ type: 'SET', d: d.id, o: o.id }); } }; }) }));
+      v.onSuggest = () => this.send({ type: 'AUTO' });
+      v.showReady = canEdit && myRole !== 'Naomi'; v.readyLabel = S.ready[myRole] ? 'Ready ✓ — click to keep working' : 'Mark my plan ready'; v.readyBg = S.ready[myRole] ? '#2c5a44' : 'transparent';
+      v.onReady = () => this.send({ type: 'READY', v: !S.ready[myRole] });
+      v.metrics = r.metrics.map((x) => ({ ...x, color: SC[x.status], w: Math.round(x.pct * 100) + '%' }));
+      v.gates = r.gates.map((g) => ({ ...g, color: SC[g.status], tag: SL[g.status] }));
+      v.scoreTotal = r.red ? '—' : String(r.score.total);
+      v.scoreNote = r.red ? `${r.red} red gate${r.red > 1 ? 's' : ''}: the mission can’t launch yet` : 'Projected score out of 100';
+      v.scoreParts = [['Science', r.score.science, 30], ['Engineering', r.score.engineering, 25], ['Safety', r.score.safety, 20], ['Reliability', r.score.reliability, 15], ['Budget', r.score.budget, 10]].map(([l, a, b]) => ({ l, a: `${a}/${b}`, w: Math.round(a / b * 100) + '%' }));
+      v.last = S.last; v.hasLast = !!S.last; v.aiNote = r.red ? (S.aiNote || '') : ''; v.hasAiNote = !!v.aiNote;
+      const waiting = R.filter((x) => x !== 'Naomi' && S.seats[x] && !S.ready[x]);
+      v.isNaomi = myRole === 'Naomi'; const goOk = !r.red && !waiting.length;
+      v.goDisabled = !goOk; v.goBg = goOk ? '#c23440' : 'rgba(241,230,214,0.1)'; v.goCursor = goOk ? 'pointer' : 'default'; v.goBd = goOk ? '#ffb0c8' : 'rgba(241,230,214,0.14)';
+      v.goText = r.red ? 'Every red gate must be fixed before Naomi can authorize the launch.' : waiting.length ? `Waiting for ${waiting.join(', ')} to mark their plan ready.` : S.seats.Naomi ? (v.isNaomi ? 'No red gates and everyone is ready. Your call.' : `Waiting for Naomi (${pname(S.seats.Naomi)}) to authorize.`) : 'Naomi’s AI teammate will authorize in a moment.';
+      v.onGo = () => this.send({ type: 'GO' });
+    }
+
+    if (e) {
+      const hidden = !!(e.private && myRole !== e.private);
+      v.evHidden = hidden; v.evShown = !hidden; v.evPrivateText = `${e.private} is inside Aegis. Nobody else can see what he sees until he comes back.`;
+      v.evChapter = e.chapter; v.evTitle = e.title; v.evIdx = `Event ${S.ops.ei + 1} of ${m.events.length}`; v.evLabel = e.label || ''; v.hasEvLabel = false;
+      const Lw = talk[0] && talk[0][0], Rw = (talk.find((x) => x[0] !== Lw) || [])[0];
+      v.hasTalk = talk.length > 0; v.talkL = this.imgFor(Lw, moodOf(Lw)); v.talkR = Rw ? this.imgFor(Rw, moodOf(Rw)) : ''; v.hasTalkL = !!v.talkL; v.hasTalkR = !!v.talkR; v.talkLBg = bgOf(v.talkL); v.talkRBg = bgOf(v.talkR);
+      v.lines = talk.map(([who, text]) => ({ who, text, color: RC[who] || '#e2d4c4' }));
+      v.evText = e.text(S, r) + (S.ops.enterText ? ' ' + S.ops.enterText : '');
+      const ownerHuman = !!S.seats[e.owner], canChoose = myRole === e.owner && !S.ops.chosen;
+      v.ownerLine = `${e.owner} decides${ownerHuman ? (S.seats[e.owner] === me ? ' — that’s you' : ` (${pname(S.seats[e.owner])})`) : ' (AI teammate)'}`; v.ownerColor = RC[e.owner];
+      v.notChosen = !S.ops.chosen;
+      { const au = E.eventOptions(S).find((o) => o.id === 'authorize'), armed = e.id === 'pulse1' || (e.id === 'pulse2' && au && !au.disabled);
+        const z = armed && canChoose && !hidden ? this.pulseState(S.mi + ':' + S.ops.ei, e.id) : null;
+        v.pulseOn = !!z && !z.done; this._pulseLive = v.pulseOn; v.showOptions = v.notChosen && !v.pulseOn;
+        if (z) { v.pulseRef = this.pulseRef; v.pulseTitle = e.id === 'pulse1' ? 'Fire the first pulse' : 'Fire the second pulse';
+          v.pulseHint = e.id === 'pulse1' ? 'The Echo Node breathes in a cycle. Kiran\u2019s model predicts its weak phase (amber). Fire when the needle crosses it.' : 'Kiran\u2019s updated model tracks the drifting weak phase (green) \u2014 narrower now. Fire when the needle is inside it.';
+          v.pulseCount = z.tries ? 'Attempts: ' + z.tries : ''; v.pulseMsg = z.msg; v.pulseMsgColor = z.color; v.onPulseFire = () => this.firePulse(); } }
+      { const gm = e.game, G = S.ops.game, seated = !!(gm && S.seats[e.owner]), mineG = myRole === e.owner;
+        const z = seated && mineG && !hidden && !G && !S.ops.chosen ? this.mgState(S.mi + ':' + S.ops.ei, e.id, gm.kind, gm.params ? gm.params(S) : {}, (S.seed % 100000) + S.mi * 7 + S.ops.ei) : null;
+        v.mgOn = !!z; this._mgLive = !!z; v.showOptions = v.showOptions && !(seated && !G);
+        v.mgWait = seated && !mineG && !G && !hidden; v.mgWaitText = gm ? e.owner + ' is ' + gm.doing + '…' : '';
+        v.hasGameRes = !!(gm && G) && !hidden; v.gameRes = G ? G.text : ''; v.gameResColor = G ? (G.grade === 'good' ? '#7fd6a4' : G.grade === 'ok' ? '#ffd27a' : '#ff6b6b') : '#cdbfd2';
+        v.gameResTag = gm && G ? gm.title + ' · ' + (G.grade === 'good' ? 'clean' : G.grade === 'ok' ? 'within limits' : 'off target') : '';
+        if (z) { v.mgRef = this.mgRef; v.mgTitle = gm.title; v.mgHint = typeof gm.hint === 'function' ? gm.hint(S) : gm.hint; v.mgMsg = z.msg; v.mgMsgColor = z.color;
+          v.mgStartable = !z.started; v.mgStartLabel = { capture: 'Begin approach', entry: 'Begin entry', sort: 'Open the archive', negotiate: 'Sit down with Voss' }[z.kind] || 'Begin'; v.onMgStart = () => this.mgStart();
+          v.mgMark = z.kind === 'eighteen' && !z.done; v.mgMarkDis = !z.sel || z.sel[1] - z.sel[0] < 2; v.mgMarkBg = v.mgMarkDis ? 'rgba(241,230,214,0.1)' : '#c23440'; v.mgMarkCursor = v.mgMarkDis ? 'default' : 'pointer'; v.onMgMark = () => this.mgMark();
+          v.mgHold = (z.kind === 'capture' || z.kind === 'entry') && z.started && !z.done; v.mgUpLabel = z.kind === 'capture' ? 'Thrust ▲' : 'Shallower ▲'; v.mgDownLabel = z.kind === 'capture' ? 'Brake ▼' : 'Steeper ▼';
+          v.onMgHoldUp = (ev) => { ev.preventDefault(); z.hold = 1; }; v.onMgHoldDown = (ev) => { ev.preventDefault(); z.hold = -1; }; v.onMgRelease = () => { z.hold = 0; };
+          v.mgCursor = z.kind === 'eighteen' && !z.done ? 'crosshair' : 'default';
+          v.onMgDown = (ev) => this.mgPointer(ev, 'down'); v.onMgMove = (ev) => this.mgPointer(ev, 'move'); v.onMgUp = (ev) => this.mgPointer(ev, 'up');
+          v.mgCanvas = z.kind === 'eighteen' || z.kind === 'capture' || z.kind === 'entry'; v.mgBarRef = this.mgBarRef; v.mgTimer = (z.kind === 'sort' || z.kind === 'negotiate') && z.started && !z.done;
+          v.mgSortOn = z.kind === 'sort' && z.started && !z.done;
+          if (v.mgSortOn) { const c = z.cards[z.i]; v.mgCardIdx = 'Record ' + (z.i + 1) + ' of ' + z.cards.length; v.mgCardText = c.t; v.mgBins = z.P.bins.map((b) => ({ label: b.label, sub: b.sub, onClick: () => this.mgSortPick(b.id) })); }
+          v.mgTalkOn = z.kind === 'negotiate' && z.started && !z.done;
+          if (v.mgTalkOn) { const rd = z.rounds[z.i]; v.mgRoundIdx = 'Exchange ' + (z.i + 1) + ' of ' + z.rounds.length; v.mgVossLine = rd.voss; v.mgHasPre = !!rd.pre; v.mgPre = rd.pre ? 'Naomi: “' + rd.pre + '”' : '';
+            v.mgReplies = rd.opts.map((o, k) => { const picked = z.picked === k, dis = z.wait > 0; return { label: o.t, dis, bg: picked ? 'rgba(255,122,107,0.16)' : 'rgba(241,230,214,0.03)', bd: picked ? '#ff7a6b' : dis ? 'rgba(241,230,214,0.14)' : 'rgba(255,122,107,0.6)', cursor: dis ? 'default' : 'pointer', onClick: () => this.mgReply(k) }; }); }
+          if (!z.done && z.fb) { v.mgMsg = z.fb; v.mgMsgColor = z.fbColor; } } }
+      v.evOptions = E.eventOptions(S).map((o) => { const dis = !canChoose || !!o.disabled;
+        return { label: o.label, sub: o.disabled ? (o.why || '') : (o.sub || ''), dis, op: o.disabled ? 0.45 : 1, cursor: dis ? 'default' : 'pointer', bd: canChoose && !o.disabled ? 'rgba(255,122,107,0.6)' : 'rgba(241,230,214,0.14)', onClick: () => { if (!dis) this.send({ type: 'CHOOSE', e: e.id, o: o.id }); } }; });
+      v.waitText = canChoose ? 'Your decision.' : ownerHuman ? `Waiting for ${e.owner}…` : `${e.owner}’s AI teammate is deciding…`;
+      const ch = S.ops.chosen;
+      v.chosen = !!ch && !hidden; v.chosenLabel = ch ? ch.label : ''; v.chosenText = ch ? ch.text : ''; v.chosenBy = ch ? `${e.owner}${ch.by === 'ai' ? ' (AI teammate)' : ''} chose` : '';
+      v.canNext = !!ch; v.nextLabel = ch && (ch.end || E.nextEventIdx(S) < 0) ? 'See the mission report' : 'Next event';
+      v.onNext = () => this.send({ type: 'NEXT', e: e.id });
+      const tm = e.timed, T = S.ops.timed;
+      v.hasTimed = !!tm && !hidden;
+      if (tm) {
+        const mineT = myRole === tm.role, n = tm.choices.length, rot = (S.seed + S.ops.ei + S.mi) % n;
+        v.tmTitle = tm.title; v.tmRole = tm.role; v.tmReward = tm.reward; v.tmSecs = (this.props.timedTasks ?? 'timed') === 'timed' ? `${tm.seconds} s` : 'untimed';
+        v.tmCanAccept = mineT && !T; v.onAccept = () => this.send({ type: 'TACCEPT', e: e.id });
+        v.tmNote = !S.seats[tm.role] ? `${tm.role} is an AI teammate. AI teammates skip optional tasks — take the seat to try it.` : (!mineT && !T ? `Only ${tm.role} can take this.` : ''); v.hasTmNote = !!v.tmNote;
+        v.tmRunning = !!T && T.state === 'running'; v.tmLeft = T ? `${T.left} s` : ''; v.tmPct = T ? Math.round(T.left / T.total * 100) + '%' : '0%';
+        v.tmQ = tm.q; v.tmShowQ = v.tmRunning && mineT; v.tmWatch = v.tmRunning && !mineT;
+        v.tmChoices = Array.from({ length: n }, (_, k) => (k + rot) % n).map((i) => ({ c: tm.choices[i], onClick: () => this.send({ type: 'TANSWER', i }) }));
+        v.tmDone = !!T && T.state !== 'running';
+        v.tmResult = !T ? '' : T.state === 'won' ? 'Bonus earned. ' + tm.winText : T.state === 'wrong' ? 'Wrong answer: the bonus is lost. The story goes on.' : 'Time ran out: the bonus is lost. Nothing else changes.';
+        v.tmResColor = T && T.state === 'won' ? '#7fd6a4' : '#ffd27a';
+      }
+      const privIds = m.events.filter((x) => x.private && x.private !== myRole).map((x) => x.id);
+      v.results = S.ops.results.filter((x) => x.e !== e.id).map((x) => privIds.includes(x.e) ? { title: x.title, label: 'private', text: 'Only Mateo knows.' } : x);
+      v.hasResults = v.results.length > 0;
+      v.opsMetrics = r ? r.metrics.map((x) => ({ label: x.label, value: x.value, color: SC[x.status] })) : [];
+    }
+
+    if (ph === 'report' && S.report) {
+      const rep = S.report;
+      v.repName = rep.name; v.repHasScore = !!rep.score; v.repStory = !rep.score; v.repTotal = rep.score ? String(rep.score.total) : '';
+      v.repCost = rep.cost != null ? `${money(rep.cost)} of ${money(rep.avail)} spent` : '';
+      v.repParts = rep.score ? [['Science', rep.score.science, 30], ['Engineering', rep.score.engineering, 25], ['Safety', rep.score.safety, 20], ['Reliability', rep.score.reliability, 15], ['Budget', rep.score.budget, 10]].map(([l, a, b]) => ({ l, a: `${a}/${b}`, w: Math.round(a / b * 100) + '%' })) : [];
+      v.repResults = rep.results;
+      const lab = { evidence: 'Evidence', trust: 'Trust', risk: 'Risk', bond: 'Kiran–Mateo bond', aegis: 'Aegis leverage', dose: 'Crew dose' }, bad = { risk: 1, aegis: 1, dose: 1 };
+      v.repDeltas = Object.keys(lab).map((k) => ({ k: lab[k], from: rep.before[k], to: rep.after[k], d: rep.after[k] - rep.before[k] })).filter((x) => x.d !== 0)
+        .map((x) => ({ ...x, color: (x.d > 0) !== !!bad[Object.keys(lab).find((k) => lab[k] === x.k)] ? '#7fd6a4' : '#ff6b6b' }));
+      v.repNote = v.repDeltas.length ? 'These values travel with you into every later mission and decide the ending.' : 'Nothing changed in the values that carry forward.';
+      v.onRetry = () => this.send({ type: 'RETRY' }); v.onContinue = () => this.send({ type: 'CONTINUE' });
+      v.contLabel = S.mi + 1 >= E.CAMPAIGN.length || L.flags.aborted ? 'See the ending' : `Continue to ${E.MISSIONS[E.CAMPAIGN[S.mi + 1]].name}`;
+    }
+
+    if (ph === 'ending' && S.ending) {
+      const en = S.ending;
+      v.endId = en.id; v.endTitle = en.title; v.endSub = en.sub; v.endText = en.text.filter(Boolean).map((t) => ({ t })); v.endWhy = en.why.map((t) => ({ t }));
+      v.endScores = S.history.map((h) => ({ name: h.name, score: h.score == null ? 'story' : `${h.score}/100` })); v.endAvg = String(en.avg);
+      v.hasEpi = typeof this.props.onEpilogue === 'function'; v.onEpi = () => this.props.onEpilogue();
+      v.canReset = host; v.onReset = () => this.hostDo({ type: 'RESET' }, { host: true, id: me });
+    }
+    {
+      const worldPhase = ph === 'design' || ph === 'ops', evKey = ph === 'ops' ? S.mi + ':' + S.ops.ei : null;
+      const open = !worldPhase || (ph === 'design' ? !!s.panel : s.closedEv !== evKey);
+      this._panelOpen = open; this._panelCanClose = worldPhase && open;
+      v.worldRef = this.worldRef; v.panelDisp = open ? 'block' : 'none'; v.canClosePanel = worldPhase && open; v.worldHud = worldPhase && !open; v.closePanel = () => this.closePanel();
+      const SN = { Kiran: 'Kiran\u2019s science desk', Mateo: 'Mateo\u2019s workbench', Leila: 'Leila\u2019s flight console', Naomi: 'Naomi\u2019s director desk', board: 'Design review board', bay: 'Integration bay' };
+      v.panelPlace = ph === 'design' ? (s.station ? SN[s.station] + ' · ' : '') + m.name : e ? (e.chapter ? e.chapter + ' · ' : '') + e.title : m.name;
+      v.hudColor = RC[myRole] || '#ff7a6b';
+      const fails = r ? r.gates.filter((g) => g.status === 'fail').length : 0;
+      if (ph === 'design') {
+        v.hudKicker = m.name + ' · design review';
+        v.hudGoal = fails ? (myRole ? `${fails} red gate${fails > 1 ? 's' : ''} block the launch. Go to ${SN[myRole]} and fix your part — the review board shows what is failing.` : `${fails} red gates block the launch. Visit the stations to follow the plan.`)
+          : myRole === 'Naomi' ? 'Every gate is clear. Go to the review board to authorize the launch.' : myRole ? (S.ready[myRole] ? 'Your plan is marked ready. Naomi authorizes the launch at the review board.' : `Gates are clear. Check ${SN[myRole]} and mark your plan ready.`) : 'Gates are clear. Naomi can authorize the launch.';
+        v.hudStations = ['Kiran', 'Mateo', 'Leila', 'Naomi', 'board'].map((id) => ({ label: SN[id], onClick: () => this.openStation(id), bd: id === myRole ? RC[id] || '#ff7a6b' : 'rgba(241,230,214,0.22)', col: id === myRole ? '#fff3e8' : '#cdbfd2' }));
+      } else if (e) {
+        v.hudKicker = m.name + (e.chapter ? ' · ' + e.chapter : '');
+        v.hudGoal = e.title + (S.ops.chosen ? ' — decided. Open it to read what happened.' : ` — ${e.owner} decides${myRole === e.owner ? ' (that\u2019s you)' : ''}. Meet at the integration bay or at ${SN[e.owner] || 'the station'}.`);
+        v.hudStations = [{ label: S.ops.chosen ? 'Open the event' : 'Open the event · ' + e.owner + ' decides', onClick: () => this.openStation('bay'), bd: '#ff7a6b', col: '#fff3e8' }];
+      } else { v.hudKicker = m.name; v.hudGoal = ''; v.hudStations = []; }
+      v.hudPrompt = s.prompt ? 'E · ' + (SN[s.prompt] || 'Open the event') : (v.coarseHint || 'Arrow keys / WASD to walk · E at a station · or click a station');
+      v.hudPromptBd = s.prompt ? '#ff7a6b' : 'rgba(241,230,214,0.25)';
+      const stg = this.stageOf(S, myRole); v.hudIntro = !!s.intro && !open && !!e; v.introChapter = e ? e.chapter || m.name : ''; v.introTitle = e ? e.title : ''; v.introPlace = e && this.PLACE[e.id] ? this.PLACE[e.id] : stg.set ? this.SETNAME[stg.set] : 'Mission Hall';
+    }
+    return v;
+  }
+}
+</script>
+</body>
+</html>

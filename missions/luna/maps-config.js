@@ -8,5 +8,9 @@ window.MAPS_CONFIG = {
     url: 'https://www.spaceappschallenge.org/2026/challenges/space-mission-design-game/'
   },
   landingVideo: null,
-  campaigns: {}
+  online: { enabled: true, peer: null, iceServers: null },
+  campaigns: {
+    ganimedes: { entryUrl: '../ganimedes/index.html', waitReady: true, timeout: 60000 },
+    solomon: { entryUrl: '../crimson-sky/index.html', waitReady: true, timeout: 60000 }
+  }
 };

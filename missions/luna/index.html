@@ -4,9 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="color-scheme" content="dark">
-<title>M.A.P.S. · Moon Mission</title>
+<title>M.A.P.S. · Space Mission Design Game</title>
 <script src="mobile-gate.js"></script>
 <script src="maps-config.js"></script>
+<script src="online.js"></script>
 <script src="music/pistas.js"></script>
 <script src="music.js"></script>
 <script src="lang-en.js"></script>
@@ -1742,8 +1743,10 @@ function showRecords(){clearTimers();clearStage();sky.hidden=true;chrome('select
 const L3=o=>o[LANG]||o.es;
 const CAMP=[
  {id:'luna',art:'moon',vid:'media/luna-mision-02.mp4',lv:1,st:'live',by:'Mauricio',n:{es:'Luna · Polo sur',en:'Moon · South pole',pt:'Lua · Polo sul'},pl:{es:'Exploración lunar',en:'Lunar exploration',pt:'Exploração lunar'},sub:{es:'La letra pequeña del cohete: buscar hielo y traerlo de vuelta',en:'The Rocket’s Fine Print: find ice and bring it back',pt:'As letras miúdas do foguete: achar gelo e trazê-lo de volta'},
-  learn:{es:['Masa y centro de masa en el lanzamiento','Órbita baja contra órbita alta','Energía limitada a bordo','Línea de vista y ventanas de radio','Frenar sin atmósfera','Robots que deciden sin señal','La ecuación del cohete'],en:['Mass and center of mass at launch','Low orbit versus high orbit','Limited power on board','Line of sight and radio windows','Braking without an atmosphere','Robots that decide without signal','The rocket equation'],pt:['Massa e centro de massa no lançamento','Órbita baixa contra órbita alta','Energia limitada a bordo','Linha de visada e janelas de rádio','Frear sem atmosfera','Robôs que decidem sem sinal','A equação do foguete']},meta:{es:'≈ 14 min · 15 pasos',en:'≈ 14 min · 15 steps',pt:'≈ 14 min · 15 etapas'}}
-];
+  learn:{es:['Masa y centro de masa en el lanzamiento','Órbita baja contra órbita alta','Energía limitada a bordo','Línea de vista y ventanas de radio','Frenar sin atmósfera','Robots que deciden sin señal','La ecuación del cohete'],en:['Mass and center of mass at launch','Low orbit versus high orbit','Limited power on board','Line of sight and radio windows','Braking without an atmosphere','Robots that decide without signal','The rocket equation'],pt:['Massa e centro de massa no lançamento','Órbita baixa contra órbita alta','Energia limitada a bordo','Linha de visada e janelas de rádio','Frear sem atmosfera','Robôs que decidem sem sinal','A equação do foguete']},meta:{es:'≈ 14 min · 15 pasos',en:'≈ 14 min · 15 steps',pt:'≈ 14 min · 15 etapas'}},
+ {id:'ganimedes',art:'gany',lv:null,st:'soon',n:{es:'Ganímedes',en:'Ganymede',pt:'Ganimedes'},pl:{es:'Sistema de Júpiter',en:'Jupiter system',pt:'Sistema de Júpiter'},sub:{es:'The Integrated Front: una expedición larga donde cada kilo de vuelta cuenta',en:'The Integrated Front: a long expedition where every kilogram home counts',pt:'The Integrated Front: uma expedição longa onde cada quilo de volta conta'},
+  learn:{es:['Radiación y blindaje','Soporte vital en viajes largos','Masa de regreso y ecuación del cohete','Decidir en equipo con votos'],en:['Radiation and shielding','Life support on long trips','Return mass and the rocket equation','Deciding as a team by vote'],pt:['Radiação e blindagem','Suporte de vida em viagens longas','Massa de retorno e equação do foguete','Decidir em equipe com votos']},draft:true},
+ {id:'solomon',art:'unk',lv:null,st:'soon',n:{es:'Campaña 4',en:'Campaign 4',pt:'Campanha 4'},pl:{es:'Destino secreto',en:'Secret destination',pt:'Destino secreto'},sub:{es:'Una nueva historia llega pronto.',en:'A new story is coming soon.',pt:'Uma nova história chega em breve.'},learn:{es:[],en:[],pt:[]}}];
 const DCOL=['#90e1bd','#ffc779','#ff8a7a','#3a475a'];
 /* Movimiento reducido: apaga animaciones, sacudidas y destellos en el juego y en los minijuegos. */
 const CALMA=(()=>{const CSS='*,*::before,*::after{animation:none!important;transition:none!important}.pstage.shake,.pstage.inv{filter:none!important;transform:none!important}';let on=false;try{on=localStorage.getItem('maps:calma')==='1'}catch(_){}
@@ -1883,9 +1886,9 @@ function observeSelectorVideos(screen){
 @media (max-width:760px){.podium{grid-template-columns:1fr}.rrow2{grid-template-columns:40px minmax(0,1fr) 80px}.rrow2 .fin,.rrow2 .stz,.rrow2 .dt{display:none}}
 `;document.head.append(s)})();
 /* Landing premium: mapa de campañas + cinta en vivo */
-Object.assign(MT.es,{lTag:'Agencia espacial',lSub:'Una misión lunar. Un equipo. Cada decisión viaja contigo hasta el final.',live:'Bitácora de misión',bodies:['Ice Window','Luna','Ganímedes','El último campo'],nowPlay:'Campaña jugable'});
-Object.assign(MT.en,{lTag:'Space agency',lSub:'One Moon mission. One crew. Every decision travels with you to the end.',live:'Mission feed',bodies:['Ice Window','Moon','Ganymede','The Last Field'],nowPlay:'Playable campaign'});
-Object.assign(MT.pt,{lTag:'Agência espacial',lSub:'Uma missão lunar. Uma tripulação. Cada decisão viaja com você até o fim.',live:'Diário de missão',bodies:['Ice Window','Lua','Ganimedes','O Último Campo'],nowPlay:'Campanha jogável'});
+Object.assign(MT.es,{lTag:'Agencia espacial',lSub:'Elige una misión espacial y lleva a tu equipo desde el diseño hasta el resultado final.',live:'Bitácora de misión',bodies:['Ice Window','Luna','Ganímedes','The Crimson Sky'],nowPlay:'Campaña jugable'});
+Object.assign(MT.en,{lTag:'Space agency',lSub:'Choose a space mission and guide your crew from design to the final outcome.',live:'Mission feed',bodies:['Ice Window','Moon','Ganymede','The Crimson Sky'],nowPlay:'Playable campaign'});
+Object.assign(MT.pt,{lTag:'Agência espacial',lSub:'Escolha uma missão espacial e conduza sua equipe do projeto ao resultado final.',live:'Diário de missão',bodies:['Ice Window','Lua','Ganimedes','The Crimson Sky'],nowPlay:'Campanha jogável'});
 function drawLanding(c,W,H,T,st,hv){const k=Math.min(W,H),wide=W>=820;
   const g=c.createRadialGradient(W*.72,H*.42,10,W*.6,H*.5,Math.max(W,H)*.9);g.addColorStop(0,'#13213b');g.addColorStop(.55,'#070c17');g.addColorStop(1,'#020409');c.fillStyle=g;c.fillRect(0,0,W,H);
   const nb=c.createRadialGradient(W*.84,H*.24,0,W*.84,H*.24,k*.6);nb.addColorStop(0,'rgba(213,175,255,.10)');nb.addColorStop(1,'rgba(213,175,255,0)');c.fillStyle=nb;c.fillRect(0,0,W,H);
@@ -1973,12 +1976,21 @@ Object.assign(MT.pt,{t3d:'Jogo 3D',diffPick:'Dificuldade à escolha',credits:'Cr
 [['es',['Misión extendida','Misión completa','Éxito mínimo','Misión degradada','Misión perdida']],['en',['Extended mission','Full mission','Minimum success','Degraded mission','Mission lost']],['pt',['Missão estendida','Missão completa','Sucesso mínimo','Missão degradada','Missão perdida']]].forEach(([l,v])=>{MT[l].endN=Object.assign({},MT[l].endN,{a_extendido:v[0],a_completo:v[1],a_minimo:v[2],a_degradada:v[3],a_perdida:v[4]})});
 Object.assign(ECOL,{a_extendido:'#90e1bd',a_completo:'#90e1bd',a_minimo:'#ffc779',a_degradada:'#d5afff',a_perdida:'#ff8a7a'});
 (()=>{const l=CAMP.find(c=>c.id==='luna');if(l)l.tag={es:'Juego 2D',en:'2D game',pt:'Jogo 2D'}})();
+(()=>{const g=CAMP.find(c=>c.id==='ganimedes');if(!g)return;delete g.draft;g.info=true;g.ext=true;g.lv=null;g.st=XC.ganimedes?.entryUrl?'live':'soon';g.tag={es:'Pixel art 2D',en:'2D pixel art',pt:'Pixel art 2D'};g.vid='media/ganimedes-03.mp4';
+  g.sub={es:'The Integrated Front: trae de Ganímedes el alga que puede devolverle el oxígeno a la Tierra',en:'The Integrated Front: bring back from Ganymede the alga that could restore Earth’s oxygen',pt:'The Integrated Front: traga de Ganimedes a alga que pode devolver o oxigênio à Terra'};
+  g.learn={es:['Presupuesto y selección de piezas','Masa y capacidad del cohete','Energía y datos a bordo','Ecuación del cohete'],en:['Budget and part selection','Mass and rocket capacity','Power and data on board','The rocket equation'],pt:['Orçamento e seleção de peças','Massa e capacidade do foguete','Energia e dados a bordo','Equação do foguete']};
+  g.meta={es:'Cinco niveles · En inglés',en:'Five levels',pt:'Cinco níveis · Em inglês'}})();
+(()=>{const o=CAMP.find(c=>c.id==='solomon');if(!o)return;o.art='aurora';o.tag={es:'Juego 2.5D',en:'2.5D game',pt:'Jogo 2.5D'};o.vid='media/ultimo-campo-01.mp4';o.info=true;o.lv=1;o.by='Solomon';
+  o.n={es:'The Crimson Sky',en:'The Crimson Sky',pt:'The Crimson Sky'};o.pl={es:'La Tierra · 2064',en:'Earth · 2064',pt:'Terra · 2064'};
+  o.sub={es:'El cielo se volvió rojo: cuatro misiones para entender la tormenta solar que no se detiene',en:'The sky turned red: four missions to understand the solar storm that won’t stop',pt:'O céu ficou vermelho: quatro missões para entender a tempestade solar que não para'};
+  o.learn={es:['Viento solar y campo magnético','Auroras y tormentas geomagnéticas','El punto L1: aviso antes de la tormenta','Tormentas solares y redes eléctricas'],en:['Solar wind and magnetic field','Auroras and geomagnetic storms','The L1 point: warning before the storm','Solar storms and power grids'],pt:['Vento solar e campo magnético','Auroras e tempestades geomagnéticas','O ponto L1: aviso antes da tempestade','Tempestades solares e redes elétricas']};
+  o.plrs={es:'1–4 jugadores',en:'1–4 players',pt:'1–4 jogadores'}})();
 {for(const c of CAMP){if(XC[c.id]?.entryUrl){c.ext=true;c.st='live';delete c.info}}}
 const AOUT={extended:'a_extendido',complete:'a_completo',minimum:'a_minimo',degraded:'a_degradada',lost:'a_perdida'};
 function allRec(){return getRec().filter(r=>r.c!=='angosat')}
 function saveExtRec(id,m,nm){const sc=m.score&&m.score.value!=null?m.score.value:(m.puntos||0);const r={id:String(m.eventId||Date.now().toString(36)),c:id,pts:Math.round(+sc||0),max:(m.score&&m.score.max)||1000,fin:AOUT[m.outcome]||'a_completo',variant:m.variantName||m.variantId||'',diff:m.difficulty||'',mode:'solo',crew:[nm||(m.participants&&m.participants[0]&&m.participants[0].name)||tm('localCrew')],pais:TEAM.country,t:Date.now()};let L=[];try{L=JSON.parse(localStorage.getItem('maps:records')||'[]')}catch(_){}if(L.some(x=>x.id===r.id))return;L.push(r);try{localStorage.setItem('maps:records',JSON.stringify(L.slice(-80)));localStorage.setItem('maps:records:last',r.id)}catch(_){}}
 function launchExt(id){const cf=XC[id]||{};if(!cf.entryUrl)return;const C=CAMP.find(c=>c.id===id);clearTimers();PAD.set(null);if(id==='ganimedes')SND.amb(null);
-  const sess=id+'-'+Date.now().toString(36),nm=((TEAM.players[0]&&TEAM.players[0].name)||'').trim();const u=new URL(cf.entryUrl,location.href);u.searchParams.set('from','maps');u.searchParams.set('lang',LANG);u.searchParams.set('session',sess);if(nm)u.searchParams.set('name',nm);
+  const sess=id+'-'+Date.now().toString(36),nm=((TEAM.players[0]&&TEAM.players[0].name)||'').trim();const u=new URL(cf.entryUrl,document.baseURI);u.searchParams.set('from','maps');u.searchParams.set('lang',LANG);u.searchParams.set('session',sess);if(nm)u.searchParams.set('name',nm);
   const ov=h('div','xov');const bar=h('div','xbar');const bk=h('button','xback','◂  '+esc(tm('xBack')));bk.type='button';bar.append(bk,h('b',null,esc(L3(C.n))));
   const ld=h('div','xload');ld.append(h('div',null,LOGO(72)),h('b',null,esc(tm('xLoading'))),h('span',null,esc(id==='ganimedes'?L3({es:'Preparando Ganímedes…',en:'Preparing Ganymede…',pt:'Preparando Ganimedes…'}):tm('xLoadSub'))),h('i','xprog','<i></i>'));
   const fr=document.createElement('iframe');fr.className='xfr';fr.title=L3(C.n);fr.allow='autoplay; fullscreen; gamepad';fr.setAttribute('allowfullscreen','');ov.append(fr,ld,bar);document.body.append(ov);
