@@ -23,7 +23,7 @@ Run a space agency where every launch starts with a choice. Pick a mission, work
 | **Moon Mission: The Rocket’s Fine Print** | Design a lunar south pole mission, then fly, explore and report your findings. Choose among crater mapping, ice confirmation and sample return objectives. |
 | **Ganymede: The Integrated Front** | Design a ship, manage a transit crisis and explore Ganymede. Bring back a sample across five levels with three difficulty settings and four possible endings. The current build is in English. |
 | **The Crimson Sky** | Investigate an unusually red sky over São Paulo. Explore a 2.5D world, solve science minigames, then make spacecraft decisions across four missions. |
-| **ATALAYA** | An Earth observation campaign in development. |
+| **ATALAYA** | In a seven-chapter solo story, design, test, launch and operate a CubeSat that observes hurricanes. Available in English and Spanish. |
 
 ## Features
 
@@ -79,6 +79,7 @@ Open [http://localhost:8000/](http://localhost:8000/) in a desktop browser with 
 | [`missions/luna/`](missions/luna/) | Moon Mission, minigames, videos, sounds and narration |
 | [`missions/ganimedes/`](missions/ganimedes/) | Ganymede campaign and mission assets |
 | [`missions/crimson-sky/`](missions/crimson-sky/) | The Crimson Sky campaign, illustrations, game modules and audio |
+| [`missions/atalaya/`](missions/atalaya/) | ATALAYA static client and campaign assets |
 | [`credits.json`](credits.json) | Team, campaign and AI-use disclosures |
 
 ### M.A.P.S. team
@@ -93,6 +94,6 @@ Open [http://localhost:8000/](http://localhost:8000/) in a desktop browser with 
 ### Resources and licensing
 
 - **NASA science.** The Moon Mission uses [LCROSS](https://science.nasa.gov/mission/lcross/) and [LRO](https://science.nasa.gov/mission/lro/) resources. See the [in-game lunar science reference](missions/luna/nasa-luna.html).
-- **Assets.** See the [Moon Mission sound credits](missions/luna/sfx/ATTRIBUTION.md), [Ganymede sound credits](missions/ganimedes/sfx/ATTRIBUTION.md) and [The Crimson Sky art and music credits](missions/crimson-sky/README.md#credits).
+- **Assets.** See the [Moon Mission sound credits](missions/luna/sfx/ATTRIBUTION.md), [Ganymede sound credits](missions/ganimedes/sfx/ATTRIBUTION.md), [The Crimson Sky art and music credits](missions/crimson-sky/README.md#credits) and [ATALAYA credits](missions/atalaya/credits.txt).
 - **AI use.** Grok Imagine was used for cinematics and character video. ElevenLabs generated the Moon Mission prologue narration. Ganymede’s intro videos and crew portraits also use AI. Claude Design and OpenAI Codex assisted with the project. [AI disclosures](credits.json)
 - **License.** The project-wide license is pending. Bundled libraries have their own MIT notices. [Three.js](missions/luna/three.LICENSE.txt) · [React](missions/luna/multiplayer-demo/react.LICENSE.txt) · [PeerJS](missions/luna/peerjs.LICENSE.txt)

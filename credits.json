@@ -15,7 +15,11 @@
     "audio": {
       "tool": "ElevenLabs",
       "usage": "Moon Mission prologue narration in English, Spanish and Portuguese.",
-      "languages": ["en", "es", "pt"]
+      "languages": [
+        "en",
+        "es",
+        "pt"
+      ]
     },
     "code": {
       "tools": [
@@ -43,6 +47,13 @@
       "entry": "missions/crimson-sky/",
       "credits": "missions/crimson-sky/README.md",
       "si_disclosure": "OpenAI Codex assisted with integration and verification."
+    },
+    "atalaya": {
+      "title": "ATALAYA Mission",
+      "author": "Joseph Arroyo",
+      "entry": "missions/atalaya/",
+      "credits": "missions/atalaya/credits.txt",
+      "si_disclosure": "Claude assisted with design, code and documentation. Higgsfield generated images and cinematics. ElevenLabs generated the English and Spanish dialogue."
     }
   }
 }

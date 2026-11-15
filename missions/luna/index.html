@@ -1886,9 +1886,9 @@ function observeSelectorVideos(screen){
 @media (max-width:760px){.podium{grid-template-columns:1fr}.rrow2{grid-template-columns:40px minmax(0,1fr) 80px}.rrow2 .fin,.rrow2 .stz,.rrow2 .dt{display:none}}
 `;document.head.append(s)})();
 /* Landing premium: mapa de campañas + cinta en vivo */
-Object.assign(MT.es,{lTag:'Agencia espacial',lSub:'Elige una misión espacial y lleva a tu equipo desde el diseño hasta el resultado final.',live:'Bitácora de misión',bodies:['Ice Window','Luna','Ganímedes','The Crimson Sky'],nowPlay:'Campaña jugable'});
-Object.assign(MT.en,{lTag:'Space agency',lSub:'Choose a space mission and guide your crew from design to the final outcome.',live:'Mission feed',bodies:['Ice Window','Moon','Ganymede','The Crimson Sky'],nowPlay:'Playable campaign'});
-Object.assign(MT.pt,{lTag:'Agência espacial',lSub:'Escolha uma missão espacial e conduza sua equipe do projeto ao resultado final.',live:'Diário de missão',bodies:['Ice Window','Lua','Ganimedes','The Crimson Sky'],nowPlay:'Campanha jogável'});
+Object.assign(MT.es,{lTag:'Agencia espacial',lSub:'Elige una misión espacial y lleva a tu equipo desde el diseño hasta el resultado final.',live:'Bitácora de misión',bodies:['ATALAYA','Luna','Ganímedes','The Crimson Sky'],nowPlay:'Campaña jugable'});
+Object.assign(MT.en,{lTag:'Space agency',lSub:'Choose a space mission and guide your crew from design to the final outcome.',live:'Mission feed',bodies:['ATALAYA','Moon','Ganymede','The Crimson Sky'],nowPlay:'Playable campaign'});
+Object.assign(MT.pt,{lTag:'Agência espacial',lSub:'Escolha uma missão espacial e conduza sua equipe do projeto ao resultado final.',live:'Diário de missão',bodies:['ATALAYA','Lua','Ganimedes','The Crimson Sky'],nowPlay:'Campanha jogável'});
 function drawLanding(c,W,H,T,st,hv){const k=Math.min(W,H),wide=W>=820;
   const g=c.createRadialGradient(W*.72,H*.42,10,W*.6,H*.5,Math.max(W,H)*.9);g.addColorStop(0,'#13213b');g.addColorStop(.55,'#070c17');g.addColorStop(1,'#020409');c.fillStyle=g;c.fillRect(0,0,W,H);
   const nb=c.createRadialGradient(W*.84,H*.24,0,W*.84,H*.24,k*.6);nb.addColorStop(0,'rgba(213,175,255,.10)');nb.addColorStop(1,'rgba(213,175,255,0)');c.fillStyle=nb;c.fillRect(0,0,W,H);
@@ -1984,17 +1984,27 @@ Object.assign(ECOL,{a_extendido:'#90e1bd',a_completo:'#90e1bd',a_minimo:'#ffc779
   o.sub={es:'El cielo se volvió rojo: cuatro misiones para entender la tormenta solar que no se detiene',en:'The sky turned red: four missions to understand the solar storm that won’t stop',pt:'O céu ficou vermelho: quatro missões para entender a tempestade solar que não para'};
   o.learn={es:['Viento solar y campo magnético','Auroras y tormentas geomagnéticas','El punto L1: aviso antes de la tormenta','Tormentas solares y redes eléctricas'],en:['Solar wind and magnetic field','Auroras and geomagnetic storms','The L1 point: warning before the storm','Solar storms and power grids'],pt:['Vento solar e campo magnético','Auroras e tempestades geomagnéticas','O ponto L1: aviso antes da tempestade','Tempestades solares e redes elétricas']};
   o.plrs={es:'1–4 jugadores',en:'1–4 players',pt:'1–4 jogadores'}})();
+if(XC.atalaya?.entryUrl)CAMP.push({
+  id:'atalaya',art:'earth',lv:1,st:'soon',ext:true,
+  n:{es:'Misión ATALAYA',en:'ATALAYA Mission',pt:'Missão ATALAYA'},
+  pl:{es:'Tierra · órbita baja',en:'Earth · low orbit',pt:'Terra · órbita baixa'},
+  sub:{es:'Diseña, lanza y opera un CubeSat para observar huracanes',en:'Design, launch and operate a CubeSat to observe hurricanes',pt:'Projete, lance e opere um CubeSat para observar furacões'},
+  tag:{es:'Juego 3D',en:'3D game',pt:'Jogo 3D'},
+  plrs:{es:'1 jugador',en:'1 player',pt:'1 jogador'},
+  meta:{es:'Español e inglés',en:'English and Spanish',pt:'Inglês e espanhol'},
+  learn:{es:['Diseño del CubeSat','Pruebas de vuelo','Datos para avisos de huracán'],en:['CubeSat design','Flight testing','Data for hurricane warnings'],pt:['Projeto do CubeSat','Testes de voo','Dados para alertas de furacão']}
+});
 {for(const c of CAMP){if(XC[c.id]?.entryUrl){c.ext=true;c.st='live';delete c.info}}}
 const AOUT={extended:'a_extendido',complete:'a_completo',minimum:'a_minimo',degraded:'a_degradada',lost:'a_perdida'};
 function allRec(){return getRec().filter(r=>r.c!=='angosat')}
 function saveExtRec(id,m,nm){const sc=m.score&&m.score.value!=null?m.score.value:(m.puntos||0);const r={id:String(m.eventId||Date.now().toString(36)),c:id,pts:Math.round(+sc||0),max:(m.score&&m.score.max)||1000,fin:AOUT[m.outcome]||'a_completo',variant:m.variantName||m.variantId||'',diff:m.difficulty||'',mode:'solo',crew:[nm||(m.participants&&m.participants[0]&&m.participants[0].name)||tm('localCrew')],pais:TEAM.country,t:Date.now()};let L=[];try{L=JSON.parse(localStorage.getItem('maps:records')||'[]')}catch(_){}if(L.some(x=>x.id===r.id))return;L.push(r);try{localStorage.setItem('maps:records',JSON.stringify(L.slice(-80)));localStorage.setItem('maps:records:last',r.id)}catch(_){}}
-function launchExt(id){const cf=XC[id]||{};if(!cf.entryUrl)return;const C=CAMP.find(c=>c.id===id);clearTimers();PAD.set(null);if(id==='ganimedes')SND.amb(null);
+function launchExt(id){const cf=XC[id]||{};if(!cf.entryUrl)return;const C=CAMP.find(c=>c.id===id);clearTimers();PAD.set(null);if(id==='ganimedes'||id==='atalaya')SND.amb(null);
   const sess=id+'-'+Date.now().toString(36),nm=((TEAM.players[0]&&TEAM.players[0].name)||'').trim();const u=new URL(cf.entryUrl,document.baseURI);u.searchParams.set('from','maps');u.searchParams.set('lang',LANG);u.searchParams.set('session',sess);if(nm)u.searchParams.set('name',nm);
   const ov=h('div','xov');const bar=h('div','xbar');const bk=h('button','xback','◂  '+esc(tm('xBack')));bk.type='button';bar.append(bk,h('b',null,esc(L3(C.n))));
   const ld=h('div','xload');ld.append(h('div',null,LOGO(72)),h('b',null,esc(tm('xLoading'))),h('span',null,esc(id==='ganimedes'?L3({es:'Preparando Ganímedes…',en:'Preparing Ganymede…',pt:'Preparando Ganimedes…'}):tm('xLoadSub'))),h('i','xprog','<i></i>'));
   const fr=document.createElement('iframe');fr.className='xfr';fr.title=L3(C.n);fr.allow='autoplay; fullscreen; gamepad';fr.setAttribute('allowfullscreen','');ov.append(fr,ld,bar);document.body.append(ov);
   const exp=cf.origin||(u.protocol==='file:'?null:u.origin),seen=new Set();
-  const onMsg=e=>{if(e.source!==fr.contentWindow||(exp&&e.origin!==exp))return;const m=e.data||{};if(id==='ganimedes'&&(m.campaignId!==id||m.sessionId!==sess))return;if(m.type==='maps:ready'){ld.classList.add('done');return}if(m.type==='maps:exit'){close();return}
+  const onMsg=e=>{if(e.source!==fr.contentWindow||(exp&&e.origin!==exp))return;const m=e.data||{};if((id==='ganimedes'||id==='atalaya')&&(m.campaignId!==id||m.sessionId!==sess))return;if(m.type==='maps:ready'){ld.classList.add('done');return}if(m.type==='maps:exit'){close();return}
     if(m.type==='maps:mission'&&(m.campaignId===id||m.campaignId==='angosat-2')&&(!m.sessionId||m.sessionId===sess)){const k=String(m.eventId||m.revision||'final');if(seen.has(k))return;seen.add(k);saveExtRec(id,m,nm)}};
   window.addEventListener('message',onMsg);fr.addEventListener('load',()=>{if(!cf.waitReady)setTimeout(()=>ld.classList.add('done'),400)});
   const to=setTimeout(()=>{if(!ld.classList.contains('done')){ld.classList.add('err');ld.querySelector('b').textContent=tm('xErr');ld.querySelector('span').textContent=tm('xErrSub')}},cf.timeout||60000);
@@ -2107,7 +2117,7 @@ drawLanding=function(c,W,H,T,st,hv){if(!LS||LS.W!==W||LS.H!==H)lsBuild(W,H);LP.x
   const mg=c.createRadialGradient(mx,my,mr,mx,my,mr*(hv?2.6:1.9));mg.addColorStop(0,hv?'rgba(144,225,189,.38)':'rgba(220,228,240,.14)');mg.addColorStop(1,'rgba(0,0,0,0)');c.fillStyle=mg;c.beginPath();c.arc(mx,my,mr*2.6,0,7);c.fill();
   moonDisc(c,mx,my,mr,T,60);lShade(c,mx,my,mr);c.strokeStyle=hv?'rgba(144,225,189,.95)':'rgba(144,225,189,.5)';c.lineWidth=1.4;c.setLineDash([3,6]);c.lineDashOffset=T*10;c.beginPath();c.arc(mx,my,mr*1.38,0,7);c.stroke();c.setLineDash([]);
   lEarth(c,ex,ey,er,T);const sa=T*.35,sx=ex+Math.cos(-1.9+Math.sin(sa)*.08)*er*1.08,sy=ey+Math.sin(-1.9)*er*1.08;c.fillStyle='#d5afff';c.fillRect(sx-3,sy-3,6,6);c.fillStyle='#566fae';c.fillRect(sx-12,sy-1.5,8,3);c.fillRect(sx+4,sy-1.5,8,3);
-  if(wide){const N=tm('bodies'),BID=['icewindow','luna','ganimedes','solomon'],lab=(i,x,y)=>{const ci=CAMP.findIndex(z=>z.id===BID[i]);if(ci<0)return;const on=CAMP[ci].st==='live';c.textAlign='left';c.textBaseline='middle';c.font='800 11px ui-monospace,Consolas,monospace';c.fillStyle=on?'#90e1bd':'#ffc779';c.fillText('0'+(ci+1),x,y);if(N[i]!=='?'){c.font=(on?'800 ':'700 ')+'13px Bahnschrift,"Segoe UI",sans-serif';c.fillStyle=on?'#f0f4fa':'rgba(214,221,230,.85)';c.fillText(N[i],x+24,y)}if(on){c.font='700 10px Bahnschrift,sans-serif';c.fillStyle='#90e1bd';c.fillText(tm('nowPlay').toUpperCase(),x,y+16)}};
+  if(wide){const N=tm('bodies'),BID=['atalaya','luna','ganimedes','solomon'],lab=(i,x,y)=>{const ci=CAMP.findIndex(z=>z.id===BID[i]);if(ci<0)return;const on=CAMP[ci].st==='live';c.textAlign='left';c.textBaseline='middle';c.font='800 11px ui-monospace,Consolas,monospace';c.fillStyle=on?'#90e1bd':'#ffc779';c.fillText('0'+(ci+1),x,y);if(N[i]!=='?'){c.font=(on?'800 ':'700 ')+'13px Bahnschrift,"Segoe UI",sans-serif';c.fillStyle=on?'#f0f4fa':'rgba(214,221,230,.85)';c.fillText(N[i],x+24,y)}if(on){c.font='700 10px Bahnschrift,sans-serif';c.fillStyle='#90e1bd';c.fillText(tm('nowPlay').toUpperCase(),x,y+16)}};
     lab(0,sx+18,sy-14);lab(1,mx+mr*1.6,my-mr*.2);lab(2,gx-gr-4,gy+gr+18);lab(3,qx+qr+10,qy)}
   c.restore();
   LS.dust.forEach(d=>{const x=((d.x-LP.x*44+T*d.s*8)%W+W)%W,y=((d.y-LP.y*30-T*d.s*5)%H+H)%H,rr=d.r*(1+.25*Math.sin(T*.8+d.p)),g=c.createRadialGradient(x,y,0,x,y,rr*3);g.addColorStop(0,'rgba(255,232,196,.10)');g.addColorStop(1,'rgba(255,232,196,0)');c.fillStyle=g;c.beginPath();c.arc(x,y,rr*3,0,7);c.fill()});

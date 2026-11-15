@@ -10,6 +10,7 @@ window.MAPS_CONFIG = {
   landingVideo: null,
   online: { enabled: true, peer: null, iceServers: null },
   campaigns: {
+    atalaya: { entryUrl: '../atalaya/index.html', waitReady: true, timeout: 60000 },
     ganimedes: { entryUrl: '../ganimedes/index.html', waitReady: true, timeout: 60000 },
     solomon: { entryUrl: '../crimson-sky/index.html', waitReady: true, timeout: 60000 }
   }
