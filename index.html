@@ -1921,7 +1921,7 @@ showTitle=function(){SND.amb('amb_control');MUS('tema');clearTimers();clearStage
     ctx.setTransform(d,0,0,d,0,0);drawLanding(ctx,W,H,still?0:(now-t0)/1000,st,hv)};S.raf=requestAnimationFrame(loop);
   const wr=h('div','lwrap');const col=h('div','lcol');const brand=h('div','lbrand');brand.innerHTML=LOGO(64);brand.append(h('span',null,esc(tm('lTag'))));
   col.append(brand,h('h1',null,'MAPS'),h('p','lsub',esc(tm('lSub'))));
-  const play=h('button','lplay','<span>'+esc(L3({es:'Jugar misión lunar',en:'Play Moon Mission',pt:'Jogar missão lunar'}))+'</span><i>▸</i>');play.type='button';play.addEventListener('click',showSelect);play.addEventListener('pointerenter',()=>hv=true);play.addEventListener('pointerleave',()=>hv=false);play.addEventListener('focus',()=>hv=true);play.addEventListener('blur',()=>hv=false);
+  const play=h('button','lplay','<span>'+esc(L3({es:'Jugar',en:'Play',pt:'Jogar'}))+'</span><i>▸</i>');play.type='button';play.addEventListener('click',showSelect);play.addEventListener('pointerenter',()=>hv=true);play.addEventListener('pointerleave',()=>hv=false);play.addEventListener('focus',()=>hv=true);play.addEventListener('blur',()=>hv=false);
   const rec=h('button','lrec',esc(tm('records')));rec.type='button';rec.addEventListener('click',()=>showRecords());
   const acts=h('div','lacts');acts.append(play,rec);if(window.MAPS_ONLINE){const ob=h('button','lrec onl-entry',esc(MAPS_ONLINE.label()));ob.type='button';ob.addEventListener('click',()=>MAPS_ONLINE.open());acts.append(ob)}
   const meta=h('div','lmeta');const cfg=h('button','lcfg','<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v2.6M12 18.9v2.6M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M2.5 12h2.6M18.9 12h2.6M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/></svg>'+esc(tm('settings')));cfg.type='button';cfg.addEventListener('click',openSettings);
@@ -2192,12 +2192,12 @@ showCredits=function(){clearTimers();clearStage();sky.hidden=true;chrome('select
   const hd=h('div','cr2h');const bk=h('button','btn ghostl sm','◂  '+esc(tm('home')));bk.type='button';bk.addEventListener('click',()=>showTitle());const tt=h('div','cr2t');const lg=h('div','cr2lg');lg.innerHTML=LOGO(72);tt.append(lg);const tx=h('div');tx.append(h('span','eyebrow',esc(tm('credits'))),h('h2',null,'MAPS'),h('p',null,esc(tm('credTag'))));tt.append(tx);hd.append(tt,bk);wr.append(hd);
   const tm1=h('section','cr2sec');tm1.append(h('b','clbl',esc(tm('credTeam'))));const g=h('div','cr2team');
   const team=[
-    ['Rubén Mauricio Romero','mauricio.jpg','#90e1bd'],
-    ['Joseph Arroyo','joseph.jpg','#8ed5f3'],
-    ['Solomon Perriyil','solomon.jpg','#ffc779'],
-    ['Soumya Shree','soumya.jpg','#d5afff']
+    ['Rubén Mauricio Romero','mauricio.jpg','#90e1bd','rudimirz'],
+    ['Joseph Arroyo','joseph.jpg','#8ed5f3','josepharroyohernandez'],
+    ['Solomon Perriyil','solomon.jpg','#ffc779','solomon-perriyil-67380b217'],
+    ['Soumya Shree','soumya.jpg','#d5afff','soumya-shree-s-779790266']
   ];
-  team.forEach(([name,file,color])=>{
+  team.forEach(([name,file,color,linkedin])=>{
     const card=h('figure','cr2p');
     card.style.setProperty('--c',color);
     const photo=h('div','cr2ph'), frame=h('div','cr2cl');
@@ -2207,7 +2207,14 @@ showCredits=function(){clearTimers();clearStage();sky.hidden=true;chrome('select
     image.decoding='async';
     frame.append(image);
     photo.append(frame);
-    card.append(photo,h('figcaption',null,'<b>'+esc(name)+'</b>'));
+    const profile=h('a','cr2linkedin','LinkedIn');
+    profile.href='https://www.linkedin.com/in/'+linkedin+'/';
+    profile.target='_blank';
+    profile.rel='noopener noreferrer';
+    profile.setAttribute('aria-label','LinkedIn · '+name);
+    const caption=h('figcaption',null,'<b>'+esc(name)+'</b>');
+    caption.append(profile);
+    card.append(photo,caption);
     g.append(card);
   });
   tm1.append(g);
@@ -2226,7 +2233,7 @@ Object.assign(MT.es,{credTag:'Un juego de diseño de misiones espaciales: cada d
 .cr2p:hover{transform:translateY(-6px);border-color:var(--c);box-shadow:0 30px 60px -26px #000,0 0 44px -14px var(--c)}
 .cr2ph{position:relative;width:min(150px,100%);aspect-ratio:1;border-radius:50%;padding:4px;background:conic-gradient(from 210deg,var(--c),transparent 40%,var(--c) 70%,transparent 90%,var(--c))}
 .cr2cl{width:100%;height:100%;border-radius:50%;overflow:hidden;border:4px solid #0d131d;background-color:#0d131d;background-repeat:no-repeat}.cr2ph img{display:block;width:100%;height:100%;object-fit:cover;filter:saturate(.95) contrast(1.03)}
-.cr2p figcaption{display:grid;justify-items:center;gap:2px;text-align:center}.cr2p figcaption b{font:800 1.2rem/1.1 var(--heading);color:var(--ink)}.cr2p figcaption span{font:700 .82rem var(--heading);letter-spacing:.14em;text-transform:uppercase;color:var(--c)}
+.cr2p figcaption{display:grid;justify-items:center;gap:2px;text-align:center}.cr2p figcaption b{font:800 1.2rem/1.1 var(--heading);color:var(--ink)}.cr2linkedin{margin-top:6px;color:var(--c);font:700 .82rem var(--heading);text-underline-offset:3px}.cr2linkedin:hover{color:var(--ink)}
 .cr2c{justify-items:center;text-align:center}.cr2c>.clbl{justify-self:center}.cr2hk{justify-self:center;width:auto;max-width:100%;display:flex;align-items:center;justify-content:center;gap:16px;padding:14px 22px;text-align:left;border-radius:18px;border:1px solid rgba(255,199,121,.45);background:linear-gradient(90deg,rgba(255,199,121,.12),rgba(255,199,121,.03));color:var(--ink);text-decoration:none;transition:border-color .2s,background .2s}
 .cr2hk:hover{border-color:var(--gold);background:linear-gradient(90deg,rgba(255,199,121,.2),rgba(255,199,121,.05));color:var(--ink)}
 .cr2hki{flex:none;width:58px;height:58px;display:grid;place-items:center;text-align:center;line-height:1.05;border-radius:50%;background:radial-gradient(circle at 35% 30%,#2f5fb3,#0b3d91 60%,#062058);color:#fff;font:900 .58rem/1.05 var(--heading);letter-spacing:.08em;box-shadow:0 0 0 2px rgba(255,255,255,.15)}
