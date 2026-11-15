@@ -2,14 +2,14 @@
 
 An educational space mission design game for the [NASA Space Apps Challenge 2026](https://www.spaceappschallenge.org/2026/challenges/space-mission-design-game/). This release includes **Moon Mission: The Rocket’s Fine Print**.
 
-[Play Moon Mission](https://rudimirz.github.io/M.A.P.S/missions/luna/)
+[Play Moon Mission](https://playmaps.online/)
 
 Design a mission to the lunar south pole and choose whether to map a crater, confirm ice, or return a sample. Pick a launch plan, build within budget, then fly, explore and transmit your findings. The final report shows how the decisions affected the outcome.
 
 ## How to play
 
 1. Open the game on a computer with a keyboard and mouse.
-2. Choose **Play Moon Mission** and select the Moon Mission card.
+2. Choose **Play** in the game and select the Moon Mission card.
 3. Choose solo play or a local crew of up to four people on one computer. The language switch supports English, Spanish and Portuguese.
 4. Use **Pilot** to practice individual minigames.
 
