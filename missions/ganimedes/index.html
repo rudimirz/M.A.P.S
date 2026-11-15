@@ -14,7 +14,11 @@
 <helmet>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=Manrope:wght@400;600;700&amp;family=Pixelify+Sans:wght@400;600;700&amp;display=swap">
-<style>html,body{margin:0;background:#03100f}a{color:#7dffbf}a:hover{color:#effcf8}</style>
+<style>
+html,body{margin:0;background:#03100f}a{color:#7dffbf}a:hover{color:#effcf8}
+.intro-control{min-height:44px;padding:0 14px;border:3px solid #2b5560;background:#06191c;color:#effcf8;font:inherit;cursor:pointer}
+.intro-control:hover,.intro-control:focus-visible{border-color:#7ff0ff}
+</style>
 </helmet>
 <sc-if value="{{ isTitle }}" hint-placeholder-val="{{ true }}">
 <main data-screen-label="01 Title" style="position:relative;min-height:100vh;overflow:hidden;background:#000000;font-family:'Manrope',sans-serif;color:#effcf8">
@@ -30,6 +34,11 @@
       </div>
       <div style="display:flex;flex-wrap:wrap;gap:12px">
         <button type="button" onClick="{{ openMap }}" style="white-space:nowrap;min-height:44px;padding:0 16px;border:4px solid #7ff0ff;border-radius:0;background:#03100f;color:#7ff0ff;font:700 16px 'Pixelify Sans',sans-serif;cursor:pointer" style-hover="background:#7ff0ff;color:#03100f">Mission map ▸</button>
+        <select aria-label="Intro language" value="{{ introLang }}" onChange="{{ changeIntroLanguage }}" style="min-height:44px;padding:0 12px;border:4px solid #2b5560;border-radius:0;background:#03100f;color:#effcf8;font:600 16px 'Manrope',sans-serif">
+          <option value="en">Intro · English</option>
+          <option value="es">Intro · Español</option>
+          <option value="pt">Intro · Português</option>
+        </select>
         <button type="button" onClick="{{ toggleSound }}" aria-pressed="{{ soundOn }}" style="min-height:44px;padding:0 16px;border:4px solid #2b5560;border-radius:0;background:#03100f;color:#effcf8;font:700 16px 'Pixelify Sans',sans-serif;cursor:pointer" style-hover="border-color:#effcf8">{{ soundLabel }}</button>
         <sc-if value="{{ inHost }}" hint-placeholder-val="{{ false }}">
           <button type="button" onClick="{{ exitToMaps }}" style="min-height:44px;padding:0 16px;border:4px solid #2b5560;border-radius:0;background:#03100f;color:#effcf8;font:700 16px 'Pixelify Sans',sans-serif;cursor:pointer" style-hover="border-color:#effcf8">◂ All missions</button>
@@ -57,15 +66,24 @@
 </sc-if>
 
 <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ false }}">
-<main data-screen-label="02 Intro video" style="position:relative;height:100vh;overflow:hidden;background:#000000;font-family:'Manrope',sans-serif;color:#effcf8">
+<main data-screen-label="02 Intro video" lang="{{ introLocale }}" style="position:relative;height:100vh;display:grid;grid-template-rows:minmax(0,1fr) auto;overflow:hidden;background:#000;font-family:'Manrope',sans-serif;color:#effcf8">
   <canvas ref="{{ bgRef }}" width="64" height="36" style="position:absolute;inset:-8%;width:116%;height:116%;filter:blur(28px) brightness(.55) saturate(1.2)"></canvas>
-  <div style="position:absolute;left:0;right:0;top:0;bottom:clamp(104px,17vh,150px)">
-    <video ref="{{ vidA }}" onEnded="{{ endA }}" onTimeUpdate="{{ timeA }}" muted="{{ introMuted }}" preload="auto" playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:{{ opA }}"></video>
-    <video ref="{{ vidB }}" onEnded="{{ endB }}" onTimeUpdate="{{ timeB }}" muted="{{ introMuted }}" preload="auto" playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:{{ opB }}"></video>
+  <div style="position:relative;min-height:0">
+    <video ref="{{ vidA }}" onEnded="{{ introEnded }}" onPlaying="{{ introPlaying }}" onPause="{{ introPaused }}" onWaiting="{{ introPaused }}" onSeeking="{{ introPaused }}" onSeeked="{{ introPlaying }}" onError="{{ introVideoError }}" preload="auto" playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:{{ opA }}"></video>
+    <video ref="{{ vidB }}" onEnded="{{ introEnded }}" onPlaying="{{ introPlaying }}" onPause="{{ introPaused }}" onWaiting="{{ introPaused }}" onSeeking="{{ introPaused }}" onSeeked="{{ introPlaying }}" onError="{{ introVideoError }}" preload="auto" playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:{{ opB }}"></video>
+    <audio ref="{{ introVoiceRef }}" muted="{{ introMuted }}" onCanPlay="{{ introVoiceReady }}" onError="{{ introVoiceReady }}" preload="auto" hidden></audio>
+    <span style="position:absolute;top:12px;left:12px;padding:5px 8px;background:#03100f;color:#effcf8;font:600 13px 'Manrope',sans-serif">{{ introDisclosure }}</span>
   </div>
-  <div style="position:absolute;left:0;right:0;bottom:0;height:clamp(104px,17vh,150px);box-sizing:border-box;display:grid;grid-template-columns:minmax(120px,1fr) minmax(0,1000px) minmax(120px,1fr);gap:12px;align-items:center;padding:0 clamp(12px,2vw,28px)">
-    <p style="grid-column:2;justify-self:center;margin:0;padding:.4em .85em;background:#effcf8;color:#03100f;border:4px solid #03100f;box-shadow:6px 6px 0 #2b5560;font:700 clamp(17px,1.2vw + 9px,30px)/1.25 'Pixelify Sans',sans-serif;text-align:center;text-wrap:pretty">{{ caption }}</p>
-    <button type="button" onClick="{{ next }}" style="grid-column:3;justify-self:end;min-height:44px;padding:0 18px;border:4px solid #effcf8;border-radius:0;background:#03100f;color:#effcf8;font:700 16px 'Pixelify Sans',sans-serif;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap;cursor:pointer" style-hover="background:#2b5560">Skip ▸</button>
+  <div style="position:relative;display:grid;justify-items:center;gap:10px;padding:10px clamp(12px,3vw,28px);min-height:112px">
+    <p style="margin:0;max-width:900px;min-height:2.5em;padding:.35em .7em;color:#effcf8;background:#03100f;font:700 clamp(17px,1.3vw + 9px,28px)/1.25 'Pixelify Sans',sans-serif;text-align:center;text-wrap:pretty">{{ caption }}</p>
+    <div style="display:flex;justify-content:center;flex-wrap:wrap;gap:8px;font:700 16px 'Pixelify Sans',sans-serif">
+      <button class="intro-control" type="button" onClick="{{ replayIntro }}">{{ introReplayLabel }}</button>
+      <button class="intro-control" type="button" onClick="{{ toggleSound }}" aria-pressed="{{ soundOn }}">{{ introSoundLabel }}</button>
+      <sc-if value="{{ introNeedsGesture }}" hint-placeholder-val="{{ false }}">
+        <button class="intro-control" type="button" onClick="{{ resumeIntroVoice }}">{{ introPlayVoiceLabel }}</button>
+      </sc-if>
+      <button class="intro-control" type="button" onClick="{{ next }}">{{ introSkipLabel }} ▸</button>
+    </div>
   </div>
 </main>
 </sc-if>
@@ -329,7 +347,7 @@
       <div style="display:flex;flex-direction:column;gap:6px;padding:16px 20px;background:#06191c;border:1px solid #2b5560">
         <h3 style="margin:0;font:600 15px 'IBM Plex Mono',monospace;letter-spacing:.12em;text-transform:uppercase;color:#7ff0ff">Use of artificial intelligence</h3>
         <ul style="margin:0;padding:0;list-style:none;display:flex;flex-direction:column">
-          <li style="display:flex;flex-direction:column;gap:4px;padding:10px 0;border-bottom:1px solid #12333a"><span style="font:600 16px 'IBM Plex Mono',monospace;color:#effcf8">Intro videos</span><span style="font-size:16px;line-height:1.5;color:#cfe9e3;text-wrap:pretty">AI-generated.</span></li>
+          <li style="display:flex;flex-direction:column;gap:4px;padding:10px 0;border-bottom:1px solid #12333a"><span style="font:600 16px 'IBM Plex Mono',monospace;color:#effcf8">Intro videos</span><span style="font-size:16px;line-height:1.5;color:#cfe9e3;text-wrap:pretty">AI-generated video. Narration synthesized with the Adam Stone voice from ElevenLabs in English, Spanish and Brazilian Portuguese.</span></li>
           <li style="display:flex;flex-direction:column;gap:4px;padding:10px 0;border-bottom:1px solid #12333a"><span style="font:600 16px 'IBM Plex Mono',monospace;color:#effcf8">Crew character art</span><span style="font-size:16px;line-height:1.5;color:#cfe9e3;text-wrap:pretty">AI-generated.</span></li>
           <li style="display:flex;flex-direction:column;gap:4px;padding:10px 0;border-bottom:1px solid #12333a"><span style="font:600 16px 'IBM Plex Mono',monospace;color:#effcf8">Code, game text and data checks</span><span style="font-size:16px;line-height:1.5;color:#cfe9e3;text-wrap:pretty">Written with help from Claude (Anthropic), then checked by the team against the sources on this page.</span></li>
           <li style="display:flex;flex-direction:column;gap:4px;padding:10px 0;border-bottom:1px solid #12333a"><span style="font:600 16px 'IBM Plex Mono',monospace;color:#effcf8">NASA branding</span><span style="font-size:16px;line-height:1.5;color:#cfe9e3;text-wrap:pretty">No AI-generated content uses NASA logos, flags or mission insignia. NASA photos are used unaltered, with credit.</span></li>
@@ -2170,7 +2188,7 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;growth&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;slow&quot;,&quot;normal&quot;,&quot;fast&quot;],&quot;default&quot;:&quot;normal&quot;,&quot;tsType&quot;:&quot;'slow'|'normal'|'fast'&quot;,&quot;section&quot;:&quot;Algae&quot;},&quot;maxAlgae&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;min&quot;:20,&quot;max&quot;:300,&quot;step&quot;:10,&quot;default&quot;:120,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Algae&quot;}}">
 class Component extends DCLogic {
-  state = { screen: 0, voice: true, diff: 'engineer', quiz: {}, reveal: {}, how: {}, srcBack: 0, clip: 0, sub: 0, sound: true, crew: [{ human: true, name: '' }, { human: false, name: '' }, { human: false, name: '' }, { human: false, name: '' }], crewSaved: false,
+  state = { screen: 0, voice: true, diff: 'engineer', quiz: {}, reveal: {}, how: {}, srcBack: 0, clip: 0, sub: 0, sound: true, crew: [{ human: true, name: '' }, { human: false, name: '' }, { human: false, name: '' }, { human: false, name: '' }], crewSaved: false, introLang: 'en', introReplay: 0, introNeedsGesture: false,
     l1: { step: 0, objective: null, contract: null, parts: [], station: 0, path: null, hover: null, month: 28, dsnH: 8, launcher: null, hint: 0, result: null, msg: '', launching: false, cineHud: null },
     l2: { step: 0, storm: null, route: null, result: null, hud: null },
     l3: { step: 0, film: false, hud: null, site: null, heat: 1.5, drill: 2, sep: 0, cw: {}, rev: {}, sel: null, dir: 0, drillDay: 0, drillDone: false, result: null },
@@ -3756,67 +3774,172 @@ class Component extends DCLogic {
   vidA = React.createRef();
   vidB = React.createRef();
   bgRef = React.createRef();
+  introVoiceRef = React.createRef();
+  introLabels = {
+    en: { locale: 'en', replay: 'Replay intro', soundOn: 'Mute', soundOff: 'Unmute', skip: 'Skip', voice: 'Play narration', disclosure: 'AI-generated video and narration' },
+    es: { locale: 'es', replay: 'Repetir intro', soundOn: 'Silenciar', soundOff: 'Activar sonido', skip: 'Saltar', voice: 'Reproducir narración', disclosure: 'Video y narración generados con IA' },
+    pt: { locale: 'pt-BR', replay: 'Rever intro', soundOn: 'Silenciar', soundOff: 'Ativar som', skip: 'Pular', voice: 'Reproduzir narração', disclosure: 'Vídeo e narração gerados por IA' }
+  };
+  clips = [
+    '01-dying-earth', '02-transit-to-jupiter', '03a-magnetosphere',
+    '03b-subsurface-dive', '04-hybrid-vessel', '05-departure'
+  ];
+  introCaptions = {
+    en: [
+      [{"start": 0.04, "end": 6.31, "text": "Earth is suffocating. A plague called the Cyanoclasm has swept through our oceans."}, {"start": 6.32, "end": 12.336, "text": "It has wiped out eighty percent of our phytoplankton. Oxygen levels are falling fast."}],
+      [{"start": 0.04, "end": 4.11, "text": "Our only hope lies four hundred million miles away."}, {"start": 4.12, "end": 8.365, "text": "There, in the Jovian system, MAPS has detected a miracle."}],
+      [{"start": 0.015, "end": 4.317, "text": "Beneath the icy crust of Ganymede, something has survived."}],
+      [{"start": 0.029, "end": 5.407, "text": "It’s called Gany-Phyta, a strain of algae that thrives in extreme conditions."}, {"start": 5.602, "end": 7.464, "text": "It’s immune to the plague."}],
+      [{"start": 0.04, "end": 4.725, "text": "MAPS is sending four specialists on an emergency expedition to bring it home."}, {"start": 5.0, "end": 10.531, "text": "Their ship must face solar storms, scarce resources, and dangerous radiation."}],
+      [{"start": 0.04, "end": 5.965, "text": "Four specialists. Four years in the dark. One chance to let Earth breathe again."}, {"start": 6.24, "end": 8.378, "text": "The mission is in your hands."}]
+    ],
+    es: [
+      [{"start": 0.04, "end": 6.005, "text": "La Tierra se ahoga. Una plaga llamada Cianoclasmo se ha propagado por los océanos."}, {"start": 6.2, "end": 11.845, "text": "Ha destruido el ochenta por ciento del fitoplancton. El oxígeno cae rápidamente."}],
+      [{"start": 0, "end": 4.193, "text": "Nuestra única esperanza está a cuatrocientos millones de millas."}, {"start": 4.388, "end": 8.753, "text": "Allí, en el sistema joviano, MAPS ha detectado un milagro."}],
+      [{"start": 0, "end": 3.713, "text": "Bajo la corteza helada de Ganímedes, algo ha sobrevivido."}],
+      [{"start": 0, "end": 4.306, "text": "Se llama Gany-Phyta, un alga que prospera en condiciones extremas."}, {"start": 4.421, "end": 5.906, "text": "Es inmune a la plaga."}],
+      [{"start": 0, "end": 5.473, "text": "MAPS envía a cuatro especialistas en una expedición de emergencia para traerla de vuelta."}, {"start": 5.508, "end": 11.753, "text": "Su nave deberá afrontar tormentas solares, recursos escasos y radiación peligrosa."}],
+      [{"start": 0, "end": 6.971, "text": "Cuatro especialistas. Cuatro años en la oscuridad. Una oportunidad para que la Tierra vuelva a respirar."}, {"start": 6.981, "end": 9.626, "text": "La misión está en tus manos."}]
+    ],
+    pt: [
+      [{"start": 0, "end": 5.963, "text": "A Terra está sufocando. Uma praga chamada Cianoclasmo se espalhou pelos oceanos."}, {"start": 6.158, "end": 12.803, "text": "Ela destruiu oitenta por cento do fitoplâncton. Os níveis de oxigênio estão caindo depressa."}],
+      [{"start": 0.015, "end": 4.18, "text": "Nossa única esperança está a quatrocentos milhões de milhas."}, {"start": 4.215, "end": 8.74, "text": "Lá, no sistema joviano, a MAPS detectou um milagre."}],
+      [{"start": 0.015, "end": 4.26, "text": "Sob a crosta gelada de Ganimedes, algo sobreviveu."}],
+      [{"start": 0, "end": 4.308, "text": "É a Gany-Phyta, uma alga que prospera em condições extremas."}, {"start": 4.318, "end": 6.283, "text": "Ela é imune à praga."}],
+      [{"start": 0, "end": 5.233, "text": "A MAPS envia quatro especialistas numa expedição de emergência para trazê-la de volta."}, {"start": 5.508, "end": 11.633, "text": "A nave enfrentará tempestades solares, recursos escassos e radiação perigosa."}],
+      [{"start": 0, "end": 6.603, "text": "Quatro especialistas. Quatro anos no escuro. Uma chance de fazer a Terra respirar de novo."}, {"start": 6.878, "end": 9.643, "text": "A missão está nas suas mãos."}]
+    ]
+  };
   activeVid() { return (this.state.clip % 2 ? this.vidB : this.vidA).current; }
   bgLoop = () => {
-    const v = this.activeVid(), c = this.bgRef.current, clip = this.clips[this.state.clip];
-    if (v && c && v.readyState >= 2) { try { c.getContext('2d').drawImage(v, 0, 0, c.width, c.height); } catch (_) {} }
-    if (v && clip && clip.end && this.state.screen === 9 && v.currentTime >= clip.end) this.advance();
-    this._bg = this.state.screen === 9 ? requestAnimationFrame(this.bgLoop) : 0;
+    const video = this.activeVid(), canvas = this.bgRef.current;
+    if (this.state.screen !== 9) { this._bg = 0; return; }
+    if (video && video.readyState >= 2) {
+      if (canvas) {
+        try { canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height); } catch (_) {}
+      }
+      const cues = this.introCaptions[this.state.introLang][this.state.clip];
+      const index = cues.findIndex(cue => video.currentTime >= cue.start && video.currentTime < cue.end);
+      if (index !== this.state.sub) this.setState({ sub: index });
+      this.syncIntroVoice();
+    }
+    this._bg = requestAnimationFrame(this.bgLoop);
   };
-  advance() {
-    if (this._advFrom === this.state.clip) return;
+  advanceIntro = event => {
+    if (this.state.screen !== 9 || event.target !== this.activeVid() ||
+        this._advFrom === this.state.clip || this._introPendingVideo) return;
     this._advFrom = this.state.clip;
-    this.setState(st => st.clip < this.clips.length - 1 ? { clip: st.clip + 1, sub: 0 } : { screen: 1 });
+    this.stopIntroPlayback();
+    this.setState(st => st.clip < this.clips.length - 1
+      ? { clip: st.clip + 1, sub: -1, introNeedsGesture: false }
+      : { screen: 1, introNeedsGesture: false });
+  };
+  introVideoError = event => {
+    if (event.target !== this.activeVid()) return;
+    this._introPendingVideo = null;
+    this.advanceIntro(event);
+  };
+  stopIntroPlayback() {
+    clearTimeout(this._introStartTimer);
+    this._introPendingVideo = null;
+    this._introPlaying = false;
+    this._introVoiceAttempt = null;
+    this._introVoiceBlocked = false;
+    this._introVoice?.pause();
+    this._introVideo?.pause();
   }
-  syncVideos() {
-    const n = this.state.clip, cur = this.clips[n], nxt = this.clips[n + 1] || cur, even = n % 2 === 0;
-    [[this.vidA.current, even ? cur : nxt], [this.vidB.current, even ? nxt : cur]].forEach(([v, c]) => {
-      if (v && v.getAttribute('src') !== c.src) { v.setAttribute('src', c.src); v.load(); }
+  prepareIntroScene() {
+    this.stopIntroPlayback();
+    this._advFrom = -1;
+    const { clip, introLang } = this.state;
+    const even = clip % 2 === 0;
+    const current = this.clips[clip], next = this.clips[clip + 1] || current;
+    for (const [video, id] of [[this.vidA.current, even ? current : next], [this.vidB.current, even ? next : current]]) {
+      if (!video) continue;
+      video.pause();
+      video.muted = true;
+      const src = 'assets/intro/' + id + '.mp4';
+      if (video.getAttribute('src') !== src) {
+        video.setAttribute('src', src);
+        video.load();
+      }
+    }
+    const audio = this.introVoiceRef.current, video = this.activeVid();
+    if (!video) return;
+    this._introVoice = audio;
+    this._introVideo = video;
+    this._introPendingVideo = video;
+    video.currentTime = 0;
+    if (!audio) { this.startIntroVideo(); return; }
+    audio.src = 'assets/narration/' + introLang + '/' + current + '.mp4';
+    audio.load();
+    this._introStartTimer = setTimeout(() => this.startIntroVideo(), 3000);
+  }
+  startIntroVideo() {
+    const video = this._introPendingVideo;
+    if (!video || this.state.screen !== 9 || video !== this.activeVid()) return;
+    clearTimeout(this._introStartTimer);
+    this._introPendingVideo = null;
+    if (video.error) this.introVideoError({ target: video });
+    else video.play()?.catch(() => {});
+  }
+  introVoiceReady = event => {
+    if (event.target !== this._introVoice) return;
+    this.startIntroVideo();
+    this.syncIntroVoice();
+  };
+  introPlaying = event => {
+    if (this.state.screen !== 9 || event.target !== this.activeVid() || this._introPendingVideo) return;
+    this._introPlaying = true;
+    this.syncIntroVoice();
+  };
+  introPaused = event => {
+    if (event.target !== this.activeVid() || !this._introPlaying) return;
+    this._introPlaying = false;
+    this._introVoice?.pause();
+  };
+  syncIntroVoice() {
+    const audio = this._introVoice, video = this.activeVid();
+    if (!audio || !video || !this._introPlaying || video.paused || video.seeking || audio.readyState < 2 ||
+        this._introVoiceBlocked || video.currentTime >= audio.duration - .04) return;
+    if (Math.abs(audio.currentTime - video.currentTime) > .18) audio.currentTime = video.currentTime;
+    if (!audio.paused || this._introVoiceAttempt) return;
+    const attempt = audio.play();
+    if (!attempt) return;
+    this._introVoiceAttempt = attempt;
+    attempt.then(() => {
+      if (this._introVoiceAttempt === attempt && this.state.introNeedsGesture) this.setState({ introNeedsGesture: false });
+    }).catch(error => {
+      if (this._introVoiceAttempt !== attempt || error.name !== 'NotAllowedError') return;
+      this._introVoiceBlocked = true;
+      this.setState({ introNeedsGesture: true });
+    }).finally(() => {
+      if (this._introVoiceAttempt === attempt) this._introVoiceAttempt = null;
     });
   }
-  introVals(clip) {
-    const n = this.state.clip, even = n % 2 === 0;
-    const onTime = par => e => {
-      if (this.state.clip % 2 !== par) return;
-      const v = e.target, d = clip.end || v.duration; if (!d) return;
-      const i = this.subAt(clip, Math.min(.999, v.currentTime / d)); if (i !== this.state.sub) this.setState({ sub: i });
-    };
-    return {
-      opA: even ? 1 : 0, opB: even ? 0 : 1,
-      timeA: onTime(0), timeB: onTime(1),
-      endA: () => { if (this.state.clip % 2 === 0) this.advance(); }, endB: () => { if (this.state.clip % 2 === 1) this.advance(); }
-    };
-  }
-  clips = [
-    { src: 'assets/intro/01-dying-earth.mp4', subs: ['Earth is suffocating.', 'A synthetic oceanic prion—The Cyanoclasm—has swept through our marine ecosystems.', 'Triggering cellular collapse upon contact with sunlight,', 'it has wiped out eighty percent of our phytoplankton.', 'Global oxygen is plummeting toward the hypoxia threshold.'] },
-    { src: 'assets/intro/02-transit-to-jupiter.mp4', end: 7.2, subs: ['Our only hope lies four hundred million miles away.', 'Deep-space spectrographic surveys by the MAPS agency', 'have detected a miracle inside the Jovian system.'] },
-    { src: 'assets/intro/03a-magnetosphere.mp4', subs: ['Beneath the icy crust of Ganymede—', 'shielded from deadly radiation by the moon’s unique intrinsic magnetosphere—'] },
-    { src: 'assets/intro/03b-subsurface-dive.mp4', subs: ['thrives an extremophile strain of magnetotactic algae:', 'Gany-Phyta.', 'Completely immune to the prion.'] },
-    { src: 'assets/intro/04-hybrid-vessel.mp4', subs: ['To harvest it, MAPS is launching an emergency four-year round-trip expedition.', 'Aboard a high-thrust nuclear-thermal and electric hybrid vessel,', 'a specialized crew of four—an Astronomer, a Flight Engineer, an Astro-Medic, and a Comms Specialist—', 'must navigate solar storms, crushing mass budgets, lethal radiation, and a fracturing Earth.'] },
-    { src: 'assets/intro/05-departure.mp4', subs: ['Four specialists. Four years in the dark.', 'One chance to let Earth breathe again.', 'From balancing the rocket equation to drilling through a hundred miles of alien ice—', 'how the mission unfolds is in your hands.', 'Take your seat at the console. Play the mission now.'] }
-  ];
-  subAt(clip, frac) {
-    const w = clip.subs.map(s => s.split(' ').length + 2), tot = w.reduce((a, b) => a + b, 0);
-    let acc = 0;
-    for (let i = 0; i < w.length; i++) { acc += w[i] / tot; if (frac < acc) return i; }
-    return w.length - 1;
-  }
+  resumeIntroVoice = () => {
+    this._introVoiceBlocked = false;
+    this.syncIntroVoice();
+  };
+  replayIntro = () => {
+    this.stopIntroPlayback();
+    this.setState(st => ({ clip: 0, sub: -1, introReplay: st.introReplay + 1, introNeedsGesture: false }));
+  };
   componentDidUpdate() {
-    const prev = this._prev || { screen: 0, clip: 0, step: 0 };
-    this._prev = { screen: this.state.screen, clip: this.state.clip, step: this.state.screen === 15 ? 400 + ['ship', 'dlg', 'reentry', 'ending'].indexOf(this.state.l5.phase) * 10 + (this.state.l5.done ? 5 : 0) : this.state.screen === 14 ? 300 + this.state.l4.step : this.state.screen === 13 ? 200 + this.state.l3.step + (this.state.l3.film ? 50 : 0) : this.state.screen === 11 ? 100 + this.state.l2.step : this.state.l1.step + (this.state.l1.launching ? 50 : 0) };
+    const prev = this._prev || { screen: 0, clip: 0, step: 0, introReplay: 0 };
+    this._prev = { screen: this.state.screen, clip: this.state.clip, introReplay: this.state.introReplay, step: this.state.screen === 15 ? 400 + ['ship', 'dlg', 'reentry', 'ending'].indexOf(this.state.l5.phase) * 10 + (this.state.l5.done ? 5 : 0) : this.state.screen === 14 ? 300 + this.state.l4.step : this.state.screen === 13 ? 200 + this.state.l3.step + (this.state.l3.film ? 50 : 0) : this.state.screen === 11 ? 100 + this.state.l2.step : this.state.l1.step + (this.state.l1.launching ? 50 : 0) };
     this.voiceCue();
     if (this.state.screen === 13 && this.state.l3.landing && !this._landRaf) { this._land = { t0: 0, beats: {} }; this._landRaf = requestAnimationFrame(this.landTick); }
     if (this.state.screen === 13 && this.state.l3.film && !this._l3raf) { this._l3f = { t0: 0 }; this._l3raf = requestAnimationFrame(this.l3Tick); }
     if (this.state.screen === 10 && this.state.l1.launching && !this._cineRaf) { this._cine = { t0: 0, beats: {} }; this._cineRaf = requestAnimationFrame(this.cineTick); }
     if (this.state.screen === 11 && this.state.l2.step === 1 && this.g && !this._l2raf) this._l2raf = requestAnimationFrame(this.stormTick);
     if (prev.screen !== this.state.screen || prev.step !== this._prev.step) { this.music(); window.scrollTo(0, 0); }
-    if (this.state.screen === 9 && !this._bg) this._bg = requestAnimationFrame(this.bgLoop);
-    if (this.state.screen === 9 && (prev.screen !== 9 || prev.clip !== this.state.clip)) {
-      if (prev.screen !== 9) this._advFrom = -1;
-      this.syncVideos();
-      const v = this.activeVid(), o = (this.state.clip % 2 ? this.vidA : this.vidB).current;
-      if (o) { try { o.pause(); } catch (_) {} }
-      if (v) { try { if (v.currentTime > .05) v.currentTime = 0; } catch (_) {} const p = v.play(); if (p && p.catch) p.catch(() => {}); }
+    if (prev.screen === 9 && this.state.screen !== 9) this.stopIntroPlayback();
+    if (this.state.screen === 9) {
+      if (prev.screen !== 9 || prev.clip !== this.state.clip || prev.introReplay !== this.state.introReplay) {
+        this.prepareIntroScene();
+      }
+      if (!this._bg) this._bg = requestAnimationFrame(this.bgLoop);
     }
   }
   canvasRef = React.createRef();
@@ -3827,7 +3950,15 @@ class Component extends DCLogic {
     window.addEventListener('keydown', this.firstGesture, true);
     window.addEventListener('keydown', this.keyDown);
     window.addEventListener('keyup', this.keyUp);
-    this._warm = this.clips.slice(0, 2).map(c => { const v = document.createElement('video'); v.preload = 'auto'; v.muted = true; v.src = c.src; return v; });
+    const requestedLang = new URLSearchParams(window.location.search).get('lang');
+    if (Object.hasOwn(this.introLabels, requestedLang)) this.setState({ introLang: requestedLang });
+    this._warm = this.clips.slice(0, 2).map(id => {
+      const video = document.createElement('video');
+      video.preload = 'auto';
+      video.muted = true;
+      video.src = 'assets/intro/' + id + '.mp4';
+      return video;
+    });
     try { if (window.GANY_MAPS && window.GANY_MAPS.inHost) window.GANY_MAPS.ready(); } catch (_) {}
     try {
       const saved = JSON.parse(localStorage.getItem('ganymede:crew') || 'null');
@@ -3844,7 +3975,7 @@ class Component extends DCLogic {
     const tick = t => { this.draw(t); this.drawMaps(t); this.l5Frame(t); this.raf = requestAnimationFrame(tick); };
     this.raf = requestAnimationFrame(tick);
   }
-  componentWillUnmount() { if (this._l5k) { window.removeEventListener('keydown', this._l5k); window.removeEventListener('keyup', this._l5ku); } if (window.speechSynthesis) window.speechSynthesis.cancel(); cancelAnimationFrame(this._landRaf); clearInterval(this._drillT); cancelAnimationFrame(this._l3raf); cancelAnimationFrame(this.raf); cancelAnimationFrame(this._cineRaf); cancelAnimationFrame(this._bg); cancelAnimationFrame(this._l2raf); window.removeEventListener('keydown', this.keyDown); window.removeEventListener('keyup', this.keyUp); window.removeEventListener('pointerdown', this.firstGesture, true); window.removeEventListener('keydown', this.firstGesture, true); }
+  componentWillUnmount() { this.stopIntroPlayback(); if (this._l5k) { window.removeEventListener('keydown', this._l5k); window.removeEventListener('keyup', this._l5ku); } if (window.speechSynthesis) window.speechSynthesis.cancel(); cancelAnimationFrame(this._landRaf); clearInterval(this._drillT); cancelAnimationFrame(this._l3raf); cancelAnimationFrame(this.raf); cancelAnimationFrame(this._cineRaf); cancelAnimationFrame(this._bg); cancelAnimationFrame(this._l2raf); window.removeEventListener('keydown', this.keyDown); window.removeEventListener('keyup', this.keyUp); window.removeEventListener('pointerdown', this.firstGesture, true); window.removeEventListener('keydown', this.firstGesture, true); }
   max() { return this.props.maxAlgae ?? 120; }
   cell(x, y, parent, born) {
     return { x, y, parent, born, r: 1.5 + Math.random() * 4.5, ph: Math.random() * 6.28, c: Math.random() < .8 ? '125,255,191' : '127,240,255' };
@@ -3897,7 +4028,8 @@ class Component extends DCLogic {
     });
   }
   renderVals() {
-    const s = this.state.screen, clip = this.clips[this.state.clip] || this.clips[0];
+    const { screen: s, clip, introLang, sub, sound, introNeedsGesture } = this.state;
+    const labels = this.introLabels[introLang];
     return {
       canvasRef: this.canvasRef, jupRef: this.jupRef,
       ...(s === 10 ? this.l1Vals() : {}),
@@ -3906,12 +4038,26 @@ class Component extends DCLogic {
       ...(s === 14 ? this.l4Vals() : {}), isL4: s === 14,
       ...(s === 15 ? this.l5Vals() : {}), isL5: s === 15,
       isTitle: s === 0, isR1: s === 1, isR2: s === 2, isR3: s === 3, isR4: s === 4, isCrew: s === 5, isL1: s === 10, isL2: s === 11, isSrc: s === 12, isMap: s === 16, ...(s === 16 ? this.mapVals() : {}), openMap: () => { this.sfx('click'); this.setState({ screen: 16 }); }, closeMap: () => { this.sfx('click'); this.setState({ screen: 0 }); }, jumpLevels: [1, 2, 3, 4, 5].map(n => ({ n: String(n), go: () => this.jumpTo(n) })), voiceOn: this.state.voice, voiceLabel: this.state.voice ? 'Voice: on' : 'Voice: off', toggleVoice: () => { const on = !this.state.voice; this._said = ''; if (!on && window.speechSynthesis) window.speechSynthesis.cancel(); this.sfx('click'); this.setState({ voice: on }); }, openSources: () => { this.sfx('click'); this.setState(st => ({ srcBack: st.screen, screen: 12 })); }, closeSources: () => { this.sfx('click'); this.setState(st => ({ screen: st.srcBack || 0 })); }, ...this.diffVals(),
-      isIntro: s === 9, introMuted: !this.state.sound, bgRef: this.bgRef, vidA: this.vidA, vidB: this.vidB, ...this.introVals(clip),
-      caption: clip.subs[this.state.sub] || clip.subs[0],
+      isIntro: s === 9, introMuted: !sound, bgRef: this.bgRef, vidA: this.vidA, vidB: this.vidB,
+      introVoiceRef: this.introVoiceRef, introVoiceReady: this.introVoiceReady,
+      introEnded: this.advanceIntro, introVideoError: this.introVideoError, introPlaying: this.introPlaying,
+      introPaused: this.introPaused, resumeIntroVoice: this.resumeIntroVoice, replayIntro: this.replayIntro,
+      introLang, introLocale: labels.locale, introReplayLabel: labels.replay, introSkipLabel: labels.skip,
+      introSoundLabel: sound ? labels.soundOn : labels.soundOff, introPlayVoiceLabel: labels.voice,
+      introNeedsGesture: sound && introNeedsGesture, introDisclosure: labels.disclosure,
+      changeIntroLanguage: event => {
+        const lang = event.target.value;
+        if (Object.hasOwn(this.introLabels, lang)) this.setState({ introLang: lang });
+      },
+      opA: clip % 2 === 0 ? 1 : 0, opB: clip % 2 === 0 ? 0 : 1,
+      caption: this.introCaptions[introLang][clip][sub]?.text || '',
       next: e => {
         if (s === 0 && window.MAPSMobileGate) { window.MAPSMobileGate(e && e.currentTarget); return; }
         this.sfx(s === 0 ? 'pop' : 'click');
-        this.setState(s === 0 ? { screen: 9, clip: 0, sub: 0 } : s === 9 ? { screen: 1 } : { screen: Math.min(5, s + 1) });
+        if (s === 9) this.stopIntroPlayback();
+        this.setState(s === 0 ? { screen: 9, clip: 0, sub: -1, introNeedsGesture: false }
+          : s === 9 ? { screen: 1, introNeedsGesture: false }
+          : { screen: Math.min(5, s + 1) });
       },
       back: () => { this.sfx('click'); this.setState({ screen: s === 9 ? 0 : Math.max(0, s - 1) }); },
       seats: this.state.crew.map((c, i) => {
@@ -3940,6 +4086,10 @@ class Component extends DCLogic {
         const on = !this.state.sound;
         if (window.GANY_SFX) window.GANY_SFX.set(on);
         if (window.MAPS_MUSIC) window.MAPS_MUSIC.mute(!on);
+        if (s === 9 && this._introVoice) {
+          this._introVoice.muted = !on;
+          if (on) this.resumeIntroVoice();
+        }
         this.setState({ sound: on }, () => { if (on) this.sfx('click'); });
       },
       inHost: !!(window.GANY_MAPS && window.GANY_MAPS.inHost && window.GANY_MAPS.fromMaps),
