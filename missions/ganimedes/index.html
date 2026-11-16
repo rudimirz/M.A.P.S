@@ -19,6 +19,27 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=Manrope:wght@400;600;700&amp;family=Pixelify+Sans:wght@400;600;700&amp;display=swap">
 <style>
 html,body{margin:0;background:#03100f}a{color:#7dffbf}a:hover{color:#effcf8}
+.intro-player {
+  position:relative; height:100vh; height:100dvh; overflow:hidden;
+  display:grid; grid-template-rows:minmax(0,1fr) auto;
+  background:#000; color:#effcf8; font-family:'Manrope',sans-serif;
+}
+.intro-stage { position:relative; min-height:0; display:grid; place-items:center; container-type:size; }
+.intro-frame { position:relative; width:100%; width:min(100%,184cqh); max-height:100%; aspect-ratio:736/400; }
+.intro-caption {
+  position:absolute; left:50%; bottom:clamp(8px,2.5cqh,24px); transform:translateX(-50%);
+  box-sizing:border-box; width:max-content; max-width:min(44rem,calc(100% - 24px));
+  margin:0; padding:4px 10px; border-radius:4px;
+  background:rgba(3,16,15,.76); color:#effcf8;
+  font:700 clamp(15px,2.3vw,22px)/1.3 'Manrope',sans-serif;
+  text-align:center; text-wrap:balance; pointer-events:none;
+}
+.intro-caption:empty { display:none; }
+.intro-controls {
+  position:relative; display:flex; justify-content:center; flex-wrap:wrap; gap:8px;
+  padding:8px 12px max(8px,env(safe-area-inset-bottom));
+  font:700 16px 'Pixelify Sans',sans-serif;
+}
 .intro-control{min-height:44px;padding:0 14px;border:3px solid #2b5560;background:#06191c;color:#effcf8;font:inherit;cursor:pointer}
 .intro-control:hover,.intro-control:focus-visible{border-color:#7ff0ff}
 </style>
@@ -69,24 +90,24 @@ html,body{margin:0;background:#03100f}a{color:#7dffbf}a:hover{color:#effcf8}
 </sc-if>
 
 <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ false }}">
-<main data-screen-label="02 Intro video" lang="{{ introLocale }}" style="position:relative;height:100vh;display:grid;grid-template-rows:minmax(0,1fr) auto;overflow:hidden;background:#000;font-family:'Manrope',sans-serif;color:#effcf8">
+<main data-screen-label="02 Intro video" lang="{{ introLocale }}" class="intro-player">
   <canvas ref="{{ bgRef }}" width="64" height="36" style="position:absolute;inset:-8%;width:116%;height:116%;filter:blur(28px) brightness(.55) saturate(1.2)"></canvas>
-  <div style="position:relative;min-height:0">
-    <video ref="{{ vidA }}" onEnded="{{ introEnded }}" onPlaying="{{ introPlaying }}" onPause="{{ introPaused }}" onWaiting="{{ introPaused }}" onSeeking="{{ introPaused }}" onSeeked="{{ introPlaying }}" onError="{{ introVideoError }}" preload="auto" playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:{{ opA }}"></video>
-    <video ref="{{ vidB }}" onEnded="{{ introEnded }}" onPlaying="{{ introPlaying }}" onPause="{{ introPaused }}" onWaiting="{{ introPaused }}" onSeeking="{{ introPaused }}" onSeeked="{{ introPlaying }}" onError="{{ introVideoError }}" preload="auto" playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:{{ opB }}"></video>
+  <div class="intro-stage">
+    <div class="intro-frame">
+      <video ref="{{ vidA }}" onEnded="{{ introEnded }}" onPlaying="{{ introPlaying }}" onPause="{{ introPaused }}" onWaiting="{{ introPaused }}" onSeeking="{{ introPaused }}" onSeeked="{{ introPlaying }}" onError="{{ introVideoError }}" preload="auto" playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:{{ opA }}"></video>
+      <video ref="{{ vidB }}" onEnded="{{ introEnded }}" onPlaying="{{ introPlaying }}" onPause="{{ introPaused }}" onWaiting="{{ introPaused }}" onSeeking="{{ introPaused }}" onSeeked="{{ introPlaying }}" onError="{{ introVideoError }}" preload="auto" playsinline style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:{{ opB }}"></video>
+      <p class="intro-caption">{{ caption }}</p>
+    </div>
     <audio ref="{{ introVoiceRef }}" muted="{{ introMuted }}" onCanPlay="{{ introVoiceReady }}" onError="{{ introVoiceReady }}" preload="auto" hidden></audio>
     <span style="position:absolute;top:12px;left:12px;padding:5px 8px;background:#03100f;color:#effcf8;font:600 13px 'Manrope',sans-serif">{{ introDisclosure }}</span>
   </div>
-  <div style="position:relative;display:grid;justify-items:center;gap:10px;padding:10px clamp(12px,3vw,28px);min-height:112px">
-    <p style="margin:0;max-width:900px;min-height:2.5em;padding:.35em .7em;color:#effcf8;background:#03100f;font:700 clamp(17px,1.3vw + 9px,28px)/1.25 'Pixelify Sans',sans-serif;text-align:center;text-wrap:pretty">{{ caption }}</p>
-    <div style="display:flex;justify-content:center;flex-wrap:wrap;gap:8px;font:700 16px 'Pixelify Sans',sans-serif">
-      <button class="intro-control" type="button" onClick="{{ replayIntro }}">{{ introReplayLabel }}</button>
-      <button class="intro-control" type="button" onClick="{{ toggleSound }}" aria-pressed="{{ soundOn }}">{{ introSoundLabel }}</button>
-      <sc-if value="{{ introNeedsGesture }}" hint-placeholder-val="{{ false }}">
-        <button class="intro-control" type="button" onClick="{{ resumeIntroVoice }}">{{ introPlayVoiceLabel }}</button>
-      </sc-if>
-      <button class="intro-control" type="button" onClick="{{ next }}">{{ introSkipLabel }} ▸</button>
-    </div>
+  <div class="intro-controls">
+    <button class="intro-control" type="button" onClick="{{ replayIntro }}">{{ introReplayLabel }}</button>
+    <button class="intro-control" type="button" onClick="{{ toggleSound }}" aria-pressed="{{ soundOn }}">{{ introSoundLabel }}</button>
+    <sc-if value="{{ introNeedsGesture }}" hint-placeholder-val="{{ false }}">
+      <button class="intro-control" type="button" onClick="{{ resumeIntroVoice }}">{{ introPlayVoiceLabel }}</button>
+    </sc-if>
+    <button class="intro-control" type="button" onClick="{{ next }}">{{ introSkipLabel }} ▸</button>
   </div>
 </main>
 </sc-if>
@@ -2843,16 +2864,19 @@ class Component extends DCLogic {
     { id: 'pole', name: 'North polar cap', lat: '70° N', terrain: 'Bright frost where Jupiter’s particles reach the ground.', depth: 1.5, temp: 85, rate: 220, hazard: 4, gold: 0, img: 'assets/ganymede/PIA03781.jpg', pos: '24% 50%', credit: 'Polar map from Voyager and Galileo images · NASA/JPL' }
   ];
   needOf(site) { return (0.03 * 60 * (293 - site.temp) / 0.3 + 500) / 1000; }
+  l3DrillLimit = 999;
   l3Plan() {
     const l3 = this.state.l3, L = this.l1info(), has = id => L.parts.includes(id), L2 = this.l2info(), site = this.sites.find(x => x.id === l3.site) || this.sites[0];
     const avail = 2 + (has('rtg') ? 3 : 0) - (L2.pumpDown ? 1 : 0), T = site.temp, heatLoss = 0.03 * 60 * (293 - T) / 0.3, need = (heatLoss + 500) / 1000;
     const A = has('drill') ? 0.0196 : 0.0314, eJ = 1500 * (273 - T) + 334000, perM = A * 920 * eJ, v = l3.drill * 1000 * .85 * 86400 / perM;
-    const depth = site.depth * 1000, days = v > 0 ? depth / v : Infinity, jam = site.hazard >= 8 ? (has('spares') ? 3 : 15) : 0, daysTotal = days + jam;
-    const stay = Math.max(180, Math.ceil(Math.min(daysTotal, 999))), gold = l3.sep * stay * site.gold, target = this.goldTarget();
-    const evaH = 10 + (has('drone') ? site.hazard / 2 : site.hazard) + (jam ? (has('spares') ? 2 : 6) : 0), evaDose = evaH * site.rate / 24, shDose = stay * site.rate * .01, dose = evaDose + shDose;
+    const depth = site.depth * 1000, meltDays = v > 0 ? Math.ceil(depth / v) : Infinity;
+    const jam = site.hazard >= 8 ? (has('spares') ? 3 : 15) : 0, jamDay = Math.ceil(meltDays * .4);
+    const daysTotal = meltDays + jam, drillEnd = Math.min(daysTotal, this.l3DrillLimit), reachesPocket = daysTotal <= this.l3DrillLimit;
+    const stay = Math.max(180, drillEnd), gold = l3.sep * stay * site.gold, target = this.goldTarget();
+    const evaH = 10 + (has('drone') ? site.hazard / 2 : site.hazard) + (jam && jamDay < drillEnd ? (has('spares') ? 2 : 6) : 0), evaDose = evaH * site.rate / 24, shDose = stay * site.rate * .01, dose = evaDose + shDose;
     const foodKg = 180 * 4 * 2.3, ration = Math.min(1, foodKg / (stay * 4 * 2.3)), shortDays = Math.max(0, stay - 180), foodPen = Math.min(30, shortDays * .25);
     const dist = this.distArr(L.path, L.month), rateK = this.linkKbps(L.link, dist), vis = site.id === 'pole' ? .4 : .5, dsnH = L.dsnH ?? 8, gbDay = rateK * 1000 * 3600 * dsnH * vis / 1e9, dataGb = 7, sendDays = dataGb / gbDay, dataHome = Math.min(1, gbDay * stay / dataGb);
-    return { site, avail, T, heatLoss, need, A, eJ, perM, v, depth, days, jam, daysTotal, stay, gold, target, evaH, evaDose, shDose, dose, heatShort: l3.heat < need - 1e-6, L, L2, has, used: l3.heat + l3.drill + l3.sep, foodKg, ration, shortDays, foodPen, dist, rateK, vis, dsnH, gbDay, dataGb, sendDays, dataHome };
+    return { site, avail, T, heatLoss, need, A, eJ, perM, v, depth, meltDays, jam, jamDay, daysTotal, drillEnd, reachesPocket, stay, gold, target, evaH, evaDose, shDose, dose, heatShort: l3.heat < need - 1e-6, L, L2, has, used: l3.heat + l3.drill + l3.sep, foodKg, ration, shortDays, foodPen, dist, rateK, vis, dsnH, gbDay, dataGb, sendDays, dataHome };
   }
   enterL3() {
     clearInterval(this._drillT); this.sfx('click'); this.g = null;
@@ -2867,9 +2891,9 @@ class Component extends DCLogic {
   }
   setPow(key, v) { const P = this.l3Plan(), st = this.state.l3, others = ['heat', 'drill', 'sep'].filter(k => k !== key).reduce((a, k) => a + st[k], 0); this.setL3({ [key]: Math.max(0, Math.min(v, P.avail - others)) }); }
   startDrill() {
-    clearInterval(this._drillT); const P = this.l3Plan(), total = Math.min(P.daysTotal, 999), inc = Math.max(1, total / 80);
+    clearInterval(this._drillT); const P = this.l3Plan(), total = P.drillEnd, inc = Math.max(1, total / 80);
     this.sfx('pop'); this.setL3({ step: 3, drillDay: 0, drillDone: false });
-    this._drillT = setInterval(() => { const d = Math.min(total, this.state.l3.drillDay + inc); this.setL3({ drillDay: d, drillDone: d >= total }); if (d >= total) { clearInterval(this._drillT); this.sfx('ok'); } }, 100);
+    this._drillT = setInterval(() => { const d = Math.min(total, this.state.l3.drillDay + inc); this.setL3({ drillDay: d, drillDone: d >= total }); if (d >= total) { clearInterval(this._drillT); this.sfx(P.reachesPocket ? 'ok' : 'bad'); } }, 100);
   }
   l3Shots = [
     { s: 0, e: 5.6, z: [1, 1.08], cap: 'Jupiter and its four big moons. Ganymede, third from the top, is the largest moon in the Solar System: wider than the planet Mercury.', credit: 'Image: NASA/JPL (Galileo). The moons are shown to scale with each other, not with Jupiter.' },
@@ -2973,6 +2997,8 @@ class Component extends DCLogic {
       ];
     }
     const ok = l3.heat >= P.need - 1e-6, dT = 273 - P.T, depthTxt = has('radar') ? f1(site.depth) + ' km' : '≈ ' + f1(site.depth) + ' km (no radar: ±40%)';
+    const drillEstimate = P.reachesPocket ? f0(P.daysTotal) + ' days to the pocket'
+      : f0(P.daysTotal) + ' days needed · exceeds the ' + this.l3DrillLimit + '-day limit';
     return [
       this.mkCalc({ id: 'heat', title: 'Habitat heat loss', tag: 'REAL', good: ok, summaryQuiz: 'Heat leaks from the warm habitat into the frozen ground. How many watts?',
         summary: 'The habitat leaks ' + f0(P.heatLoss) + ' W into the ice. With life support it needs ' + f2(P.need) + ' kW, and you gave it ' + l3.heat + ' kW.' + (ok ? '' : ' The crew will be cold.'),
@@ -2982,13 +3008,13 @@ class Component extends DCLogic {
         result: ok ? 'Warm · ' + f2(P.need) + ' kW needed' : 'Too cold · ' + f2(P.need - l3.heat) + ' kW short',
         quiz: { q: 'How many watts of heat does the habitat lose to the ice?', v: P.heatLoss, alts: [{ x: P.heatLoss * 2, why: 'Too much. Divide by the 0.3 m thickness.' }, { x: P.heatLoss / 2, why: 'Too little. ΔT is 293 K minus the ground temperature.' }], fmt: x => f0(x) + ' W' },
         src: 'NASA/JPL Galileo · Ganymede temperature map (PIA01232)', href: 'https://photojournal.jpl.nasa.gov/catalog/PIA01232' }),
-      this.mkCalc({ id: 'drillq', title: 'Melt-drill speed', tag: 'REAL', good: P.days <= 180, summaryQuiz: 'The drill must warm the ice to 0 °C and then melt it. How long to reach the pocket?',
-        summary: P.v > 0 ? 'At ' + f1(P.v) + ' m a day the drill reaches the pocket in ' + f0(P.days) + ' days' + (P.days > 180 ? ', longer than your 180-day stay.' : '.') : 'The drill has no power yet.',
-        rows: [['Drill power', l3.drill + ' kW', 'ESTIMATE'], ['Heat that reaches the ice', '85%', 'ESTIMATE'], ['Hole size', has('drill') ? '15.8 cm, heavy thermal drill' : '20 cm, standard drill', 'ESTIMATE'], ['Ice density', '920 kg/m³', 'REAL'], ['Warming ice (specific heat c)', '1.5 kJ/kg·K', 'REAL'], ['Melting ice (latent heat L)', '334 kJ/kg', 'REAL'], ['Depth to the brine pocket', depthTxt, 'FICTION']],
-        how: { general: 'energy per metre = area × density × (c × ΔT + L)\nspeed = power × 0.85 ÷ energy per metre\ndays = depth ÷ speed', vars: [['c', 'energy to warm 1 kg of ice by 1 K'], ['L', 'energy to melt 1 kg of ice'], ['ΔT', '273 K minus the ice temperature']], idea: 'A melt drill, or cryobot, is a hot probe that sinks as it melts the ice under it. Very cold ice must first be warmed to 0 °C and then melted, so every metre costs millions of joules. That is why drilling takes weeks, and why more power means a faster drill.' },
-        formula: 'per metre = ' + P.A + ' × 920 × (1,500 × ' + dT + ' + 334,000) = ' + f1(P.perM / 1e6) + ' MJ\nspeed = ' + f0(l3.drill * 1000) + ' × 0.85 × 86,400 ÷ ' + f1(P.perM / 1e6) + ' MJ = ' + f1(P.v) + ' m/day\ndays  = ' + f0(P.depth) + ' ÷ ' + f1(P.v) + ' = ' + f0(P.days),
-        result: P.v > 0 ? f0(P.days) + ' days to the pocket' : 'No power',
-        quiz: P.v > 0 ? { q: 'How many days to drill down to the pocket?', v: P.days, alts: [{ x: P.days * 2, why: 'That uses half the drill power.' }, { x: P.days / 2, why: 'Too fast. Count both warming the ice and melting it.' }], fmt: x => f0(x) + ' days' } : null,
+      this.mkCalc({ id: 'drillq', title: 'Melt-drill speed', tag: 'REAL', good: P.daysTotal <= 180, summaryQuiz: 'The drill must warm and melt the ice. How many days are needed, including time lost to a jam?',
+        summary: P.v > 0 ? 'At ' + f2(P.v) + ' m a day: ' + drillEstimate + '.' : 'The drill has no power yet.',
+        rows: [['Drill power', l3.drill + ' kW', 'ESTIMATE'], ['Heat that reaches the ice', '85%', 'ESTIMATE'], ['Hole size', has('drill') ? '15.8 cm, heavy thermal drill' : '20 cm, standard drill', 'ESTIMATE'], ['Ice density', '920 kg/m³', 'REAL'], ['Warming ice (specific heat c)', '1.5 kJ/kg·K', 'REAL'], ['Melting ice (latent heat L)', '334 kJ/kg', 'REAL'], ['Depth to the brine pocket', depthTxt, 'FICTION'], ['Time lost to a jam', P.jam + ' days', 'ESTIMATE']],
+        how: { general: 'energy per metre = area × density × (c × ΔT + L)\nspeed = power × 0.85 × seconds per day ÷ energy per metre\ntotal days = round up(depth ÷ speed) + jam days', vars: [['c', 'energy to warm 1 kg of ice by 1 K'], ['L', 'energy to melt 1 kg of ice'], ['ΔT', '273 K minus the ice temperature']], idea: 'A melt drill, or cryobot, is a hot probe that sinks as it melts the ice under it. Very cold ice must first be warmed to 0 °C and then melted, so every metre costs millions of joules. More power means a faster drill.' },
+        formula: P.v > 0 ? 'per metre = ' + P.A + ' × 920 × (1,500 × ' + dT + ' + 334,000) ≈ ' + f0(P.perM) + ' J\nspeed = ' + f0(l3.drill * 1000) + ' × 0.85 × 86,400 ÷ ' + f0(P.perM) + ' ≈ ' + f2(P.v) + ' m/day\nmelting = ' + f0(P.meltDays) + ' days after rounding up\ntotal = ' + f0(P.meltDays) + ' + ' + P.jam + ' jam days = ' + f0(P.daysTotal) + ' days' : 'Give the drill power to calculate the duration.',
+        result: P.v > 0 ? drillEstimate : 'No power',
+        quiz: P.v > 0 ? { q: 'How many days would reaching the pocket take, including jam time?', v: P.daysTotal, alts: [{ x: P.meltDays * 2 + P.jam, why: 'That uses about half the drill power.' }, { x: P.jam ? P.meltDays : Math.floor(P.meltDays / 2), why: P.jam ? 'Add the days lost to the jam.' : 'Too fast. Count both warming the ice and melting it.' }], fmt: x => f0(x) + ' days' } : null,
         src: 'NASA · Ganymede overview', href: 'https://science.nasa.gov/jupiter/jupiter-moons/ganymede/' }),
       this.mkCalc({ id: 'goldq', title: 'Gold separator', tag: 'FICTION', good: !P.target || P.gold >= P.target,
         summary: P.target ? 'Your contract needs ' + P.target + ' t of gold. At this setting the separator makes ' + f1(P.gold) + ' t during your stay.' : 'No gold contract, so the separator can stay off.',
@@ -3008,23 +3034,27 @@ class Component extends DCLogic {
   }
   finishL3() {
     clearInterval(this._drillT); const P = this.l3Plan(), has = P.has, site = P.site;
-    const sciF = P.daysTotal <= 180 ? 1 : P.daysTotal <= 240 ? .7 : .3, sci = Math.round(400 * sciF * (has('incubator') ? 1 : .5) * (has('radar') ? 1 : .85) * (.7 + .3 * P.dataHome));
+    const sciF = !P.reachesPocket ? 0 : P.daysTotal <= 180 ? 1 : P.daysTotal <= 240 ? .7 : .3;
+    const sci = Math.round(400 * sciF * (has('incubator') ? 1 : .5) * (has('radar') ? 1 : .85) * (.7 + .3 * P.dataHome));
     const health = Math.max(0, Math.round(P.L2.health - P.dose / 40 - (P.heatShort ? 15 : 0) - P.foodPen));
     const crew = Math.round(300 * health / 100), contract = Math.round(150 * (P.target ? Math.min(1, P.gold / P.target) : 1)), eff = Math.round(150 * Math.max(0, Math.min(1, (300 - P.stay) / 120)));
     const total = sci + crew + contract + eff, cw = this.cwScore(), bonus = this.calcBonus(['land', 'evadose', 'heat', 'drillq']), final = Math.round((total + bonus + cw.pts) * this.mult());
     const f0 = v => Math.round(v).toLocaleString('en-US'), f1 = v => (Math.round(v * 10) / 10).toLocaleString('en-US'), E = [];
     E.push([1, 'Landed at ' + site.name + ' (' + site.lat + ').']);
-    E.push(P.daysTotal <= 180 ? [1, 'Brine pocket reached on day ' + f0(P.daysTotal) + ' of the 180-day stay.'] : [0, 'The drill needed ' + f0(P.daysTotal) + ' days, so the stay stretched to ' + P.stay + ' days and the trip home starts late.']);
-    if (P.jam) E.push([has('spares'), has('spares') ? 'The drill jammed on a salt layer; spare parts fixed it in 3 days.' : 'The drill jammed on a salt layer and lost 15 days: no spare parts.']);
+    if (!P.reachesPocket) E.push([0, 'The crew left without an algae sample after ' + f0(P.stay) + ' days. The drill needed ' + f0(P.daysTotal) + ' days to reach the pocket.']);
+    else if (P.daysTotal <= 180) E.push([1, 'Brine pocket reached on day ' + f0(P.daysTotal) + ' of the 180-day stay.']);
+    else E.push([0, 'The drill needed ' + f0(P.daysTotal) + ' days, so the stay stretched to ' + P.stay + ' days and the trip home starts late.']);
+    if (P.jam && P.jamDay < P.drillEnd) E.push([has('spares'), 'The drill jammed on a salt layer and lost ' + Math.min(P.jam, P.drillEnd - P.jamDay) + ' days.']);
     E.push(P.heatShort ? [0, 'Heater short by ' + (P.need - this.state.l3.heat).toFixed(2) + ' kW: the crew was cold (−15 health).'] : [1, 'Habitat kept warm: ' + f0(P.heatLoss) + ' W of heat loss covered.']);
     E.push(P.ration >= 1 ? [1, 'Food lasted: ' + f0(P.foodKg) + ' kg covered all ' + P.stay + ' days.'] : [0, 'Food ran short: ' + Math.round(P.ration * 100) + '% rations for ' + P.stay + ' days (−' + Math.round(P.foodPen) + ' health).']);
-    E.push(P.dataHome >= 1 ? [1, 'All 7 Gb of radar and sample data reached Earth in ' + f0(P.sendDays) + ' days.'] : [0, 'Only ' + Math.round(P.dataHome * 100) + '% of the radar and sample data reached Earth before you left.']);
+    const dataLabel = P.reachesPocket ? 'radar and sample data' : 'radar and drilling data';
+    E.push(P.dataHome >= 1 ? [1, 'All 7 Gb of ' + dataLabel + ' reached Earth in ' + f0(P.sendDays) + ' days.'] : [0, 'Only ' + Math.round(P.dataHome * 100) + '% of the ' + dataLabel + ' reached Earth before you left.']);
     E.push([P.dose < 400, 'Surface radiation: ' + f0(P.dose) + ' mSv (' + f0(P.evaH) + ' h of spacewalks plus the ice shelter).']);
     if (P.target) E.push(P.gold >= P.target ? [1, 'The separator made ' + f1(P.gold) + ' t of gold: contract met.'] : [0, 'Only ' + f1(P.gold) + ' t of the ' + P.target + ' t of gold promised. Áurea will want answers in Level 4.']);
-    E.push(has('incubator') ? [1, 'Algae sealed in the reinforced incubator for the trip home.'] : [0, 'No reinforced incubator: half the algae samples will not survive the trip.']);
+    if (P.reachesPocket) E.push(has('incubator') ? [1, 'Algae sealed in the reinforced incubator for the trip home.'] : [0, 'No reinforced incubator: half the algae samples will not survive the trip.']);
     E.push(has('radar') ? [1, 'The ice radar showed exactly where the brine was.'] : [0, 'Without the ice radar you drilled on a best guess.']);
     E.push([cw.n >= 6, 'Crew training: ' + cw.n + ' of 8 crossword words solved (+' + cw.pts + ').']);
-    const result = { sci, crew, contract, eff, total, bonus, cw: cw.pts, final, stars: total >= 800 ? 3 : total >= 550 ? 2 : 1, health, effects: E.map(([g, text]) => ({ text, mark: g ? '▲' : '▼', color: g ? '#7dffbf' : '#ff8a7a' })) };
+    const result = { sci, crew, contract, eff, total, bonus, cw: cw.pts, final, stars: total >= 800 ? 3 : total >= 550 ? 2 : 1, health, reachedPocket: P.reachesPocket, effects: E.map(([g, text]) => ({ text, mark: g ? '▲' : '▼', color: g ? '#7dffbf' : '#ff8a7a' })) };
     try {
       localStorage.setItem('ganymede:l3', JSON.stringify({ site: site.id, stay: P.stay, gold: P.gold, health, dose: Math.round(P.dose), heatShort: P.heatShort, score: final, stars: result.stars }));
       const RR = JSON.parse(localStorage.getItem('ganymede:runs') || '[]'); if (RR.length) { RR[RR.length - 1].s3 = final; localStorage.setItem('ganymede:runs', JSON.stringify(RR)); }
@@ -3049,16 +3079,28 @@ class Component extends DCLogic {
     const bd = this.boardVals({ path: L.path, now: arrive + dayNow / 365.25, arrive, home: arrive + P.stay / 365.25 + 2.73, money: L.money, margin: L2.marginLeft, power: Math.round((P.avail - P.used) * 100) / 100, health: hNow, link: L.link, cap: L.cap, data: L.data, m: L.month, delay: P.dist * 499 / 60, antenna: has('antenna'),
       extra: [['Food left', Math.max(0, Math.round(180 - dayNow * (1 / Math.max(P.ration, .01)) * P.ration)) + ' days', P.ration], this.hideQ('evadose') ? ['Surface dose', '?', .5] : ['Surface dose', Math.round(P.dose) + ' mSv', 1 - P.dose / 600]] });
     const T = [['REAL', 'NASA images of Ganymede'], ['MIXED', 'real terrain, invented brine pockets'], ['REAL', 'heat and melting physics'], ['MIXED', 'real physics, invented algae'], ['REAL', 'what real missions found']][step];
+    const retryDrill = res?.reachedPocket === false;
     const nextInfo = [
       { label: 'Choose a landing site ▸', block: '' },
       { label: 'Plan the power ▸', block: l3.site ? qb : 'Pick a landing site.' },
       { label: 'Start drilling ▸', block: l3.drill < .25 ? 'Give the drill some power.' : qb },
       { label: 'Mission report ▸', block: l3.drillDone ? '' : 'Drilling…' },
-      { label: 'Level 4 · Hard choices ▸', block: '' }
+      { label: retryDrill ? 'Revise the power plan ▸' : 'Level 4 · Hard choices ▸', block: '' }
     ][step];
     const t = l3.hud || 0, sh = this.l3Shots.filter(x => t >= x.s).pop() || this.l3Shots[0];
-    const frac = P.daysTotal > 0 && isFinite(P.daysTotal) ? Math.min(1, l3.drillDay / Math.min(P.daysTotal, 999)) : 0, jamHit = P.jam && frac >= .4;
-    const pw = [['heat', 'Habitat heat and life support', '#ffb36b', this.hideQ('heat') ? 'Ground at ' + P.T + ' K. Solve the heat check below.' : 'Needs ' + P.need.toFixed(2) + ' kW at ' + P.T + ' K.'], ['drill', 'Melt drill', '#7ff0ff', !isFinite(P.days) ? 'No power: the drill is stopped.' : this.hideQ('drillq') ? 'Solve the drill check below.' : f0(P.days) + ' days to the pocket.'], ['sep', 'Gold separator', '#ffd36b', P.target ? f1(P.gold) + ' t of ' + P.target + ' t promised.' : 'No contract: optional.']];
+    const jamHit = P.jam > 0 && l3.drillDay >= P.jamDay;
+    const jamLost = Math.min(P.jam, Math.max(0, l3.drillDay - P.jamDay));
+    const pocketReached = l3.drillDone && P.reachesPocket;
+    const frac = pocketReached ? 1 : Math.min(.999, (l3.drillDay - jamLost) / P.meltDays);
+    const drillStatus = P.reachesPocket ? f0(P.daysTotal) + ' days to the pocket.'
+      : f0(P.daysTotal) + ' days needed, past the ' + this.l3DrillLimit + '-day limit.';
+    const pw = [['heat', 'Habitat heat and life support', '#ffb36b', this.hideQ('heat') ? 'Ground at ' + P.T + ' K. Solve the heat check below.' : 'Needs ' + P.need.toFixed(2) + ' kW at ' + P.T + ' K.'], ['drill', 'Melt drill', '#7ff0ff', P.v <= 0 ? 'No power: the drill is stopped.' : this.hideQ('drillq') ? 'Solve the drill check below.' : drillStatus], ['sep', 'Gold separator', '#ffd36b', P.target ? f1(P.gold) + ' t of ' + P.target + ' t promised.' : 'No contract: optional.']];
+    let drillMessage = 'Melting through ice at ' + f1(P.v) + ' m a day.';
+    if (jamHit && jamLost < P.jam) drillMessage = 'The drill is paused while the crew clears the jam.';
+    if (!P.reachesPocket) drillMessage += ' The operation stops on day ' + this.l3DrillLimit + '.';
+    else if (P.daysTotal > 180) drillMessage += ' This will run past the 180-day stay.';
+    if (l3.drillDone) drillMessage = pocketReached ? 'Brine pocket reached. The probe is pulling up an algae sample.'
+      : 'The drill reached the ' + this.l3DrillLimit + '-day limit. The crew left without an algae sample.';
     const left = Math.max(0, P.avail - P.used);
     return {
       l3Label: '10 Level 3 · ' + steps[step],
@@ -3109,10 +3151,10 @@ class Component extends DCLogic {
       l3Sliders: pw.map(([k, label, color, note]) => ({ label, color, note, value: l3[k], max: P.avail, display: l3[k].toFixed(2) + ' kW', onInput: e => this.setPow(k, +e.target.value) })),
       l3HasSuggest: d === 'cadet',
       l3Suggest: () => { this.sfx('click'); const heat = Math.min(P.avail, Math.ceil(P.need * 4) / 4), sep = P.target && P.site.gold ? Math.min(P.avail - heat, Math.ceil(P.target / (180 * P.site.gold) * 4) / 4) : 0; this.setL3({ heat, sep, drill: Math.max(0, P.avail - heat - sep) }); },
-      l3DrillPct: (frac * 100).toFixed(1) + '%', l3DrillDepth: f0(frac * P.depth) + ' m of ' + f0(P.depth) + ' m',
-      l3DrillDay: 'Day ' + f0(l3.drillDay) + (isFinite(P.daysTotal) ? ' of about ' + f0(P.daysTotal) : ''),
-      l3DrillMsg: l3.drillDone ? 'Brine pocket reached. The probe is pulling up an algae sample.' : 'Melting through ice at ' + f1(P.v) + ' m a day.' + (P.daysTotal > 180 ? ' This will run past the 180-day stay.' : ''), l3DrillColor: l3.drillDone ? '#7dffbf' : P.daysTotal > 180 ? '#ffb36b' : '#cfe9e3',
-      l3Events: jamHit ? [{ text: 'Day ' + f0(P.daysTotal * .4) + ': the drill jammed on a salt layer. ' + (has('spares') ? 'Spare parts fixed it in 3 days.' : 'No spare parts: 15 days lost.'), color: has('spares') ? '#7dffbf' : '#ff8a7a' }] : [],
+      l3DrillPct: (frac * 100).toFixed(1) + '%', l3DrillDepth: f0(Math.floor(frac * P.depth)) + ' m of ' + f0(P.depth) + ' m',
+      l3DrillDay: 'Day ' + f0(l3.drillDay) + ' of ' + f0(P.drillEnd),
+      l3DrillMsg: drillMessage, l3DrillColor: pocketReached ? '#7dffbf' : P.daysTotal > 180 ? '#ffb36b' : '#cfe9e3',
+      l3Events: jamHit ? [{ text: 'Day ' + f0(P.jamDay) + ': the drill jammed on a salt layer. ' + (has('spares') ? 'Spare parts reduce repairs to 3 days.' : 'Without spare parts, repairs take 15 days.'), color: has('spares') ? '#7dffbf' : '#ff8a7a' }] : [],
       ...this.cwVals(),
       l3Stars: res ? '★'.repeat(res.stars) + '☆'.repeat(3 - res.stars) : '', l3StarsLabel: res ? res.stars + ' of 3 stars' : '',
       l3Score: res ? this.scoreLabel(res) : '',
@@ -3131,7 +3173,11 @@ class Component extends DCLogic {
         if (step === 1) { this.sfx('click'); this.setL3({ landing: true, landHud: null }); return; }
         if (step === 2) { this.startDrill(); return; }
         if (step === 3) { this.finishL3(); return; }
-        if (step === 4) { this.enterL4(); return; }
+        if (step === 4) {
+          if (retryDrill) this.setL3({ step: 2, result: null, drillDay: 0, drillDone: false });
+          else this.enterL4();
+          return;
+        }
         this.sfx('click'); this.setL3({ step: step + 1 });
       }
     };
@@ -3860,33 +3906,33 @@ class Component extends DCLogic {
     pt: { locale: 'pt-BR', replay: 'Rever intro', soundOn: 'Silenciar', soundOff: 'Ativar som', skip: 'Pular', voice: 'Reproduzir narração', disclosure: 'Vídeo e narração gerados por IA' }
   };
   clips = [
-    '01-dying-earth', '02-transit-to-jupiter', '03a-magnetosphere',
-    '03b-subsurface-dive', '04-hybrid-vessel', '05-departure'
+    '01-dying-earth', '02-maps-ship', '03-departure',
+    '04-jupiter-ganymede', '05-under-the-ice', '06-mission-yours'
   ];
   introCaptions = {
     en: [
-      [{"start": 0.04, "end": 6.31, "text": "Earth is suffocating. A plague called the Cyanoclasm has swept through our oceans."}, {"start": 6.32, "end": 12.336, "text": "It has wiped out eighty percent of our phytoplankton. Oxygen levels are falling fast."}],
-      [{"start": 0.04, "end": 4.11, "text": "Our only hope lies four hundred million miles away."}, {"start": 4.12, "end": 8.365, "text": "There, in the Jovian system, MAPS has detected a miracle."}],
-      [{"start": 0.015, "end": 4.317, "text": "Beneath the icy crust of Ganymede, something has survived."}],
-      [{"start": 0.029, "end": 5.407, "text": "It’s called Gany-Phyta, a strain of algae that thrives in extreme conditions."}, {"start": 5.602, "end": 7.464, "text": "It’s immune to the plague."}],
-      [{"start": 0.04, "end": 4.725, "text": "MAPS is sending four specialists on an emergency expedition to bring it home."}, {"start": 5.0, "end": 10.531, "text": "Their ship must face solar storms, scarce resources, and dangerous radiation."}],
-      [{"start": 0.04, "end": 5.965, "text": "Four specialists. Four years in the dark. One chance to let Earth breathe again."}, {"start": 6.24, "end": 8.378, "text": "The mission is in your hands."}]
+      [{"start": 0.06, "end": 2.696, "text": "Earth is running out of breath."}, {"start": 2.736, "end": 9.077, "text": "A plague has killed most of the ocean’s plankton, the tiny plants that make much of our oxygen."}],
+      [{"start": 0.051, "end": 5.371, "text": "Our only hope is a living alga found on Ganymede, Jupiter’s largest moon."}, {"start": 5.371, "end": 9.956, "text": "Four specialists will fly there on a nuclear-powered ship to bring it home."}],
+      [{"start": 0.06, "end": 2.085, "text": "The trip takes years."}, {"start": 2.085, "end": 8.991, "text": "Every kilogram costs fuel, and every choice the crew makes now will follow them all the way home."}],
+      [{"start": 0.06, "end": 4.018, "text": "Ganymede is the only moon with its own magnetic field."}, {"start": 4.018, "end": 9.065, "text": "Under its ice lies a salty ocean, and in it, something alive."}],
+      [{"start": 0.06, "end": 4.371, "text": "Gany-Phyta. An alga the plague cannot touch."}, {"start": 4.371, "end": 8.129, "text": "If the crew can bring it home, Earth can breathe again."}],
+      [{"start": 0.06, "end": 2.902, "text": "Four specialists. One chance."}, {"start": 2.902, "end": 5.742, "text": "How the mission unfolds is up to you."}, {"start": 5.742, "end": 8.923, "text": "Take your seat. The mission starts now."}]
     ],
     es: [
-      [{"start": 0.04, "end": 6.005, "text": "La Tierra se ahoga. Una plaga llamada Cianoclasmo se ha propagado por los océanos."}, {"start": 6.2, "end": 11.845, "text": "Ha destruido el ochenta por ciento del fitoplancton. El oxígeno cae rápidamente."}],
-      [{"start": 0, "end": 4.193, "text": "Nuestra única esperanza está a cuatrocientos millones de millas."}, {"start": 4.388, "end": 8.753, "text": "Allí, en el sistema joviano, MAPS ha detectado un milagro."}],
-      [{"start": 0, "end": 3.713, "text": "Bajo la corteza helada de Ganímedes, algo ha sobrevivido."}],
-      [{"start": 0, "end": 4.306, "text": "Se llama Gany-Phyta, un alga que prospera en condiciones extremas."}, {"start": 4.421, "end": 5.906, "text": "Es inmune a la plaga."}],
-      [{"start": 0, "end": 5.473, "text": "MAPS envía a cuatro especialistas en una expedición de emergencia para traerla de vuelta."}, {"start": 5.508, "end": 11.753, "text": "Su nave deberá afrontar tormentas solares, recursos escasos y radiación peligrosa."}],
-      [{"start": 0, "end": 6.971, "text": "Cuatro especialistas. Cuatro años en la oscuridad. Una oportunidad para que la Tierra vuelva a respirar."}, {"start": 6.981, "end": 9.626, "text": "La misión está en tus manos."}]
+      [{"start": 0.06, "end": 2.633, "text": "La Tierra se queda sin aliento."}, {"start": 2.753, "end": 9.227, "text": "Una plaga ha matado gran parte del plancton marino, que produce mucho del oxígeno que respiramos."}],
+      [{"start": 0.053, "end": 5.531, "text": "Nuestra única esperanza es un alga de Ganímedes, la luna más grande de Júpiter."}, {"start": 5.531, "end": 9.958, "text": "Cuatro especialistas viajarán en una nave nuclear para traerla a la Tierra."}],
+      [{"start": 0.06, "end": 2.167, "text": "El viaje dura años."}, {"start": 2.167, "end": 8.872, "text": "Cada kilo cuesta combustible y cada decisión de la tripulación tendrá consecuencias hasta el regreso."}],
+      [{"start": 0.06, "end": 3.956, "text": "Ganímedes es la única luna con campo magnético propio."}, {"start": 3.956, "end": 8.37, "text": "Bajo el hielo hay un océano salado, y en él, algo vivo."}],
+      [{"start": 0.06, "end": 3.462, "text": "Gany-Phyta. Un alga inmune a la plaga."}, {"start": 3.462, "end": 8.069, "text": "Si la tripulación logra traerla, la Tierra podrá respirar de nuevo."}],
+      [{"start": 0.06, "end": 3.265, "text": "Cuatro especialistas. Una oportunidad."}, {"start": 3.265, "end": 5.985, "text": "Tú decides cómo se desarrolla la misión."}, {"start": 5.985, "end": 9.36, "text": "Toma asiento. La misión empieza ahora."}]
     ],
     pt: [
-      [{"start": 0, "end": 5.963, "text": "A Terra está sufocando. Uma praga chamada Cianoclasmo se espalhou pelos oceanos."}, {"start": 6.158, "end": 12.803, "text": "Ela destruiu oitenta por cento do fitoplâncton. Os níveis de oxigênio estão caindo depressa."}],
-      [{"start": 0.015, "end": 4.18, "text": "Nossa única esperança está a quatrocentos milhões de milhas."}, {"start": 4.215, "end": 8.74, "text": "Lá, no sistema joviano, a MAPS detectou um milagre."}],
-      [{"start": 0.015, "end": 4.26, "text": "Sob a crosta gelada de Ganimedes, algo sobreviveu."}],
-      [{"start": 0, "end": 4.308, "text": "É a Gany-Phyta, uma alga que prospera em condições extremas."}, {"start": 4.318, "end": 6.283, "text": "Ela é imune à praga."}],
-      [{"start": 0, "end": 5.233, "text": "A MAPS envia quatro especialistas numa expedição de emergência para trazê-la de volta."}, {"start": 5.508, "end": 11.633, "text": "A nave enfrentará tempestades solares, recursos escassos e radiação perigosa."}],
-      [{"start": 0, "end": 6.603, "text": "Quatro especialistas. Quatro anos no escuro. Uma chance de fazer a Terra respirar de novo."}, {"start": 6.878, "end": 9.643, "text": "A missão está nas suas mãos."}]
+      [{"start": 0.06, "end": 2.388, "text": "A Terra está ficando sem ar."}, {"start": 2.388, "end": 8.575, "text": "Uma praga matou grande parte do plâncton marinho, que produz muito do oxigênio que respiramos."}],
+      [{"start": 0.06, "end": 4.964, "text": "Nossa única esperança é uma alga de Ganimedes, a maior lua de Júpiter."}, {"start": 4.964, "end": 9.238, "text": "Quatro especialistas vão buscá-la numa nave com propulsão nuclear."}],
+      [{"start": 0.06, "end": 1.938, "text": "A viagem leva anos."}, {"start": 1.938, "end": 8.354, "text": "Cada quilo custa combustível, e cada escolha da tripulação terá consequências até a volta."}],
+      [{"start": 0.06, "end": 3.892, "text": "Ganimedes é a única lua com campo magnético próprio."}, {"start": 3.892, "end": 8.381, "text": "Sob o gelo há um oceano salgado e, nele, algo vivo."}],
+      [{"start": 0.06, "end": 3.177, "text": "Gany-Phyta. Uma alga imune à praga."}, {"start": 3.177, "end": 7.674, "text": "Se a tripulação conseguir trazê-la, a Terra poderá respirar de novo."}],
+      [{"start": 0.06, "end": 2.815, "text": "Quatro especialistas. Uma chance."}, {"start": 2.815, "end": 5.695, "text": "Você decide como a missão vai acontecer."}, {"start": 5.695, "end": 8.822, "text": "Tome seu lugar. A missão começa agora."}]
     ]
   };
   activeVid() { return (this.state.clip % 2 ? this.vidB : this.vidA).current; }
