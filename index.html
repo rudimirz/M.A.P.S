@@ -2230,7 +2230,14 @@ showCredits=function(){clearTimers();clearStage();sky.hidden=true;chrome('select
   tm1.append(g);
   wr.append(tm1);
   const H=CFG.hackathon||{},HN=H.name&&typeof H.name==='object'?L3(H.name):H.name;if(HN||H.url){const hk=h('section','cr2sec cr2c');hk.append(h('b','clbl',esc(tm('credHack'))));const a=document.createElement(H.url?'a':'div');if(H.url){a.href=H.url;a.target='_blank';a.rel='noopener'}a.className='cr2hk';const parts=String(HN||H.url).split(' · ');a.innerHTML='<span class="cr2hki">SPACE<br>APPS</span><span class="cr2hkt"><b>'+esc(parts[0])+'</b>'+(parts[1]?'<em>'+esc(parts.slice(1).join(' · '))+'</em>':'')+'</span>'+(H.url?'<i>↗</i>':'');hk.append(a);wr.append(hk)}
-  const rs=h('section','cr2sec');rs.append(h('b','clbl',esc(tm('credRes'))));const gr=h('div','cr2res');tm('credList').forEach((x,i)=>{const m=String(x).match(/^<b>(.*?)<\/b>\s*·\s*(.*)$/);const d=h('div','cr2r');d.style.animationDelay=(.3+i*.04)+'s';if(m){const bits=m[2].split(' · ');const lic=bits.length>1?bits.pop():'';d.append(h('b',null,m[1]),h('span',null,bits.join(' · ')));if(lic)d.append(h('em',null,lic))}else d.innerHTML=x;gr.append(d)});rs.append(gr);const ref=h('a','chlink',esc(L3({es:'Lámina NASA · Misión Luna',en:'NASA · Lunar Mission reference',pt:'Referência NASA · Missão Lunar'})));ref.href='nasa-luna.html';rs.append(ref);wr.append(rs);
+  const rs=h('section','cr2sec');rs.append(h('b','clbl',esc(tm('credRes'))));const gr=h('div','cr2res');tm('credList').forEach((x,i)=>{const m=String(x).match(/^<b>(.*?)<\/b>\s*·\s*(.*)$/);const d=h('div','cr2r');d.style.animationDelay=(.3+i*.04)+'s';if(m){const bits=m[2].split(' · ');const lic=bits.length>1?bits.pop():'';d.append(h('b',null,m[1]),h('span',null,bits.join(' · ')));if(lic)d.append(h('em',null,lic))}else d.innerHTML=x;gr.append(d)});
+  if(window.MAPS_TRACKS?.tema==='jupiter-chandra.mp3'){
+  const audioCredit=h('a','cr2r');
+  audioCredit.href='https://chandra.harvard.edu/sound/jupiter.html';
+  audioCredit.target='_blank';audioCredit.rel='noopener';
+  audioCredit.append(h('b',null,L3({es:'Júpiter · Compuesto',en:'Jupiter · Composite',pt:'Júpiter · Composição'})),h('span',null,'NASA/CXC/SAO/K. Arcand, SYSTEM Sounds (M. Russo, A. Santaguida)'));
+  gr.append(audioCredit);}
+  rs.append(gr);const ref=h('a','chlink',esc(L3({es:'Lámina NASA · Misión Luna',en:'NASA · Lunar Mission reference',pt:'Referência NASA · Missão Lunar'})));ref.href='nasa-luna.html';rs.append(ref);wr.append(rs);
   sc.append(wr);vn.append(sc);stage.append(vn);bk.focus()};
 Object.assign(MT.es,{credTag:'Un juego de diseño de misiones espaciales: cada decisión tiene consecuencias.'});Object.assign(MT.en,{credTag:'A space mission design game: every decision has consequences.'});Object.assign(MT.pt,{credTag:'Um jogo de design de missões espaciais: cada decisão tem consequências.'});
 (()=>{const st=document.createElement('style');st.textContent=`

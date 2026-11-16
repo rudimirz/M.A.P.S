@@ -4,4 +4,6 @@
    Ejemplo:
    window.MAPS_TRACKS = { tema: 'tema.ogg', control: 'control.mp3', tension: 'tension.mp3', maravilla: 'maravilla.ogg', derrota: 'derrota.ogg' };
 */
-window.MAPS_TRACKS = {};
+window.MAPS_TRACKS = document.querySelector('base[href="missions/luna/"]')
+  ? { tema: 'jupiter-chandra.mp3' }
+  : {};
