@@ -1,0 +1,16 @@
+import{aF as j,aG as i,bg as $,aH as s,aE as x}from"./index-CrpESsUe.js";import{t as S}from"./text-NjHeXEmh.js";import{ROLE_LIST as T}from"./team-DKsEX-aV.js";const E={science:"#3ddc84",bus:"#ff8a3d",orbit:"#4da3ff",ground:"#ffd23d"};function A(f,h){const t=(a,o)=>S(x.lang==="en"?"en":"es",a,o),b=j("div","screen slobby");let p=!1,m="";const r=()=>{const a=i.sroom,o=i.sme();if(!a||!o)return;const n=a.hostId===i.id,d=a.mode==="versus",g=d?["A","B"]:["A"],v=e=>a.players.filter(l=>l.team===e&&!l.supervisor),w=(e,l)=>{const c=v(e).find(k=>k.pick===l),L=!c&&!o.supervisor&&o.team===e;return`<div class="sl" style="--c:${E[l]}"><div><b>${s(t(`role.${l}`)[0])}</b><span>${s(t(`role.d.${l}`))}</span></div>
+        <div class="who">${c?`${s(c.name)}${c.id===i.id?` <u>${s(t("lb.you"))}</u>`:""}${c.id===a.hostId?` <u class="h">${s(t("lb.host"))}</u>`:""}`:`<i>${s(t("lb.empty"))}</i>`}</div>
+        ${L?`<button class="btn small" data-role="${l}">${s(t("lb.take"))}</button>`:"<span></span>"}</div>`},u=a.players.filter(e=>e.supervisor);b.innerHTML=`<div class="panel">
+      <div class="head"><div><div class="tag">${s(t(d?"lb.versus":"lb.team"))}</div><h2>${s(t("lb.title"))}</h2></div>
+        <div class="codebox"><div class="code">${s(a.code)}</div><small>${s(t("lb.share"))} <button class="btn small" data-act="copy">${s(t(p?"lb.copied":"lb.copy"))}</button></small></div></div>
+      <p class="sl-note">${s(t(d?"lb.note.versus":"lb.note.team"))} ${s(t("lb.free"))}</p>
+      <div class="sl-teams ${d?"two":""}">${g.map(e=>`<div class="sl-team sl-${e}">
+        ${d?`<h3>${s(t(`team.${e}`))} <small>${v(e).length}/4</small>${o.team!==e||o.supervisor?`<button class="btn small" data-team="${e}" ${v(e).length>=4?"disabled":""}>${s(t("lb.join"))}</button>`:""}</h3>`:""}
+        ${T.map(l=>w(e,l)).join("")}
+        <div class="sl-extra">${v(e).filter(l=>!l.pick).map(l=>`<span>${s(l.name)}</span>`).join("")}</div></div>`).join("")}</div>
+      ${d?`<div class="sl-sups"><h3>${s(t("lb.sups"))} <small>${u.length}/2</small> <button class="btn small" data-act="sup">${s(t(o.supervisor?"lb.leaveSup":"lb.beSup"))}</button></h3>
+        <div>${u.map(e=>`<span>${s(e.name)}${e.id===i.id?` <u>${s(t("lb.you"))}</u>`:""}</span>`).join("")||"—"}</div></div>`:""}
+      <p class="sl-voice">${s(t("lb.voice"))}</p>
+      <div class="error">${s(m)}</div>
+      <div class="foot"><button class="btn" data-act="leave">${s(t("lb.leave"))}</button>
+        ${n?`<button class="btn primary" data-act="start">${s(t("lb.start"))}</button>`:`<span class="who">${s(t("lb.waitHost"))}</span>`}</div></div>`};b.addEventListener("click",async a=>{const o=a.target.closest("button");if(!o||o.disabled)return;const n=o.dataset;if(n.role)i.send({t:"sr:pick",role:n.role});else if(n.team)i.send({t:"sr:team",team:n.team});else if(n.act==="sup")i.send({t:"sr:sup",on:!i.sme().supervisor});else if(n.act==="start")m="",i.send({t:"sr:start"});else if(n.act==="leave")i.sleave(),h();else if(n.act==="copy"){try{await navigator.clipboard.writeText(i.sroom.code)}catch{}p=!0,r(),setTimeout(()=>{p=!1,r()},1500)}});const y=[$.on("net:sr:room",r),$.on("settings",r),$.on("net:error",a=>{m=t(`err.${a.code}`),r()})];return r(),f.appendChild(b),()=>{y.forEach(a=>a()),b.remove()}}export{A as showStoryLobby};

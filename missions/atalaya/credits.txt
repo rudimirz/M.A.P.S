@@ -1,7 +1,7 @@
 Misión ATALAYA / ATALAYA Mission
 Design and development: Joseph Arroyo, team MAPS.
 Built with Claude assistance. Images and cinematics: generated with Higgsfield.
-Synthetic bilingual dialogue: ElevenLabs. Characters and hurricane are fictional.
+Synthetic bilingual dialogue, ambience, music and sound effects: ElevenLabs. Characters and hurricane are fictional.
 NASA and JPL sources include CubeSat 101, Concept Maturity Levels, Mission Design
 Lab, IceCube (NASA 3D Resources and Wu et al.), NASA Earth Observatory
 and NASA Image and Video Library. Surface textures and sky: Poly Haven (CC0).
