@@ -1,8 +1,8 @@
 /* MAPS · integra el inicio 3D (1a · mapa de campañas) y pule la selección del objetivo de la misión.
    Requiere three.min.js e inicio3d.js. Si WebGL falla, se queda el fondo 2D de siempre. */
 (function () {
-  const LB = { luna: 'luna', solomon: 'last', icewindow: 'ice', ganimedes: 'gany' };
-  const COL = { luna: ['#90e1bd', '144,225,189'], solomon: ['#ff8a9c', '255,90,115'], icewindow: ['#d5afff', '213,175,255'], ganimedes: ['#8ed5f3', '142,213,243'] };
+  const LB = { luna: 'luna', solomon: 'last', atalaya: 'ice', ganimedes: 'gany' };
+  const COL = { luna: ['#90e1bd', '144,225,189'], solomon: ['#ff8a9c', '255,90,115'], atalaya: ['#d5afff', '213,175,255'], ganimedes: ['#8ed5f3', '142,213,243'] };
   const VIEW = { es: 'Ver campaña', en: 'View campaign', pt: 'Ver campanha' };
   const st = document.createElement('style');
   st.textContent = `
