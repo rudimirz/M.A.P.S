@@ -194,6 +194,12 @@ export const ART = {
     gentle: 'Naomi_Chen_Compassionate.png', determined: 'Naomi_Chen_Determined.png', reassuring: 'Naomi_Chen_Reassuring.png', worried: 'Naomi_Chen_Worried.png',
     proud: 'Naomi_Chen_Proud.png', relief: 'Naomi_Chen_Relieved.png',
   },
+  // Professor Elias Mercer (Geneva chairman, Ch. 2): 6 files, one batch (15 Nov 2026). 820×760, scale 0.58, top-aligned.
+  Mercer: {
+    dir: 'film/portraits/mercer/',
+    neutral: 'Elias_Mercer_Neutral.png', tired: 'Elias_Mercer_Weary.png', serious: 'Elias_Mercer_Serious.png',
+    curious: 'Elias_Mercer_Curious.png', happy: 'Elias_Mercer_Faint_Smile.png', surprised: 'Elias_Mercer_Surprised.png',
+  },
   // Lucas Almeida (child, Prologue · Ch. 1 · Ch. 21/26): 12 files, one batch (15 Nov 2026). 820×760, one uniform scale, bottom-aligned (a child's head, smaller than the adults').
   Lucas: {
     dir: 'film/portraits/lucas/',
@@ -205,6 +211,7 @@ export const ART = {
 // Kiran and Mateo are final: Solomon will not draw more expressions for them (Nov 2026).
 // Every mood they lack is filled here with the closest drawing they do have, so no line ever falls back to a pixel bust.
 export const ALIAS = {
+  Mercer: { thinking: 'curious', skeptical: 'curious', smirk: 'happy', grin: 'happy', relief: 'happy', confident: 'serious', determined: 'serious', worried: 'tired', sad: 'tired', shocked: 'surprised', amazed: 'surprised', realization: 'surprised' },
   Lucas: { grin: 'excited', laughing: 'excited', playful: 'happy', smirk: 'happy', proud: 'realization', shocked: 'surprised', worried: 'frightened', desperate: 'frightened',
     crying: 'sad', disappointed: 'sad', guilty: 'sad', ashamed: 'sad', tired: 'sad', thinking: 'curious', serious: 'determined', defiant: 'determined', angry: 'determined',
     frustrated: 'confused', skeptical: 'confused', relief: 'hopeful', emotional: 'hopeful', reassuring: 'happy', confident: 'determined', gentle: 'happy' },

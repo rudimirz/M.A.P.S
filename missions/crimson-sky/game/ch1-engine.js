@@ -758,10 +758,10 @@ export function createGame(THREE, o) {
         closeUp();
         await mgPattern();
         wide(); labDigits(clk, '10:42'); S.sub = 'São Paulo · 10:42'; await wait(700);
-        const tx = P.x + 1, path = [[5, 6], [5, 5], [5, 4], [5, 3]]; for (let x = 6; x <= tx; x++) path.push([x, 3]); path.push([tx, 2]);
-        place(mateo, 5, 7, 1, S); mateo.g.visible = true; await walkActor(mateo, path); faceEach();
+        const tx = P.x + 1;
+        await fadeTo(1, 0.6); await cinematic('ch1_mateo'); hooks.onMusic && hooks.onMusic('lab');
+        place(mateo, tx, 2, 1, S); mateo.g.visible = true; faceEach(); await fadeTo(0, 0.6);
         await emote(P, '!');
-        await say(null, 'At 10:42, his friend Mateo Reyes arrived at the laboratory carrying two coffees and a bag of electronic components.');
         await emote(mateo, '…', 0.9);
         await talk('Kiran', 'Mateo', async () => {
           await say(null, 'He looked around the laboratory.', { Mateo: 'confused', Kiran: 'tired' });
