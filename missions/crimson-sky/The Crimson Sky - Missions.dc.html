@@ -305,6 +305,9 @@
                 <sc-if value="{{ panelNote }}" hint-placeholder-val="{{ false }}">
                   <div style="padding:10px 12px; border:1px solid rgba(241,230,214,0.16); background:rgba(241,230,214,0.04); font-size:14px; color:#e2d4c4;">{{ panelNote }}</div>
                 </sc-if>
+                <sc-if value="{{ wbOn }}" hint-placeholder-val="{{ false }}">
+                  <div ref="{{ wbRef }}" style="display:flex; flex-direction:column; gap:10px; padding:12px; background:#0b0710; border:1px solid rgba(255,210,122,0.35);"></div>
+                </sc-if>
                 <div style="display:flex; flex-direction:column;">
                   <sc-for list="{{ decisions }}" as="d" hint-placeholder-count="3">
                     <div style="display:flex; flex-direction:column; gap:8px; padding:14px 0; border-top:1px solid rgba(241,230,214,0.1);">
@@ -443,6 +446,9 @@
                       <div style="display:flex; flex-direction:column; gap:10px; padding:14px; background:#0b0710; border:1px solid #6b2433;">
                         <span style="font-family:'Pixelify Sans', sans-serif; font-size:22px; color:#fff3e8;">{{ mgTitle }}</span>
                         <span style="font-size:14.5px; color:#e2d4c4; text-wrap:pretty;">{{ mgHint }}</span>
+                        <sc-if value="{{ mgAction }}" hint-placeholder-val="{{ false }}">
+                          <div ref="{{ actRef }}" style="display:flex; flex-direction:column; gap:10px;"></div>
+                        </sc-if>
                         <sc-if value="{{ mgCanvas }}" hint-placeholder-val="{{ false }}">
                           <canvas ref="{{ mgRef }}" onPointerDown="{{ onMgDown }}" onPointerMove="{{ onMgMove }}" onPointerUp="{{ onMgUp }}" style="width:100%; aspect-ratio:2 / 1; display:block; touch-action:none; cursor:{{ mgCursor }};"></canvas>
                         </sc-if>
@@ -753,10 +759,19 @@ class Component extends DCLogic {
   }
   // Sprint 2 minigames (Ch. 8, 23, 29). Local to the event owner's screen; the grade goes to the host as a GAME command and feeds the legacy values.
   mgRef = React.createRef();
+  // Action Lab (game/action-lab.js): hands-on station games. Ops kinds mount on actRef; Mateo's workbench mounts on wbRef in the design phase.
+  ACTION = ['faults', 'ascent', 'downlink', 'peaks', 'burn', 'lag', 'poll', 'probes', 'eva', 'anomaly'];
+  actRef = (el) => { if (el === this._actEl) return; if (this._act) { this._act.destroy(); this._act = null; } this._actEl = el; this.mountAct(); };
+  mountAct() { const el = this._actEl, z = this.mz; if (!el || !this.AL || this._act || !z || !this.ACTION.includes(z.kind)) return; this._actKey = z.key;
+    this._act = this.AL.mount(z.kind, el, { P: z.P, seed: z.seed, finish: (g, v, msg) => { if (this.mz === z) this.mgFinish(g, v, msg); } }); }
+  wbRef = (el) => { if (el === this._wbEl) return; if (this._wb) { this._wb.destroy(); this._wb = null; } this._wbEl = el; this.mountWb(); };
+  wbCtx() { const S = this.S, E = this.E, myRole = E.ROLES.find((x) => S.seats[x] === this.me) || null;
+    return { S, E, canEdit: myRole === 'Mateo' && S.phase === 'design', set: (d, o) => this.send({ type: 'SET', d, o }), act: (k, data) => this.send({ type: 'ACT', k, data }) }; }
+  mountWb() { if (!this._wbEl || !this.AL || this._wb || !this.S || !this.E) return; this._wb = this.AL.mount('workbench', this._wbEl, this.wbCtx()); }
   mgState(key, eid, kind, P, seed) {
     if (this.mz && this.mz.key === key) return this.mz;
     const rnd = (k) => { const x = Math.sin(seed * 12.9898 + k * 78.233) * 43758.5453; return x - Math.floor(x); };
-    const now = performance.now(), z = { key, eid, kind, P: P || {}, t0: now, last: now, msg: '', color: '#cdbfd2', done: false, sent: false, hold: 0, started: kind === 'eighteen', tt: 0, trail: [] };
+    const now = performance.now(), z = { key, eid, kind, P: P || {}, seed, t0: now, last: now, msg: '', color: '#cdbfd2', done: false, sent: false, hold: 0, started: kind === 'eighteen' || this.ACTION.includes(kind), tt: 0, trail: [] };
     if (kind === 'eighteen') {
       z.s = 140 + Math.round(rnd(1) * 50); z.dz = 30 + Math.round(rnd(2) * 50); z.dl = 12; z.sel = null; z.drag = null; z.sig = new Float32Array(960);
       for (let i = 0; i < 960; i++) { const m = i / 4, h = Math.sin(i * 91.7 + seed) * 43758.5, n = h - Math.floor(h) - 0.5, bg = 0.28 * Math.sin(m / 23 + seed) + 0.18 * Math.sin(m / 9.3 + seed * 2) + n * 0.32;
@@ -883,6 +898,8 @@ class Component extends DCLogic {
   componentDidUpdate() {
     if (this._pulseLive && !this._praf) this._praf = requestAnimationFrame(this.pulseTick);
     if (this._mgLive && !this._mraf) this._mraf = requestAnimationFrame(this.mgTick);
+    if (this._act && this.mz && this._actKey !== this.mz.key) { this._act.destroy(); this._act = null; } this.mountAct(); this.mountWb();
+    if (this._wb && this.S && this.E && this.S !== this._wbS) { this._wbS = this.S; this._wb.update(this.wbCtx()); }
     const S = this.S, ph = S ? S.mi + ':' + S.phase : null;
     if (ph !== this._lastPh) { this._lastPh = ph; if (this.state.panel || this.state.station) this.setState({ panel: false, station: null }); }
     const evKey = S && S.phase === 'ops' ? S.mi + ':' + S.ops.ei : null;
@@ -925,6 +942,7 @@ class Component extends DCLogic {
     let name = '', hasSave = false;
     try { name = localStorage.getItem('tlf-name') || ''; hasSave = !!localStorage.getItem('tlf-mlab-save'); } catch (e) { /* storage blocked */ }
     this.setState({ name, hasSave });
+    import(url('game/action-lab.js')).then((AL) => { if (this._dead) return; this.AL = AL; this.mountAct(); this.mountWb(); }).catch((err) => console.warn(err));
     Promise.all([import(url('game/mission-engine.js')), import(url('game/net.js')), import(url('game/portraits.js'))])
       .then(([E, N, P]) => { if (this._dead) return; this.E = E; this.N = N; this.P = P; this.setState({ ready: true }); if (this.props.fromStory) this.autoStory(); })
       .catch((e) => this.setState({ status: 'Could not load the game: ' + (e.message || e) }));
@@ -948,7 +966,7 @@ class Component extends DCLogic {
   }
   componentWillUnmount() {
     if (this.score) this.score.stop(1);
-    this._dead = true; cancelAnimationFrame(this._praf); clearTimeout(this.introT); window.removeEventListener('keydown', this.onEsc); window.removeEventListener('keydown', this.onMgKey); window.removeEventListener('keyup', this.onMgKey); cancelAnimationFrame(this._mraf); if (this.W) { this.W.destroy(); this.W = null; } clearInterval(this.tickI); clearTimeout(this.aiT); clearTimeout(this.toastT);
+    this._dead = true; if (this._act) this._act.destroy(); if (this._wb) this._wb.destroy(); cancelAnimationFrame(this._praf); clearTimeout(this.introT); window.removeEventListener('keydown', this.onEsc); window.removeEventListener('keydown', this.onMgKey); window.removeEventListener('keyup', this.onMgKey); cancelAnimationFrame(this._mraf); if (this.W) { this.W.destroy(); this.W = null; } clearInterval(this.tickI); clearTimeout(this.aiT); clearTimeout(this.toastT);
     document.removeEventListener('visibilitychange', this.onVis); if (this.stopTick) this.stopTick(); clearInterval(this.tickI); clearTimeout(this.relinkT);
     if (this.net) this.net.close(); if (this.link) this.link.close();
   }
@@ -1168,7 +1186,9 @@ class Component extends DCLogic {
       v.panelImg = this.imgFor(selRole, 'neutral'); v.panelHasImg = !!v.panelImg; v.panelBg = bgOf(v.panelImg); v.panelMine = canEdit;
       v.panelWho = canEdit ? 'Your seat.' : S.seats[selRole] ? `Played by ${pname(S.seats[selRole])}.` : 'Played by an AI teammate.';
       v.panelNote = canEdit ? '' : S.seats[selRole] ? `Only ${pname(S.seats[selRole])} can change these. Talk to them!` : `An AI teammate is choosing these and re-plans whenever someone else changes something. Take the seat to decide yourself.`;
-      v.decisions = m.decisions.filter((d) => d.role === selRole).map((d) => ({ label: d.label, help: d.help, options: d.options.map((o) => { const on = S.choices[d.id] === o.id;
+      const wbDecs = m.bench || [];
+      v.wbOn = !!m.bench && selRole === 'Mateo'; v.wbRef = this.wbRef;
+      v.decisions = m.decisions.filter((d) => d.role === selRole && !(v.wbOn && wbDecs.includes(d.id))).map((d) => ({ label: d.label, help: d.help, options: d.options.map((o) => { const on = S.choices[d.id] === o.id;
         return { label: o.label, sub: o.sub || '', locked: !canEdit, bg: on ? 'rgba(255,122,107,0.16)' : 'rgba(241,230,214,0.03)', bd: on ? '#ff7a6b' : 'rgba(241,230,214,0.14)', cursor: canEdit && !on ? 'pointer' : 'default', mark: on ? '●' : '○', markColor: on ? '#ff7a6b' : '#7d7186',
           onClick: () => { if (canEdit && !on) this.send({ type: 'SET', d: d.id, o: o.id }); } }; }) }));
       v.onSuggest = () => this.send({ type: 'AUTO' });
@@ -1181,9 +1201,10 @@ class Component extends DCLogic {
       v.scoreParts = [['Science', r.score.science, 30], ['Engineering', r.score.engineering, 25], ['Safety', r.score.safety, 20], ['Reliability', r.score.reliability, 15], ['Budget', r.score.budget, 10]].map(([l, a, b]) => ({ l, a: `${a}/${b}`, w: Math.round(a / b * 100) + '%' }));
       v.last = S.last; v.hasLast = !!S.last; v.aiNote = r.red ? (S.aiNote || '') : ''; v.hasAiNote = !!v.aiNote;
       const waiting = R.filter((x) => x !== 'Naomi' && S.seats[x] && !S.ready[x]);
-      v.isNaomi = myRole === 'Naomi'; const goOk = !r.red && !waiting.length;
+      const craftWait = E.craftPending(S);
+      v.isNaomi = myRole === 'Naomi'; const goOk = !r.red && !waiting.length && !craftWait;
       v.goDisabled = !goOk; v.goBg = goOk ? '#c23440' : 'rgba(241,230,214,0.1)'; v.goCursor = goOk ? 'pointer' : 'default'; v.goBd = goOk ? '#ffb0c8' : 'rgba(241,230,214,0.14)';
-      v.goText = r.red ? 'Every red gate must be fixed before Naomi can authorize the launch.' : waiting.length ? `Waiting for ${waiting.join(', ')} to mark their plan ready.` : S.seats.Naomi ? (v.isNaomi ? 'No red gates and everyone is ready. Your call.' : `Waiting for Naomi (${pname(S.seats.Naomi)}) to authorize.`) : 'Naomi’s AI teammate will authorize in a moment.';
+      v.goText = r.red ? 'Every red gate must be fixed before Naomi can authorize the launch.' : craftWait ? `Mateo still has to build and qualify ${({ sentinel: 'Sentinel', helios: 'Helios', selene: 'Selene', bridge: 'Bridge' })[m.id] || 'the spacecraft'} on his workbench.` : waiting.length ? `Waiting for ${waiting.join(', ')} to mark their plan ready.` : S.seats.Naomi ? (v.isNaomi ? 'No red gates and everyone is ready. Your call.' : `Waiting for Naomi (${pname(S.seats.Naomi)}) to authorize.`) : 'Naomi’s AI teammate will authorize in a moment.';
       v.onGo = () => this.send({ type: 'GO' });
     }
 
@@ -1211,7 +1232,7 @@ class Component extends DCLogic {
         v.hasGameRes = !!(gm && G) && !hidden; v.gameRes = G ? G.text : ''; v.gameResColor = G ? (G.grade === 'good' ? '#7fd6a4' : G.grade === 'ok' ? '#ffd27a' : '#ff6b6b') : '#cdbfd2';
         v.gameResTag = gm && G ? gm.title + ' · ' + (G.grade === 'good' ? 'clean' : G.grade === 'ok' ? 'within limits' : 'off target') : '';
         if (z) { v.mgRef = this.mgRef; v.mgTitle = gm.title; v.mgHint = typeof gm.hint === 'function' ? gm.hint(S) : gm.hint; v.mgMsg = z.msg; v.mgMsgColor = z.color;
-          v.mgStartable = !z.started; v.mgStartLabel = { capture: 'Begin approach', entry: 'Begin entry', sort: 'Open the archive', negotiate: 'Sit down with Voss' }[z.kind] || 'Begin'; v.onMgStart = () => this.mgStart();
+          v.mgAction = this.ACTION.includes(z.kind); v.actRef = this.actRef; v.mgStartable = !z.started; v.mgStartLabel = { capture: 'Begin approach', entry: 'Begin entry', sort: 'Open the archive', negotiate: 'Sit down with Voss' }[z.kind] || 'Begin'; v.onMgStart = () => this.mgStart();
           v.mgMark = z.kind === 'eighteen' && !z.done; v.mgMarkDis = !z.sel || z.sel[1] - z.sel[0] < 2; v.mgMarkBg = v.mgMarkDis ? 'rgba(241,230,214,0.1)' : '#c23440'; v.mgMarkCursor = v.mgMarkDis ? 'default' : 'pointer'; v.onMgMark = () => this.mgMark();
           v.mgHold = (z.kind === 'capture' || z.kind === 'entry') && z.started && !z.done; v.mgUpLabel = z.kind === 'capture' ? 'Thrust ▲' : 'Shallower ▲'; v.mgDownLabel = z.kind === 'capture' ? 'Brake ▼' : 'Steeper ▼';
           v.onMgHoldUp = (ev) => { ev.preventDefault(); z.hold = 1; }; v.onMgHoldDown = (ev) => { ev.preventDefault(); z.hold = -1; }; v.onMgRelease = () => { z.hold = 0; };
@@ -1283,7 +1304,7 @@ class Component extends DCLogic {
       const fails = r ? r.gates.filter((g) => g.status === 'fail').length : 0;
       if (ph === 'design') {
         v.hudKicker = m.name + ' · design review';
-        v.hudGoal = fails ? (myRole ? `${fails} red gate${fails > 1 ? 's' : ''} block the launch. Go to ${SN[myRole]} and fix your part — the review board shows what is failing.` : `${fails} red gates block the launch. Visit the stations to follow the plan.`)
+        v.hudGoal = !fails && E.craftPending(S) ? (myRole === 'Mateo' ? `Build ${({ sentinel: 'Sentinel', helios: 'Helios', selene: 'Selene', bridge: 'Bridge' })[m.id] || 'the spacecraft'} at your workbench: fit every part and run the qualification.` : `Waiting for Mateo to build and qualify ${({ sentinel: 'Sentinel', helios: 'Helios', selene: 'Selene', bridge: 'Bridge' })[m.id] || 'the spacecraft'} at his workbench.`) : fails ? (myRole ? `${fails} red gate${fails > 1 ? 's' : ''} block the launch. Go to ${SN[myRole]} and fix your part — the review board shows what is failing.` : `${fails} red gates block the launch. Visit the stations to follow the plan.`)
           : myRole === 'Naomi' ? 'Every gate is clear. Go to the review board to authorize the launch.' : myRole ? (S.ready[myRole] ? 'Your plan is marked ready. Naomi authorizes the launch at the review board.' : `Gates are clear. Check ${SN[myRole]} and mark your plan ready.`) : 'Gates are clear. Naomi can authorize the launch.';
         v.hudStations = ['Kiran', 'Mateo', 'Leila', 'Naomi', 'board'].map((id) => ({ label: SN[id], onClick: () => this.openStation(id), bd: id === myRole ? RC[id] || '#ff7a6b' : 'rgba(241,230,214,0.22)', col: id === myRole ? '#fff3e8' : '#cdbfd2' }));
       } else if (e) {

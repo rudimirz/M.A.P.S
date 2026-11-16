@@ -51,7 +51,7 @@ const RES = (total, reserve) => ({ id: 'n_res', role: 'Naomi', label: 'Contingen
 
 // ---------------------------------------------------------------- Sentinel (Ch. 3–4)
 const SENTINEL = {
-  id: 'sentinel', name: 'Project Sentinel', chapters: 'Chapter 4', total: 18.0, reserve: 1.6,
+  id: 'sentinel', name: 'Project Sentinel', chapters: 'Chapter 4', total: 18.0, reserve: 1.6, bench: ['m_arr', 'm_bat', 'm_proc', 'm_com', 'm_rec', 'm_pd'], workbench: ['m_arr', 'm_bat', 'm_proc', 'm_com', 'm_rec', 'm_pd', 'k_obj', 'k_time', 'k_cad', 'l_lv', 'l_orb'],
   question: 'Can two small satellites near Earth confirm the repeating intensifications and time-tag them?',
   brief: ['Geneva funds a first, fast mission: two ~45 kg satellites in near-polar orbit, launching on day 59.',
     'The concept review left you a baseline design. It does not fly yet — look at the red gates and fix them together.'],
@@ -87,10 +87,10 @@ const SENTINEL = {
       { id: 'pd', label: 'Standard', sub: '3 kg · 5 W · 2 kbps · $0.40M', kg: 3, W: 5, k: 2, c: 0.40, q: 1 },
       { id: 'pdx', label: 'High resolution', sub: '5 kg · 9 W · 9 kbps · $0.55M', kg: 5, W: 9, k: 9, c: 0.55, q: 1.15 }] },
     { id: 'l_orb', role: 'Leila', label: 'Orbit', help: 'Sets eclipse length, latitude coverage and ground-station passes.', def: 'p82', options: [
-      { id: 'p82', label: '580 km · 82° near-polar', sub: 'Covers the auroral zones', h: 580, cov: 1, passes: { uni: 1, coop: 3, aegis: 6 } },
-      { id: 'sso', label: 'Dawn–dusk sun-synchronous · 580 km', sub: 'Short eclipses; fixed local time · +$0.4M launch', h: 580, cov: 0.8, ef: 0.25, lc: 0.4, passes: { uni: 1, coop: 3, aegis: 6 } },
-      { id: 'm55', label: '700 km · 55°', sub: 'Misses the polar regions', h: 700, cov: 0.5, passes: { uni: 2, coop: 3, aegis: 4 } },
-      { id: 'e0', label: '550 km · equatorial', sub: 'Easy launch, wrong latitudes', h: 550, cov: 0.05, passes: { uni: 0, coop: 1, aegis: 0 } }] },
+      { id: 'p82', label: '580 km · 82° near-polar', sub: 'Covers the auroral zones', h: 580, inc: 82, cov: 1, passes: { uni: 1, coop: 3, aegis: 6 } },
+      { id: 'sso', label: 'Dawn–dusk sun-synchronous · 580 km', sub: 'Short eclipses; fixed local time · +$0.4M launch', h: 580, inc: 97.7, cov: 0.8, ef: 0.25, lc: 0.4, passes: { uni: 1, coop: 3, aegis: 6 } },
+      { id: 'm55', label: '700 km · 55°', sub: 'Misses the polar regions', h: 700, inc: 55, cov: 0.5, passes: { uni: 2, coop: 3, aegis: 4 } },
+      { id: 'e0', label: '550 km · equatorial', sub: 'Easy launch, wrong latitudes', h: 550, inc: 0, cov: 0.05, passes: { uni: 0, coop: 1, aegis: 0 } }] },
     { id: 'l_plane', role: 'Leila', label: 'Constellation', help: 'Where the two satellites fly relative to each other.', def: 'same', options: [
       { id: 'same', label: 'One plane, 180° apart', sub: 'One rideshare', c: 0, s: 1 },
       { id: 'split', label: 'Two planes', sub: 'Second rideshare +$0.8M; separates space from time better', c: 0.8, s: 1.15 }] },
@@ -151,15 +151,28 @@ const SENTINEL = {
       talk: (S) => S.choices.m_proc === 'aegis'
         ? [['Mateo', 'Aegis just pulled the AX-7. Supply problems, they say. Three weeks before launch.', 'frustrated'], ['Kiran', 'Then we fly something we can test.', 'determined']]
         : [['Mateo', 'Aegis pulled the AX-7 from three other missions this morning.', 'thinking'], ['Kiran', 'Good thing we don’t depend on it.', 'sarcastic']],
+      game: { kind: 'faults', title: 'Fault-injection lab', doing: 'rebuilding and testing the flight computer',
+        hint: 'The AX-7 is gone. Fit a replacement architecture on the avionics board — boards, backup, watchdog, memory and power protection — then inject the faults Sentinel will meet in orbit. Re-run as often as you like; sign off only what recovers.',
+        params: (S) => { const r = evaluate(S); const T = r.T || 96, avgW = (r.pw ? r.pw.net : 0) / (T / 60); return { kgA: Math.round((r.o.l_lv.lim - r.num.mass[0] + (r.o.m_proc.kg || 2)) * 10) / 10, wA: Math.round((r.o.m_proc.W + clamp(avgW * 0.5, 0, 6)) * 10) / 10 }; },
+        result: (S, g) => g === 'good' ? { d: { risk: -6 }, text: 'Every injected fault recovers on the first runs. The test log goes into the launch review.' }
+          : g === 'ok' ? { d: { risk: -2 }, text: 'The architecture recovers from every fault, with some cycles lost along the way.' }
+          : { d: { risk: 6 }, text: 'Signed off with failing tests. Leila writes it into the flight rules.' } },
       text: (S) => S.choices.m_proc === 'aegis' ? 'The single-string processor you chose will not arrive. The redundant board fits, but it draws 2 W more per satellite and must be qualified before flight.' : 'Your redundant board is already qualified. Aegis offers its AX-7 boards to you as cheap spares.',
       options: (S) => S.choices.m_proc === 'aegis' ? [
         { id: 'swap_test', label: 'Swap to the redundant board and run fault-injection tests', ai: true, effect: (S) => ({ set: { m_proc: 'red' }, d: { cost: 0.3 + (S.choices.n_test === 'full' ? 0 : 0.2) }, text: 'The new boards pass upset-reset, memory and failover tests. Launch stays on day 59.' }) },
         { id: 'swap_fast', label: 'Swap and skip the tests to keep the date', effect: () => ({ set: { m_proc: 'red' }, d: { cost: 0.5, trust: -6, bond: -4 }, text: 'Leila refuses to fly untested flight hardware. The tests run overnight anyway — the shortcut cost trust.' }) }]
         : [
         { id: 'decline', label: 'Keep the qualified board', ai: true, effect: () => ({ text: 'Nothing changes. Your board is already qualified.' }) },
-        { id: 'spares', label: 'Buy discounted AX-7 spares from Aegis', effect: () => ({ d: { cost: -0.05, aegis: 8 }, text: 'Aegis sells the spares cheaply — and now knows your schedule.' }) }],
-      timed: { role: 'Mateo', title: 'Extra fault-injection run', seconds: 90, reward: 'Find a latent fault before launch (risk −6)', q: 'The watchdog resets the board during the test. Which reading proves the failover worked?',
-        choices: ['Housekeeping packets resume within one cycle, with no gap in time-tags', 'Battery voltage rises by 0.2 V', 'The magnetometer reads zero'], answer: 0, win: { risk: -6 }, winText: 'The extra run caught a memory fault before launch.' } },
+        { id: 'spares', label: 'Buy discounted AX-7 spares from Aegis', effect: () => ({ d: { cost: -0.05, aegis: 8 }, text: 'Aegis sells the spares cheaply — and now knows your schedule.' }) }] },
+    { id: 'ascent', chapter: 'Ch. 4 · day 59', title: 'Ascent', owner: 'Leila', talk: () => [],
+      text: (S, r) => `Rideshare to ${r.o.l_orb.label}. Each Sentinel weighs ${f1(r.num.mass[0])} kg in its slot.`,
+      game: { kind: 'ascent', title: 'Fly the ascent', doing: 'flying the ascent',
+        hint: 'Guidance flies the pitch program; wind shear pushes it off. Trim with ▲/▼ (or W/S) to stay inside the corridor, throttle down through max-Q (T), separate the stages on cue (Space), then trim the orbit with the upper stage before releasing both Sentinels.',
+        params: (S) => { const r = evaluate(S); return { h: r.o.l_orb.h, inc: r.o.l_orb.inc, kg: r.num.mass[0], orbit: r.o.l_orb.label }; },
+        result: (S, g, v) => g === 'good' ? { d: { sci: 1.03 }, text: `Both Sentinels released ${Math.round(v)} m/s from the target orbit, with propellant to spare.` }
+          : g === 'ok' ? { text: `Released ${Math.round(v)} m/s off target — inside the rideshare tolerance.` }
+          : { d: { sci: 0.94, risk: 3 }, text: `Released ${Math.round(v)} m/s off target. The orbit is slightly elliptical: coverage and pass times drift from the plan.` } },
+      options: () => [{ id: 'release', label: 'Release both Sentinels', ai: true, effect: () => ({ text: 'Both Sentinels separate from the upper stage.' }) }] },
     { id: 'launch', chapter: 'Ch. 4 · day 59', title: 'Launch and commissioning', owner: 'Kiran',
       talk: () => [['Leila', 'Both spacecraft separated. Booms deploying.', 'commanding'], ['Naomi', 'Then let’s see if they were worth it.', 'serious']],
       text: (S, r) => r.pw.net < 0 ? `Sentinel B drops into safe mode in its first eclipse: the battery loses ${f1(-r.pw.net)} Wh per orbit. Science runs only part-time.` : 'Both satellites are healthy. The magnetometer booms are out. Before science starts, the instruments need calibrating.',
@@ -170,6 +183,12 @@ const SENTINEL = {
         choices: ['About 48 minutes', 'About 96 minutes', 'About 12 hours'], answer: 0, win: { sci: 1.04 }, winText: 'Half of a 96-minute orbit: 48 minutes. Phasing confirmed.' } },
     { id: 'campaign', chapter: 'Ch. 4 · the next recurrence', title: 'The pattern returns', owner: 'Naomi',
       talk: () => [['Kiran', 'Forty-eight minutes apart. Again.', 'excited'], ['Naomi', 'Will we get the data down in time?', 'thinking']],
+      game: { kind: 'downlink', title: 'Bring the event home', doing: 'scheduling the ground passes',
+        hint: 'Six hours of operations in one minute. The recurrence will fill the recorder. Book passes on the timeline, settle contested antennas, decide whether to pay Aegis, and get the event packets to Kiran before they are overwritten.',
+        params: (S) => { const o = evaluate(S).o; return { h: o.l_orb.h, inc: o.l_orb.inc, net: o.n_gs.id, kbps: o.m_com.kbps, recMB: o.m_rec.MB, buffering: o.k_cad.id === 'event' }; },
+        // v packs both results: event fraction in % (v mod 1000) and extra spend in $10k units (v div 1000).
+        result: (S, g, v) => { const frac = (v % 1000) / 100, spent = Math.floor(v / 1000) / 100, d = { sci: g === 'good' ? 1.04 : g === 'ok' ? 1 : 0.88 }; if (spent > 0) d.cost = spent;
+          return { d, flags: { rxSentinel: frac }, text: `${Math.round(frac * 100)} % of the event packets verified on the ground${spent > 0 ? ` · ${money(spent)} on priority contacts` : ''}.` }; } },
       text: (S, r) => r.backlog > 0 ? `The recorder is filling ${f1(r.backlog)} MB/day faster than the stations empty it (full in ${r.fill === Infinity ? '—' : r.fill.toFixed(0)} days). The event records may be overwritten.` : 'Downlink keeps up with the data. The event records will come down the same day.',
       options: (S, r) => [
         { id: 'book', label: 'Book extra passes for the event (+$0.10M)', ai: r.backlog > 0, effect: () => ({ d: { cost: 0.1 }, mods: { passes: 1 }, text: r.backlog > 0 ? 'Extra passes empty the recorder during the event. Nothing is lost.' : 'The extra passes weren’t needed.' }) },
@@ -178,6 +197,12 @@ const SENTINEL = {
         choices: ['03:53', '02:65', '04:41'], answer: 0, win: { sci: 1.05 }, winText: '02:17 + 2 × 48 min = 03:53. Third peak captured at full rate.' } },
     { id: 'findings', chapter: 'Ch. 4 · Geneva', title: 'What Sentinel found', owner: 'Kiran',
       talk: () => [['Kiran', 'It repeats. But from down here we can’t see where it starts.', 'thinking'], ['Naomi', 'Then say exactly that.', 'serious']],
+      game: { kind: 'peaks', title: 'Read the Sentinel data', doing: 'analysing the Sentinel data',
+        hint: 'Only what reached the ground is here. Align Sentinel B’s clock with A (drag the lower trace), mark the three intensifications, flag anything the spacecraft made itself, then put each piece of evidence on the hypothesis it decides.',
+        params: (S) => ({ rx: S.legacy.flags.rxSentinel ?? 1, magBody: !!(S.act && S.act.craft && S.act.craft.magBody), gps: S.choices.k_time === 'gps' }),
+        result: (S, g) => g === 'good' ? { d: { evidence: 4 }, text: 'Three intensifications about 48 minutes apart on both satellites, with the spacecraft’s own noise set aside. The model cannot reproduce the spacing.' }
+          : g === 'ok' ? { d: { evidence: 2 }, text: 'The recurrence is there, but parts of the case are thin.' }
+          : { d: { trust: -2 }, text: 'The analysis mixes spacecraft noise with sky. Reviewers will ask hard questions.' } },
       text: () => 'Two satellites and the ground stations agree: the intensifications recur. Measurements near Earth cannot show what drives them. How do you report it?',
       options: () => [
         { id: 'careful', label: 'Report what was measured, with uncertainties', ai: true, effect: () => ({ d: { trust: 4 }, text: 'Reviewers trust the result. The next step is upstream: Helios.' }) },
@@ -193,7 +218,7 @@ const SENTINEL = {
 // ---------------------------------------------------------------- Helios (Ch. 5–6)
 const HI = { mag: { kg: 13, W: 9, k: 2, c: 3 }, plasma: { kg: 29, W: 22, k: 12, c: 7 }, part: { kg: 25, W: 16, k: 8, c: 6 }, img: { kg: 60, W: 45, k: 40, c: 12 } };
 const HELIOS = {
-  id: 'helios', name: 'Project Helios', chapters: 'Chapters 5–6', total: 110, reserve: 6,
+  id: 'helios', name: 'Project Helios', chapters: 'Chapters 5–6', total: 110, reserve: 6, bench: ['h_prop', 'h_ant', 'h_arr', 'h_rec'], workbench: ['h_prop', 'h_ant', 'h_arr', 'h_rec', 'h_obs', 'h_pkg', 'h_lv', 'h_orb', 'h_years'],
   question: 'Is the pattern just an unmeasured change in the incoming solar wind?',
   brief: ['A spacecraft at the Sun–Earth L1 region, ~1.5 million km sunward, sees the solar wind about an hour before it reaches Earth.',
     'Nothing can park exactly at L1. Helios must orbit around it and spend propellant to stay there.'],
@@ -278,18 +303,25 @@ const HELIOS = {
   },
   events: [
     { id: 'antenna', chapter: 'Ch. 5', title: 'Adrian Voss makes an offer', owner: 'Naomi',
+      game: { kind: 'downlink', title: 'Helios’s first shock', doing: 'scheduling the deep-space dishes',
+        hint: 'One day of Helios operations in a minute. A shock front will cross the spacecraft. Book the dishes that can see it, settle shared antennas, decide whether Aegis’s priority time is worth its price — and get the shock packets home before the recorder overwrites them.',
+        params: (S) => { const o = evaluate(S).o; return { deep: true, craft: 'Helios', net: o.h_gs.id, kbps: o.h_ant.kbps, recMB: o.h_rec.MB, buffering: o.h_cad.id === 'adaptive' }; },
+        result: (S, g, v) => { const frac = (v % 1000) / 100, spent = Math.floor(v / 1000) / 100, d = g === 'bad' ? { sci: 0.94 } : {}; if (spent > 0) { d.cost = spent; d.aegis = 3; }
+          return { d, mods: g === 'good' ? { hours: 2 } : {}, text: `${Math.round(frac * 100)} % of the shock packets verified on the ground${spent > 0 ? ` · ${money(spent)} paid to Aegis` : ''}.${g === 'good' ? ' The university offers a weekend shift: +2 h/day.' : ''}` }; } },
       talk: () => [['Voss', 'Our network never sleeps, Dr. Chen. Universities do.', 'persuasive'], ['Naomi', 'Universities also publish their prices.', 'skeptical']],
       text: (S) => S.choices.h_gs === 'aegis' ? 'You already chose Aegis’s antennas. Voss wants a long-term data-sharing clause in return.' : 'Aegis offers round-the-clock deep-space contact — for $14M and a seat in your data reviews.',
       options: (S) => [
         { id: 'accept', label: S.choices.h_gs === 'aegis' ? 'Sign the data-sharing clause' : 'Accept the Aegis network', effect: () => ({ set: { h_gs: 'aegis' }, d: { aegis: 15 }, text: 'Helios gets 20 hours of contact a day. Aegis gets a view into everything you find.' }) },
         { id: 'public', label: 'Publish the quote and ask agencies for shared time', ai: true, effect: () => ({ d: { trust: 6, aegis: -5 }, flags: { vossSnub: true }, text: 'Two agencies offer antenna time. Voss smiles, and remembers.' }) },
-        { id: 'keep', label: 'Keep the current plan quietly', effect: () => ({ text: 'Nothing changes.' }) }],
-      timed: { role: 'Naomi', title: 'Second quotation', seconds: 120, reward: '+2 h/day of antenna time from a university', q: 'A cooperative dish gives 8 h/day at 64 kbps with 85 % goodput. How much data is that per day?',
-        choices: ['≈ 196 MB', '≈ 1.8 GB', '≈ 24 MB'], answer: 0, win: {}, mods: { hours: 2 }, winText: '64 kbps × 8 h × 3600 s × 0.85 ÷ 8 ≈ 196 MB. The university adds a weekend shift.' } },
+        { id: 'keep', label: 'Keep the current plan quietly', effect: () => ({ text: 'Nothing changes.' }) }] },
     { id: 'transfer', chapter: 'Ch. 6 · cruise', title: 'The first correction burn', owner: 'Leila',
       talk: () => [['Leila', 'Tracking says we’re slightly off. I can fix it now, or wait for a cleaner solution.', 'thinking']],
       text: (S, r) => `Δv margin before the burn: ${Math.round(r.dv - r.req)} m/s. Correcting now costs ~5 m/s; waiting costs ~25 m/s because the error grows.`,
-      options: (S, r) => [
+      game: { kind: 'burn', title: 'Plan the correction burn', doing: 'planning the correction burn',
+        hint: 'Tracking shows Helios drifting off its transfer. Drop a manoeuvre node ahead of the spacecraft and drag the burn arrow onto the tracking solution. Early burns are cheap but uncertain; wait and tracking improves, but the error grows.',
+        params: (S) => { const r = evaluate(S); return { isp: r.o.h_prop.isp, wet: r.wet, margin: Math.round(r.dv - r.req) }; },
+        result: (S, g, v) => ({ mods: { dvUsed: Math.round(v) }, d: g === 'bad' ? { risk: 6 } : {}, text: g === 'good' ? `Corrected with ${f1(v)} m/s. Helios stays on its path.` : g === 'ok' ? `Corrected with ${f1(v)} m/s — more than an early burn, still inside the margin.` : `${f1(v)} m/s spent, including an emergency trim. The stationkeeping margin is thinner.` }) },
+      options: (S, r) => S.ops.game ? [{ id: 'logged', label: 'Log the burn and continue the cruise', ai: true, effect: () => ({ text: 'Helios cruises on toward L1.' }) }] : [
         { id: 'early', label: 'Correct now (~5 m/s)', ai: true, effect: () => ({ mods: { dvUsed: 5 }, text: 'Small burn, small cost. Helios stays on its path.' }) },
         { id: 'late', label: 'Wait for better tracking (~25 m/s)', effect: () => (r.dv - r.req < 25 ? { mods: { dvUsed: 25 }, d: { risk: 10, sci: 0.85 }, text: 'The late burn eats the stationkeeping margin. Helios will have to end its mission early.' } : { mods: { dvUsed: 25 }, text: 'The margin absorbs it.' }) }],
       timed: { role: 'Leila', title: 'Light-time check', seconds: 60, reward: 'Better command planning (risk −3)', q: 'Helios is 1.5 million km away. How long does a command take to arrive?',
@@ -297,6 +329,11 @@ const HELIOS = {
     { id: 'lag', chapter: 'Ch. 6 · first data', title: 'How long does the wind take?', owner: 'Kiran',
       talk: () => [['Kiran', 'If I line up the wrong hour, I’ll see a correlation that isn’t there.', 'thinking']],
       text: () => 'To compare Helios with Sentinel, its data must be shifted by the solar wind’s travel time to Earth. At 450 km/s that is about 56 minutes — but the speed changes.',
+      game: { kind: 'lag', title: 'Line up the solar wind', doing: 'aligning Helios with Earth',
+        hint: 'Upper trace: Helios at L1. Lower: the response near Earth. Drag the upper trace until the features line up — the wind speeds up halfway through, so each half needs its own delay. Then click the peaks near Earth that nothing upstream explains.',
+        params: (S) => ({ lagOk: evaluate(S).lagOk }),
+        result: (S, g, v) => g === 'good' ? { d: { evidence: 4 }, text: `Both streams aligned. ${Math.round(v)} recurring peaks near Earth have no upstream cause.` }
+          : g === 'ok' ? { d: { evidence: 2 }, text: `A partial alignment. ${Math.round(v)} unexplained peaks marked.` } : { text: 'The alignment never settled; the comparison stays ambiguous.' } },
       options: (S, r) => [
         { id: 'velocity', label: 'Shift by the measured flow speed, sample by sample', ai: r.lagOk, disabled: !r.lagOk, why: r.lagOk ? '' : 'Needs the plasma analyzer', effect: () => ({ d: { sci: 1.1 }, text: 'The early energy input lines up with Earth’s response. The recurring peaks do not.' }) },
         { id: 'fixed', label: 'Shift everything by a fixed 60 minutes', ai: !r.lagOk, effect: () => ({ d: { sci: 0.85 }, text: 'A rough fit. Fast and slow streams smear together.' }) },
@@ -313,7 +350,7 @@ const HELIOS = {
 
 // ---------------------------------------------------------------- Selene (Ch. 7–8)
 const SELENE = {
-  id: 'selene', name: 'Project Selene', chapters: 'Chapters 7–8', total: 420, reserve: 40,
+  id: 'selene', name: 'Project Selene', chapters: 'Chapters 7–8', total: 420, reserve: 40, bench: ['s_rec', 's_port', 's_iso'], workbench: ['s_rec', 's_port', 's_iso', 's_probes', 's_clock', 's_lv', 's_xfer'],
   question: 'Is the repeating energy release in the magnetotail — and is it moving, or growing in place?',
   brief: ['An orbiter and probes in the lunar region. Only several points at once can tell a moving structure from one that grows in place.',
     'The Moon is inside Earth’s magnetotail for only a few days around each full Moon.'],
@@ -376,6 +413,13 @@ const SELENE = {
       margins: [clamp((lim - stack) / 80), clamp((avail - cost) / 20), backlog <= 0 ? 1 : 0.5] });
   },
   events: [
+    { id: 'deploy', chapter: 'Ch. 7', title: 'Releasing the probes', owner: 'Leila', talk: () => [],
+      text: (S, r) => `Selene is in lunar orbit, inside the magnetotail. ${r.o.s_probes.n} probe${r.o.s_probes.n > 1 ? 's' : ''} wait for their separation burns.`,
+      game: { kind: 'probes', title: 'Release the probes', doing: 'positioning the probes',
+        hint: 'Drag each probe to its station within the separation Δv. The plasma sheet is where the model predicts — until it isn’t. Several points across it tell a moving structure from one growing in place.',
+        params: (S) => { const o = evaluate(S).o; return { n: o.s_probes.n, sep: { tight: 500, medium: 3000, wide: 10000 }[o.s_sep.id] || 3000 }; },
+        result: (S, g) => g === 'good' ? { d: { sci: 1.06 }, text: 'Even on the edge, the spread catches the sheet from above, inside and below.' } : g === 'ok' ? { text: 'Some of the probes catch the sheet’s edge.' } : { d: { sci: 0.9 }, text: 'The probes cluster where the sheet was supposed to be. It wasn’t there.' } },
+      options: () => [{ id: 'run', label: 'Run the first campaign', ai: true, effect: () => ({ text: 'Six days of data in the magnetotail.' }) }] },
     { id: 'camp1', chapter: 'Ch. 7', title: 'The first campaign', owner: 'Naomi',
       talk: () => [['Leila', 'The plasma sheet sat lower than predicted. We skimmed its edge.', 'annoyed'], ['Kiran', 'It’s not a bug. The tail moves.', 'thinking']],
       text: (S) => `The probes sampled the edge of the plasma sheet, not its centre. ${S.choices.s_window === 'new' ? 'Worse: the campaign was timed for new Moon, when the Moon is outside the tail. ' : ''}${S.choices.s_campaign === 'two' ? 'A second campaign is already funded.' : 'Only one campaign was funded.'}`,
@@ -528,7 +572,7 @@ const AEGIS = {
 
 // ---------------------------------------------------------------- Bridge / Breakpoint (Ch. 18–29)
 const BRIDGE = {
-  id: 'bridge', name: 'Bridge · Breakpoint', chapters: 'Chapters 18–30', total: 5780, reserve: 820,
+  id: 'bridge', name: 'Bridge · Breakpoint', chapters: 'Chapters 18–30', total: 5780, reserve: 820, bench: ['b_ls', 'b_shelter', 'b_tools'], workbench: ['b_ls', 'b_shelter', 'b_tools'],
   question: 'Three people to the Moon: repair Selene, recover its data, test the Echo Node — and come home.',
   brief: ['Crew: Kiran, Mateo and Leila. Naomi directs from Earth. The vehicle is an existing crew spacecraft, adapted.',
     'Everything you did on the earlier missions arrives here: evidence, trust, risk, the people.'],
@@ -629,6 +673,10 @@ const BRIDGE = {
         { id: 'publish', label: '“Then we’ll publish what we learned. And other people will try again.”', ai: true, effect: () => ({ d: { trust: 4 }, text: 'Naomi leaves. It is the last time they speak.' }) },
         { id: 'deal', label: 'Ask for Aegis’s deep-space antennas during the window, in exchange for first look at the data', effect: () => ({ d: { aegis: 10, trust: -6, risk: -3 }, text: 'Voss agrees at once. Better coverage for the window — and Aegis back inside the mission.' }) }] },
     { id: 'go', chapter: 'Ch. 21', title: 'Launch day', owner: 'Naomi',
+      game: { kind: 'poll', title: 'GO / NO-GO', doing: 'running the final poll',
+        hint: 'Each station reports in turn. Ask for the data when a call sounds too easy, HOLD what is really wrong, GO the rest — before the launch window closes.',
+        params: (S) => ({ grounded: S.legacy.risk >= 70 }),
+        result: (S, g, v) => g === 'good' ? { d: { risk: -4, trust: 2 }, text: 'Every signature on the poll stands on real data.' } : g === 'ok' ? { text: 'The poll closes with one question left unasked.' } : { d: { risk: 6 }, text: S.legacy.risk >= 70 ? 'The board will not sign.' : 'Something went through as GO that should not have.' } },
       talk: (S) => S.legacy.risk >= 70 ? [] : [['Mateo', 'You’re doing that wrong.', 'smirk'], ['Kiran', 'I know what I’m doing.', 'annoyed'], ['Mateo', 'Then why is it upside down?', 'grin'],
         ['Leila', 'Both of you finished?', 'stern'], ['Mateo', 'Yes, Commander.', 'grin'], ['Leila', 'Good. We have a spacecraft to fly.', 'commanding'],
         ['Naomi', 'Bridge crew, final systems review complete.', 'serious'], ['Naomi', 'Everything we’re capable of making ready.', 'serious'], ['Naomi', 'Come home.', 'gentle'], ['Kiran', 'We will.', 'determined']],
@@ -661,12 +709,16 @@ const BRIDGE = {
           : { d: { risk: 5 }, text: v == null ? 'Bridge drifts out of the approach window. Leila backs off and comes in again on the next orbit; it costs margin.' : 'Contact at ' + v.toFixed(2) + ' m/s. The capture arm holds, but one of Selene’s arrays is bent.' } },
       options: (S) => [{ id: 'eva', label: 'Prepare for the EVA', ai: true, effect: () => ({ text: S.ops.game ? '' : 'Bridge approaches slowly, verifies the geometry with cameras and lidar, and captures Selene.' }) }] },
     { id: 'eva', chapter: 'Ch. 23', title: 'Selene', owner: 'Mateo',
+      game: { kind: 'eva', title: 'The spacewalk', doing: 'out on the EVA',
+        hint: 'Translate along the handrails with two tethers — always one clipped. At the work site, hold Space (or the button) for each task, lock the connector key when it lines up. Shadow and standard tools slow you down. Leila can authorise two more minutes, once.',
+        params: (S) => ({ port: !!S.legacy.flags.servicePort, glove: S.choices.b_tools === 'glove' || !!S.legacy.flags.gloveFix }),
+        result: (S, g, v) => g === 'good' ? { d: { risk: -3 }, flags: { evaClean: true }, text: 'A clean EVA: every move tethered, every task inside the timeline.' } : g === 'ok' ? { flags: { evaClean: true }, text: 'The work gets done, with less margin than Leila likes.' } : { d: { risk: 6 }, flags: { evaRough: true }, text: v != null && v > 1 ? 'Too many untethered moves. Leila ends the EVA.' : 'The EVA clock runs out before the connection is made.' } },
       talk: () => [['Mateo', 'Primary connector’s scorched. I can’t use it.', 'frustrated'], ['Leila', 'Options, Mateo.', 'stern']],
       text: (S) => `The primary data connector is damaged. ${S.legacy.flags.servicePort ? 'Selene has a secondary service interface.' : 'Selene was built without a secondary service interface.'} Selene’s recorder holds ${Math.round((S.legacy.flags.trapped ?? 0.6) * 100)} % of its campaign data.`,
       options: (S) => [
         { id: 'secondary', label: 'Use the secondary service port', ai: !!S.legacy.flags.servicePort, disabled: !S.legacy.flags.servicePort, why: S.legacy.flags.servicePort ? '' : 'Selene has no secondary port', effect: () => ({ d: { evidence: Math.round(15 * (S.legacy.flags.trapped ?? 0.6)) }, text: 'Connected. Checksums verified on Earth by Naomi’s team. The eighteen minutes are in there.' }) },
         { id: 'improvise', label: 'Bypass the damaged connector by hand', ai: !S.legacy.flags.servicePort, effect: () => {
-          const ok = (S.choices.b_tools === 'glove' || S.legacy.flags.gloveFix) && S.legacy.bond >= 30;
+          const ok = (S.choices.b_tools === 'glove' || S.legacy.flags.gloveFix) && S.legacy.bond >= 30 && !(S.ops.game && S.ops.game.grade === 'bad');
           return ok ? { d: { evidence: Math.round(12 * (S.legacy.flags.trapped ?? 0.6)), risk: 5 }, text: 'Slow, careful work in pressure gloves. It holds. Most of the data come across.' }
             : { d: { risk: 10 }, flags: { seleneLost: true }, text: S.choices.b_tools !== 'glove' && !S.legacy.flags.gloveFix ? 'The standard tools can’t be worked in pressure gloves. The connection fails. Selene’s data stay out of reach.' : 'Kiran and Mateo can’t work as one out there. The connection fails.' };
         } }] },
@@ -712,6 +764,9 @@ const BRIDGE = {
         { id: 'correct', label: 'Spend the last margin on a final correction', ai: true, effect: () => ({ flags: { crewInjured: S.legacy.dose > 50 }, text: 'The corridor is perfect. The tanks are nearly dry.' }) },
         { id: 'skip', label: 'Skip it and keep the margin', effect: () => ({ flags: { crewInjured: true }, text: 'A steep entry. Bridge lands hard; Leila is hurt.' }) }] },
     { id: 'open', chapter: 'Ch. 30 · the months after', title: 'A world without fear', owner: 'Kiran', when: (S) => !!S.legacy.flags.pulseGlobal,
+      game: { kind: 'anomaly', title: 'Six reports', doing: 'reviewing the public reports',
+        hint: 'The open network has six reports that the Cascade is back. For each: does it appear at one station only (an artefact), arrive with the solar wind (shift the upstream trace by its travel time), or fit nothing?',
+        result: (S, g) => g === 'good' ? { d: { trust: 3 }, flags: { newAnomaly: true }, text: 'Five familiar things and one that isn’t. Kiran logs it, small and open, for whoever comes next.' } : g === 'ok' ? { flags: { newAnomaly: true }, text: 'Most reports are explained. One stays on the list.' } : { d: { trust: -2 }, text: 'The review mixes artefacts with sky. Critics notice.' } },
       talk: () => [],
       text: () => 'The persistent Cascade signature has not returned. The data are released openly. Independent groups test Kiran’s model: some support it, others refine it, and several question whether the pulse caused the transition or the natural system was already close to changing state.',
       options: () => [
@@ -773,13 +828,17 @@ const clone = (x) => JSON.parse(JSON.stringify(x));
 const LEG0 = { evidence: 10, trust: 50, risk: 0, bond: 60, aegis: 0, dose: 0, flags: {} };
 export function newState(seed = 1) {
   return { v: 0, seed: seed >>> 0, phase: 'lobby', mi: 0, players: {}, seats: { Kiran: null, Mateo: null, Leila: null, Naomi: null },
-    choices: {}, ready: {}, mods: { sci: 1, cost: 0 }, ops: null, report: null, ending: null, legacy: clone(LEG0), history: [], log: [], last: '', paused: false, retries: 0, checkpoint: null };
+    choices: {}, ready: {}, act: {}, mods: { sci: 1, cost: 0 }, ops: null, report: null, ending: null, legacy: clone(LEG0), history: [], log: [], last: '', paused: false, retries: 0, checkpoint: null };
 }
 export const mission = (S) => MISSIONS[CAMPAIGN[S.mi]];
 export const evaluate = (S) => mission(S).evaluate(S.choices, S.legacy, S.mods);
 export const aiRoles = (S) => ROLES.filter((r) => !S.seats[r]);
 export const curEvent = (S) => (S.ops ? mission(S).events[S.ops.ei] : null);
 export const nextEventIdx = (S) => { const ev = mission(S).events; for (let i = S.ops.ei + 1; i < ev.length; i++) if (!ev[i].when || ev[i].when(S)) return i; return -1; };
+// Mateo's hands-on build (Action Lab workbench): qualified craft must match the current plan.
+export const CRAFT_KEYS = ['m_arr', 'm_bat', 'm_proc', 'm_com', 'm_rec', 'm_pd', 'k_obj', 'k_time', 'k_cad', 'l_lv', 'l_orb'];
+export const craftSig = (S) => { const w = mission(S).workbench; return (Array.isArray(w) ? w : CRAFT_KEYS).map((k) => S.choices[k] || '').join('|'); };
+export const craftPending = (S) => { const m = mission(S); if (!m.workbench || !S.seats.Mateo) return false; const c = S.act && S.act.craft; return !(c && c.ok && c.sig === craftSig(S)); };
 export const eventOptions = (S) => { const e = curEvent(S); return e ? e.options(S, evaluate(S)) : []; };
 const defaults = (m) => Object.fromEntries(m.decisions.map((d) => [d.id, d.def]));
 const log = (S, who, text) => { S.log.push({ who, text }); if (S.log.length > 40) S.log.shift(); };
@@ -813,7 +872,7 @@ function enterEvent(S) {
   S.ops.chosen = null; S.ops.timed = null; S.ops.game = null; S.ops.enterText = '';
   if (e.enter) { const x = e.enter(S, evaluate(S)) || {}; applyD(S, x.d, x.mods, x.flags); S.ops.enterText = x.text || ''; }
 }
-function toBrief(S) { S.phase = 'brief'; S.ops = null; S.report = null; S.mods = { sci: 1, cost: 0 }; S.ready = {}; S.choices = defaults(mission(S)); const cp = clone(S); delete cp.checkpoint; cp.players = {}; S.checkpoint = cp; }
+function toBrief(S) { S.phase = 'brief'; S.ops = null; S.report = null; S.act = {}; S.mods = { sci: 1, cost: 0 }; S.ready = {}; S.choices = defaults(mission(S)); const cp = clone(S); delete cp.checkpoint; cp.players = {}; S.checkpoint = cp; }
 function finishMission(S) {
   const m = mission(S), r = m.story ? null : evaluate(S), before = clone(S.legacy);
   const out = m.outcome(r, S) || {};
@@ -848,8 +907,13 @@ export function reduce(S0, cmd, actor = {}) {
     case 'AUTO': { if (S.phase !== 'design' || !human(role) || role !== actor.role) return err('No role'); const before = evaluate(S);
       S.choices = botDesign(m, S.choices, [role], S.legacy, S.mods); S.last = diffText(m, before, evaluate(S), `${role} took the AI suggestion`); log(S, role, S.last); break; }
     case 'READY': if (!human(role)) return err('No role'); S.ready[role] = !!cmd.v; break;
+    case 'ACT': { if (S.phase !== 'design') return err('Not in design'); const own = { craft: 'Mateo' }[cmd.k]; if (!own) return err('Unknown artifact'); if (!owns(own)) return err(`Only ${own} can do this`);
+      let data; try { data = JSON.parse(JSON.stringify(cmd.data || {})); } catch (e) { return err('Bad data'); } if (JSON.stringify(data).length > 4000) return err('Too large');
+      const was = S.act && S.act[cmd.k] && S.act[cmd.k].ok; S.act = S.act || {}; S.act[cmd.k] = data;
+      if (data.ok && !was) log(S, own, `Spacecraft qualified on the workbench${data.summary ? ': ' + data.summary : ''}.`); break; }
     case 'GO': { if (S.phase !== 'design') return err('Not in design'); if (!owns('Naomi')) return err('Only Naomi authorizes launch');
       const r = evaluate(S); if (r.red) return err('Red gates must be fixed first');
+      if (craftPending(S)) return err('Mateo has not qualified the spacecraft on the workbench');
       const waiting = ROLES.filter((x) => x !== 'Naomi' && human(x) && !S.ready[x]); if (waiting.length) return err(`Waiting for ${waiting.join(', ')}`);
       S.phase = 'ops'; S.ops = { ei: 0, results: [] }; log(S, 'Naomi', `Go for ${m.name}.`); enterEvent(S); break; }
     case 'CHOOSE': { if (S.phase !== 'ops') return err('No event'); const e = curEvent(S); if (!e || e.id !== cmd.e || S.ops.chosen) return err('Stale');
@@ -886,7 +950,7 @@ export function reduce(S0, cmd, actor = {}) {
 // What the host's AI should do next (or null). Deterministic.
 export function aiStep(S) {
   if (S.paused) return null;
-  if (S.phase === 'design') { const r = evaluate(S); if (!S.seats.Naomi && !r.red && ROLES.every((x) => !S.seats[x] || S.ready[x])) return { type: 'GO' }; return null; }
+  if (S.phase === 'design') { const r = evaluate(S); if (!S.seats.Naomi && !r.red && !craftPending(S) && ROLES.every((x) => !S.seats[x] || S.ready[x])) return { type: 'GO' }; return null; }
   if (S.phase === 'ops') { const e = curEvent(S); if (!e || S.ops.chosen || S.seats[e.owner]) return null; const opts = eventOptions(S).filter((o) => !o.disabled); const o = opts.find((x) => x.ai) || opts[0]; return o ? { type: 'CHOOSE', e: e.id, o: o.id } : null; }
   return null;
 }

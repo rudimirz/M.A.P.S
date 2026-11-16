@@ -1361,11 +1361,14 @@ export function createGame(THREE, o) {
   }
   async function mgEpi() {
     DS = 1;
-    mgOpen('epi', { axis: 'x', step: 1 / 180, cursor: 0.12, marks: [], stage: 'epi', modelProg: 0, gap: false, spans: false, title: 'A spacecraft dataset', hint: 'Quiet conditions. Mark anything that does not belong.' });
+    mgOpen('epi', { axis: 'x', step: 1 / 180, cursor: 0.12, marks: [], stage: 'epi', modelProg: 0, gap: false, spans: false, title: 'A spacecraft dataset', hint: 'Quiet conditions. Mark anything that does not belong. Not everything that stands out is the sky.' });
+    let art = false;
     for (let k = 0; k < 2; k++) {
       const c = 126 + k * 3;
-      for (let miss = 0; ; ) { const t = (await mgInput(() => ['set', c / 180])) * 180; if (Math.abs(t - c) <= 6) { blip(660, 990); mgSet({ marks: [c], msg: '' }); break; } miss++; blip(220, 150, 0.16, 0.04, 'sawtooth'); mgSet({ msg: miss > 1 ? 'Ordinary fluctuation. Look for the one shape that repeats nowhere else.' : 'Ordinary fluctuation.' }); }
-      if (!k) { await say(null, 'A small unexpected variation appeared. Probably an instrumental effect, a familiar plasma process, or noise.'); await say(null, 'Lucas enlarged it, checked timestamps, and opened another dataset.'); DS = 2; mgSet({ marks: [], cursor: 0.12, title: 'Another dataset', hint: 'An independent instrument, the same hours.' }); }
+      for (let miss = 0; ; ) { const t = (await mgInput(() => ['set', c / 180])) * 180; if (Math.abs(t - c) <= 6) { blip(660, 990); mgSet({ marks: [c], msg: '' }); break; }
+        if (Math.abs(t - 62) <= 4) { blip(440, 440, 0.08); mgSet({ msg: k ? 'Nothing here on the independent instrument. That spike belonged to the first recorder.' : art ? 'Already set aside: the recorder’s timestamp jump.' : 'One sample wide, sharper than any plasma can change: the recorder’s timestamp jumped. An instrumental effect. Set aside — keep looking.' }); art = true; continue; }
+        miss++; blip(220, 150, 0.16, 0.04, 'sawtooth'); mgSet({ msg: miss > 1 ? 'Ordinary fluctuation. Look for the one shape that repeats nowhere else.' : 'Ordinary fluctuation.' }); }
+      if (!k) { await say(null, 'A small unexpected variation appeared. Probably an instrumental effect, a familiar plasma process, or noise.'); await say(null, 'Lucas enlarged it, checked timestamps, and opened another dataset.'); DS = 2; mgSet({ marks: [], cursor: 0.12, title: 'Another dataset', hint: 'An independent instrument, the same hours. What survives here is not the instrument.' }); }
     }
     blip(520, 1040, 0.18); await say(null, 'The variation appeared there too.'); mgClose(); DS = 0;
   }
@@ -1426,7 +1429,7 @@ export function createGame(THREE, o) {
   const PEAKS = [{ t: 17, a: 1, w: 4.5 }, { t: 65, a: 0.84, w: 5.5 }, { t: 114, a: 0.72, w: 6.5 }];
   const gauss = (t, c, a, w) => a * Math.exp(-((t - c) ** 2) / (2 * w * w));
   let DS = 0;
-  const epiObs = (t, k) => 0.3 + 0.05 * Math.sin(t * 0.21 + k) + 0.03 * Math.sin(t * 0.9 + k * 2) + 0.02 * Math.sin(t * 2.3 + k) + gauss(t, 125 + k * 3, 0.17, 2.2) - gauss(t, 130 + k * 3, 0.09, 1.8);
+  const epiObs = (t, k) => 0.3 + 0.05 * Math.sin(t * 0.21 + k) + 0.03 * Math.sin(t * 0.9 + k * 2) + 0.02 * Math.sin(t * 2.3 + k) + gauss(t, 125 + k * 3, 0.17, 2.2) - gauss(t, 130 + k * 3, 0.09, 1.8) + (k === 1 ? gauss(t, 62, 0.24, 0.7) : 0);
   const obs = (t) => (DS ? epiObs(t, DS) : obs0(t));
   const obs0 = (t) => 0.06 + PEAKS.reduce((acc, p) => acc + gauss(t, p.t, p.a, p.w), 0) + 0.2 * clamp((t - 21) / 8, 0, 1) * clamp((178 - t) / 14, 0, 1)
     + gauss(t, 40, 0.09, 1.8) + gauss(t, 92, 0.08, 1.6) + gauss(t, 141, 0.07, 1.6) + 0.03 * Math.sin(t * 0.9) + 0.02 * Math.sin(t * 2.3 + 1);
